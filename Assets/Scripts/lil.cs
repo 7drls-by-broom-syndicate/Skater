@@ -18,6 +18,12 @@ public static class lil {
    // public static Etilesprite[] dirchar = { Etilesprite.TORCHUP, Etilesprite.TORCHDOWN, Etilesprite.TORCHRIGHT, Etilesprite.TORCHLEFT };
    // public static Etilesprite[] dirchar_rev=	{ Etilesprite.TORCHDOWN, Etilesprite.TORCHUP,Etilesprite.TORCHLEFT, Etilesprite.TORCHRIGHT };
     
+    public static UnityEngine.Color rgb_unitycolour(int r,int g,int b)
+    {
+        return new UnityEngine.Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f);
+        
+    }
+
     public static int percentof(int self, int x){
 		return (int) ((((float) x / 100.0f)*(float) self) + 0.5f);
 	}
@@ -25,10 +31,10 @@ public static class lil {
         return UnityEngine.Random.Range(low, high);
     }
     public static int randi(int low, int high) {
-        return UnityEngine.Random.Range(low, high);
+        return UnityEngine.Random.Range(low, high+1);
     }
     public static byte randb(byte low, byte high) {
-        return (byte)UnityEngine.Random.Range(low, high);
+        return (byte)UnityEngine.Random.Range(low, high+1);
     }
     public static void seed(int s) {
         UnityEngine.Random.seed = s;

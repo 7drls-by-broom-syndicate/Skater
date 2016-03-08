@@ -124,9 +124,10 @@ public partial class RLMap  {
         }
 
         minimapcolours[(int)Etilesprite.MAP_SNOW] = Color.white;
-        minimapcolours[(int)Etilesprite.MAP_WATER] = Color.blue;
-        minimapcolours[(int)Etilesprite.MAP_ICE] = Color.yellow;
-        minimapcolours[(int)Etilesprite.MAP_THIN_ICE] = Color.red;
+        minimapcolours[(int)Etilesprite.MAP_WATER] = lil.rgb_unitycolour(38, 43, 55);
+        minimapcolours[(int)Etilesprite.MAP_ICE] = lil.rgb_unitycolour(101, 147, 232);
+        minimapcolours[(int)Etilesprite.MAP_THIN_ICE] = lil.rgb_unitycolour(188, 212, 255);
+        minimapcolours[(int)Etilesprite.ITEM_WARP_GATE_ANIM_1] = lil.rgb_unitycolour(184, 133, 217);
 
         //locked=new BitArray(width*height,false);
         //itemgrid.Init(nullptr, width, height);

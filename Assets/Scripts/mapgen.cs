@@ -563,8 +563,13 @@ public partial class RLMap
 
         emptyspaces = new List<Cell>();
 
+        regen:
 
-        float r = lil.randf(-1, 1);
+        float r = lil.randf(-1000, 1000);
+        float r2 = lil.randf(-1000, 1000);
+
+        int highpoint_x=0, highpoint_y=0;
+        float high = -100;
 
         for (int y = 0; y < height; y++)
         {
@@ -572,7 +577,14 @@ public partial class RLMap
             {
 
 
-                float n = SimplexNoise.Noise.Generate(((float)x) / width, ((float)y) / height, r*1000);//-1 to +1 i think
+                float n = SimplexNoise.Noise.Generate(((float)x) / width, ((float)y) / height, r);//-1 to +1 i think
+
+                if (n > high)
+                {
+                    high = n;
+                    highpoint_x = x;highpoint_y = y;
+                }
+
                 if (n < -0.7)
                 {
                     displaychar.AtSet(x, y, Etilesprite.MAP_WATER);
@@ -584,13 +596,27 @@ public partial class RLMap
                 {
                     displaychar.AtSet(x, y, Etilesprite.MAP_THIN_ICE);
                     passable.AtSet(x, y, true);
-                    blocks_sight.AtSet(x, y, false);
+                    blocks_sight.AtSet(x, y, false);                    
                 }
                 else if (n < 0.3)
                 {
                     displaychar.AtSet(x, y, Etilesprite.MAP_ICE);
                     passable.AtSet(x, y, true);
                     blocks_sight.AtSet(x, y, false);
+                    emptyspaces.Add(new Cell(x, y));
+                }
+                else if(n<0.9)
+                {
+                    displaychar.AtSet(x, y, Etilesprite.MAP_SNOW);
+                    passable.AtSet(x, y, true);
+                    blocks_sight.AtSet(x, y, false);
+                    emptyspaces.Add(new Cell(x, y));
+                }
+                else if (n < 0.91)
+                {
+                    displaychar.AtSet(x, y, Etilesprite.MAP_HENGE_STONE_1+lil.randi(0,3));
+                    passable.AtSet(x, y, true);
+                    blocks_sight.AtSet(x, y, true);
                 }
                 else
                 {
@@ -599,11 +625,22 @@ public partial class RLMap
                     blocks_sight.AtSet(x, y, false);
                     emptyspaces.Add(new Cell(x, y));
                 }
-              
-            }
-        }
-        
 
+            }
+        }//end of xy loop
+
+        displaychar.AtSet(highpoint_x, highpoint_y, Etilesprite.ITEM_WARP_GATE_ANIM_1);
+        passable.AtSet(highpoint_x, highpoint_y, false);
+        blocks_sight.AtSet(highpoint_x, highpoint_y, true);
+        //need to remove this square from emptyspaces!! urgent
+        Debug.Log("empty spaces " + emptyspaces.Count);
+        emptyspaces.RemoveAll(i => i.x == highpoint_x && i.y == highpoint_y);
+        Debug.Log("empty spaces NOW " + emptyspaces.Count);
+        if (emptyspaces.Count < 1)
+        {
+            Debug.Log("No empty spaces-all water?!");
+            goto regen;
+        }
         emptyspaces.Shuffle();
 
 

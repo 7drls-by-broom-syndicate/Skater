@@ -274,6 +274,8 @@ public partial class Game : MonoBehaviour {
             for (int x = 0; x < map.width; x++)
             {
                 Etilesprite et = map.displaychar.AtGet(x, y);
+                int pango = (int)et;
+               // if (pango < 1 || pango > 255) Debug.Log("bad pango " + pango);
                 map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)et]);
             }
         }
@@ -305,7 +307,7 @@ public partial class Game : MonoBehaviour {
 	    map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
 	    map.dynamiclight.Fill(Color.black);
 	    if (player.lantern)
-		    map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);
+		    map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);//was 9
   
 	    if (lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy))== 0f &&
 		    lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f)
