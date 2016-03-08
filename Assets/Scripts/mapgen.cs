@@ -596,9 +596,17 @@ public partial class RLMap
                 }
                 else if (n < -0.5)
                 {
-                    displaychar.AtSet(x, y, Etilesprite.MAP_THIN_ICE);
-                    passable.AtSet(x, y, true);
-                    blocks_sight.AtSet(x, y, false);                    
+                    if (n2 > 0 && n2 < 0.00001)
+                    {
+                        displaychar.AtSet(x, y, Etilesprite.ITEM_SIGN_THIN_ICE);
+                        passable.AtSet(x, y, false);
+                        blocks_sight.AtSet(x, y, false);
+                    }
+                    else {
+                        displaychar.AtSet(x, y, Etilesprite.MAP_THIN_ICE);
+                        passable.AtSet(x, y, true);
+                        blocks_sight.AtSet(x, y, false);
+                    }
                 }
                 else if (n < 0.3)
                 {
