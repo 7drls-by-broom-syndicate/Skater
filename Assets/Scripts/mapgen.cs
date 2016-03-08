@@ -578,6 +578,8 @@ public partial class RLMap
 
 
                 float n = SimplexNoise.Noise.Generate(((float)x) / width, ((float)y) / height, r);//-1 to +1 i think
+                float n2 = SimplexNoise.Noise.Generate(((float)x) / 1.0f, ((float)y) / 1.0f, r2);
+
 
                 if (n > high)
                 {
@@ -607,10 +609,18 @@ public partial class RLMap
                 }
                 else if(n<0.9)
                 {
-                    displaychar.AtSet(x, y, Etilesprite.MAP_SNOW);
-                    passable.AtSet(x, y, true);
-                    blocks_sight.AtSet(x, y, false);
-                    emptyspaces.Add(new Cell(x, y));
+                    if (n2 > 0.9)
+                    {
+                        displaychar.AtSet(x, y, Etilesprite.MAP_TREE_BARE_1+lil.randi(0,3));
+                        passable.AtSet(x, y, false);
+                        blocks_sight.AtSet(x, y, true);                        
+                    }
+                    else {
+                        displaychar.AtSet(x, y, Etilesprite.MAP_SNOW);
+                        passable.AtSet(x, y, true);
+                        blocks_sight.AtSet(x, y, false);
+                        emptyspaces.Add(new Cell(x, y));
+                    }
                 }
                 else if (n < 0.91)
                 {
