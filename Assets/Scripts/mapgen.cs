@@ -633,9 +633,9 @@ public partial class RLMap
         passable.AtSet(highpoint_x, highpoint_y, false);
         blocks_sight.AtSet(highpoint_x, highpoint_y, true);
         //need to remove this square from emptyspaces!! urgent
-        Debug.Log("empty spaces " + emptyspaces.Count);
+       // Debug.Log("empty spaces " + emptyspaces.Count);
         emptyspaces.RemoveAll(i => i.x == highpoint_x && i.y == highpoint_y);
-        Debug.Log("empty spaces NOW " + emptyspaces.Count);
+        //Debug.Log("empty spaces NOW " + emptyspaces.Count);
         if (emptyspaces.Count < 1)
         {
             Debug.Log("No empty spaces-all water?!");

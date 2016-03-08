@@ -181,10 +181,16 @@ public partial class Game : MonoBehaviour {
                     GUI.color = lil.colouradd(c, map.staticlight.AtGet(xx, yy));
 #else
     GUI.color = lil.colouradd(map.staticlight[xx, yy], map.dynamiclight[xx, yy]);
-#endif              
-                    
-                    DrawSprite(screenx, screeny, (int)map.displaychar.AtGet(xx, yy));
+#endif
 
+                    if (map.displaychar.AtGet(xx, yy) == Etilesprite.ITEM_WARP_GATE_ANIM_1)
+                    {
+                        int i = (int)(Time.time * 3.0f) % 3;
+                        DrawSprite(screenx, screeny, (int)Etilesprite.ITEM_WARP_GATE_ANIM_1 + i);
+                    }
+                    else {
+                        DrawSprite(screenx, screeny, (int)map.displaychar.AtGet(xx, yy));
+                    }
 
                     if (player.posx == xx && player.posy == yy) {
                         GUI.color = Color.white;
