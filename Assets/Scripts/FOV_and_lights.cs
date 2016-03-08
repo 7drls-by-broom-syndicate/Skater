@@ -9,8 +9,9 @@ public partial class RLMap {
 	    { 0, 1, 1, 0, 0, -1, -1, 0 },
 	    { 1, 0, 0, 1, -1, 0, 0, -1 }
     };
-
-    static Color walllight = new Color(1.0f, 0.30859375f, 0f);
+    static Color walllight = new Color(1.0f , 0.30859375f , 0f);
+    static Color gatelight = lil.rgb_unitycolour(184, 133, 217);
+    //    static Color walllight = new Color(1.0f/8f, 0.30859375f/8f, 0f);
     public static Color memorylight=new Color(0f,0f,0.3f);
     //static Color walllight = new Color(1.0f, 0.30859375f, 0.5f);
 
@@ -155,8 +156,9 @@ public partial class RLMap {
      void dolight(int x1, int y1, int x2, int y2,//new 18 jan
 		int r, Color colour,bool dostatic){                    //new 18 jan
 
-		//nice lava with 3 + ds /5 and radius 9
-		float c1 = 1.0f / (1.0f+ (float)(Distance_Squared(x1, y1, x2, y2)) / 70.0f);//was 20. bigger = more light
+        //nice lava with 3 + ds /5 and radius 9
+        float factor = (r == 3) ? 1.5f : 70f;
+		float c1 = 1.0f / (1.0f+ (float)(Distance_Squared(x1, y1, x2, y2)) /factor);//was 20. bigger = more light
 		float c2 = c1 - 1.0f / (1.0f + (float)(r*r));
 		float c3 = c2 / (1.0f- 1.0f / (1.0f+ (float)(r*r)));
 
@@ -210,7 +212,7 @@ public partial class RLMap {
 					case Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON:
 					
 				
-                    		do_fov_foralight(x, y, 9, walllight);
+                    		do_fov_foralight(x, y, 3, walllight);//never referenced
 						break;
 				//	case 'L':
 				//		do_fov_foralight(x, y, 5, new Color( 255, 0, 0 ));

@@ -610,10 +610,19 @@ public partial class RLMap
                 }
                 else if (n < 0.3)
                 {
-                    displaychar.AtSet(x, y, Etilesprite.MAP_ICE);
-                    passable.AtSet(x, y, true);
-                    blocks_sight.AtSet(x, y, false);
-                    emptyspaces.Add(new Cell(x, y));
+                  //  if (lil.randi(1, 200) > 199)
+                  //  {
+                  //      displaychar.AtSet(x, y, Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
+                  //      passable.AtSet(x, y, false);
+                  //      blocks_sight.AtSet(x, y, false);
+                  //  }
+                  //  else
+                   // {
+                        displaychar.AtSet(x, y, Etilesprite.MAP_ICE);
+                        passable.AtSet(x, y, true);
+                        blocks_sight.AtSet(x, y, false);
+                        emptyspaces.Add(new Cell(x, y));
+                   // }
                 }
                 else if(n<0.9)
                 {
@@ -654,6 +663,47 @@ public partial class RLMap
        // Debug.Log("empty spaces " + emptyspaces.Count);
         emptyspaces.RemoveAll(i => i.x == highpoint_x && i.y == highpoint_y);
         //Debug.Log("empty spaces NOW " + emptyspaces.Count);
+        do_fov_foralight(highpoint_x, highpoint_y, 3, gatelight);
+
+
+        for (int ly = 0; ly < this.height; ly += 10)
+        {
+            for (int lx = 0; lx < this.width; lx += 10)
+            {
+                int tentx = lx + lil.randi(0, 9);
+                int tenty = ly + lil.randi(0, 9);
+                if (tentx >= this.width || tenty >= this.height) Debug.Log("ERROR OUT OF BOUNDS");
+                //move light to wall
+                //    int outx, outy;
+                //    sbyte direction;
+                //bool suc;
+                //     if (displaychar[tentx, tenty] == Etilesprite.WALL)
+                //     {
+                     //    if (shootrays(tentx, tenty, Etilesprite.FLOOR, out outx, out outy, out direction, true))
+                //         {//DODGY - WAS ' '
+                //             displaychar[outx, outy] = lil.dirchar[direction];
+                displaychar.AtSet(tentx, tenty, Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
+                do_fov_foralight(tentx, tenty, 3, walllight);
+            //             do_fov_foralight(outx, outy, 9, walllight, direction);//255,255,128 pampkin 255, 117, 24
+           //         }
+
+            //    }
+            //    else {
+            //        if (shootrays(tentx, tenty, Etilesprite.WALL, out outx, out outy, out direction))
+             //       {
+             //           displaychar[outx, outy] = lil.dirchar_rev[direction];
+             //           do_fov_foralight(outx, outy, 9, walllight, lil.opdir[direction]);//255,255,128
+            //        }
+            //    }
+
+            }
+        }
+
+
+
+
+
+
         if (emptyspaces.Count < 1)
         {
             Debug.Log("No empty spaces-all water?!");
