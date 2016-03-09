@@ -638,7 +638,8 @@ public partial class RLMap
                 {
                     if (n2 > 0.9)
                     {
-                        displaychar.AtSet(x, y, Etilesprite.MAP_TREE_BARE_1+lil.randi(0,3));
+                        displaychar[x, y] = Etilesprite.MAP_SNOW;
+                        itemgrid[x,y]=new item_instance(Etilesprite.MAP_TREE_BARE_1+lil.randi(0,3));                       
                         passable.AtSet(x, y, false);
                         blocks_sight.AtSet(x, y, true);                        
                     }
@@ -652,7 +653,7 @@ public partial class RLMap
                 else if (n < 0.91)
                 {
                     displaychar.AtSet(x, y, Etilesprite.MAP_HENGE_STONE_1+lil.randi(0,3));
-                    passable.AtSet(x, y, true);
+                    passable.AtSet(x, y, false);
                     blocks_sight.AtSet(x, y, true);
                 }
                 else
@@ -730,7 +731,9 @@ public partial class RLMap
         for (int i = 0; i < NUMBEROF_CAIRNS; i++)
         {
             FreeSpace(out cx, out cy);
-            displaychar[cx, cy] = Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3);
+            passable[cx, cy] = false;
+            blocks_sight[cx, cy] = true;
+            itemgrid[cx,cy]=new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
         }
         //map all done- generate the static light map
         dostaticlights();

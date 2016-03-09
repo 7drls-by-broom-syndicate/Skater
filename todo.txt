@@ -6,21 +6,30 @@ make house simple rectangle with one hole. you can make multi room houses later 
 
 do barrels drunken walk. greater chance of barrels in house. check floodfill of level before barrels because they can be destroyed. the more barrels you generate the lower the chance of getting something
 
-do cairns from free spaces- ice or snow
+
 
 push lanterns to walls fix background to snow?
 
 cairns and barrels have to be drawn on background actually so maybe make lanterns do it too
 
 if you ever destroy a lantern regen lighting
+when you activate a cairn, redo lighting (dostaticlights())
 
 stop player turning lantern on and off it's always on
 
-remove lights from free spaces or gen them from the free spaces
 
-do boulders
+
+
 
 movement: if you press any direction you go in that direction except for straight back, which just stops you. you need this so you can stop in front of cairns, barrels etc.
+
+pathfinding crash. check a* code in both 
+
+
+another idea: item: fishing kit: get fish from water. hp back
+or even eat fish - low hp regain, be standing on blood when
+ignited, fish gets fried. full hp back on eat. almost becomes
+like an adventure game
 
 stretch goals:
 mobs other than polarmoops and skaters are now stretch goals

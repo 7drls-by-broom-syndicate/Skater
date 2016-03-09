@@ -191,7 +191,13 @@ public partial class Game : MonoBehaviour {
                     else {
                         DrawSprite(screenx, screeny, (int)map.displaychar.AtGet(xx, yy));
                     }
+                    //item layer
+                    if (map.itemgrid[xx, yy] != null)
+                    {
+                        DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+                    }
 
+                    //player
                     if (player.posx == xx && player.posy == yy) {
                         GUI.color = Color.white;
                         DrawSprite(screenx, screeny, 2);
