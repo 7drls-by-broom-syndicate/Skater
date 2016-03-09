@@ -1,15 +1,6 @@
-
-
-purple cairn: need to make a 2nd one to teleport to for each one
-
-need to store for barrels if it's good or not.
-
-(for above 2 things- maybe "extradata" 2d array for map- store things like if a barrel contains something and where teleport twin is)
-
 do something about lanterns. maybe outside buildings
-
+barrels outside should use drunken walk to be less randomly scattered
 for the love of god, skating
-
 
 music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
 
@@ -17,9 +8,7 @@ music that's faster for combat. same music or different? anyway it speeds up in 
 
 
 
-do barrels drunken walk. greater chance of barrels in house. check floodfill of level before barrels because they can be destroyed. the more barrels you generate the lower the chance of getting something
-
-some things missing from minimap: cairns, trees
+check floodfill of level before barrels because they can be destroyed. 
 
 sometimes can't get into house because door inaccessible
  due to edge of map
@@ -33,15 +22,12 @@ when you activate a cairn, redo lighting (dostaticlights())
 
 stop player turning lantern on and off it's always on
 
-
 make walls item not map feature so you can blow em up
-
 
 movement: if you press any direction you go in that direction except for straight back, which just stops you. you need this so you can stop in front of cairns, barrels etc.
 
 pathfinding crash. check a* code in both 
 also warning/error on clicking somewhere unreachable
-
 
 another idea: item: fishing kit: get fish from water. hp back
 or even eat fish - low hp regain, be standing on blood when

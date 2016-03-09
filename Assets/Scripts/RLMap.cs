@@ -44,8 +44,37 @@ public partial class RLMap  {
     private Player player;
 
     public Array2D<item_instance> itemgrid;//if you want multiple objects on each square, need a 2d array of lists of items where each list can be null
-    //List<item_instance> moblist;//put mobs in with items? but this var is a list of mobs with no ref to where they are
-    //list<item_instance> bomblist // specific to sucker
+                                           //List<item_instance> moblist;//put mobs in with items? but this var is a list of mobs with no ref to where they are
+                                           //list<item_instance> bomblist // specific to sucker
+
+    bool IsEmpty(int x, int y)
+    {
+        if (x < 0 || x >=width || y < 0 || y >= height) return false;//off map
+        //if (displaychar[x, y] != Etilesprite.FLOOR) return false; //not an empty tile
+        if (passable[x,y] ==false) return false;//not passable
+        if (x == player.posx && y == player.posy) return false;//player is on square
+        if (itemgrid[x, y] != null) return false;//item on square
+        return true;
+    }
+
+    Cell Random9way(int x, int y)
+    {
+        
+            List<Cell> bob = new List<Cell>();
+            if (IsEmpty(x - 1, y)) bob.Add(new Cell(x - 1, y));
+            if (IsEmpty(x + 1, y)) bob.Add(new Cell(x + 1, y));
+            if (IsEmpty(x, y - 1)) bob.Add(new Cell(x, y - 1));
+            if (IsEmpty(x, y + 1)) bob.Add(new Cell(x, y + 1));
+
+            if (IsEmpty(x - 1, y - 1)) bob.Add(new Cell(x - 1, y - 1));
+            if (IsEmpty(x + 1, y + 1)) bob.Add(new Cell(x + 1, y + 1));
+            if (IsEmpty(x + 1, y - 1)) bob.Add(new Cell(x + 1, y - 1));
+            if (IsEmpty(x - 1, y + 1)) bob.Add(new Cell(x - 1, y + 1));
+            if (bob.Count == 0) return null;
+            else return bob.randmember();
+        
+    }
+
 
     List<Cell> BresLine(int x0, int y0, int x1, int y1){
 

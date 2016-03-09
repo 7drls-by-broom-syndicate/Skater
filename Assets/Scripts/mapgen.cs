@@ -13,6 +13,9 @@ public class Patch
     public float posx, posy;
     public bool out_of_bounds = false;
     public bool stamped_down = false;
+
+
+
     public bool AnyMatching(int x, int y, Etilesprite ets)
     {
         for (int i = 0; i < 8; i++)
@@ -895,9 +898,12 @@ public partial class RLMap
 
         //let's do barrels. barrels are fun. i love barrels. do you love barrels, broom? broom loves barrels.
         List<Cell> barrels = new List<Cell>();
+            bool outsidevirgin = true;
+            int lastoutx = 0;int lastouty = 0;
 
         while (NUMBEROF_BARRELS > 0)
         {
+           
             int tx, ty;
             if (spaceinbild.Count > 0)
             {
@@ -905,7 +911,19 @@ public partial class RLMap
                 tx = c.x;ty = c.y;
             } else
             {
-                FreeSpace(out tx, out ty);
+                if (!outsidevirgin && lil.randi(1, 100) > 25) 
+                {
+                    Cell ctt = Random9way(lastoutx, lastouty);
+                    if (ctt==null){                       
+                        FreeSpace(out tx, out ty);                      
+                    } else { tx = ctt.x; ty = ctt.y; emptyspaces.RemoveAll(i => i.x == tx && i.y == ty); }
+                }
+                else { 
+                    FreeSpace(out tx, out ty);
+                    outsidevirgin = false;
+                   // lastoutx = tx; lastouty = ty;
+                }
+                lastoutx = tx; lastouty = ty;
             }
 
             itemgrid[tx, ty] = new item_instance(Etilesprite.ITEM_BARREL);
@@ -919,7 +937,7 @@ public partial class RLMap
             Debug.Log("suspiciously there are no barrels in the list of barrels");
         } else
         {
-            barrels.Shuffle();
+            barrels.Shuffle();//CRASH
             for (int i = 0; i < NUMBEROF_BARRELS_THAT_HAVE_ITEMS; i++)
             {
                 Cell c = barrels.OneFromTheTop();
