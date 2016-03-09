@@ -666,6 +666,7 @@ public partial class RLMap
         do_fov_foralight(highpoint_x, highpoint_y, 3, gatelight);
 
 
+        //add lanterns
         for (int ly = 0; ly < this.height; ly += 10)
         {
             for (int lx = 0; lx < this.width; lx += 10)
@@ -674,32 +675,32 @@ public partial class RLMap
                 int tenty = ly + lil.randi(0, 9);
                 if (tentx >= this.width || tenty >= this.height) Debug.Log("ERROR OUT OF BOUNDS");
                 //move light to wall
-                //    int outx, outy;
-                //    sbyte direction;
+                int outx, outy;
+                sbyte direction;
                 //bool suc;
-                //     if (displaychar[tentx, tenty] == Etilesprite.WALL)
-                //     {
-                     //    if (shootrays(tentx, tenty, Etilesprite.FLOOR, out outx, out outy, out direction, true))
-                //         {//DODGY - WAS ' '
-                //             displaychar[outx, outy] = lil.dirchar[direction];
-                displaychar.AtSet(tentx, tenty, Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
-                do_fov_foralight(tentx, tenty, 3, walllight);
-            //             do_fov_foralight(outx, outy, 9, walllight, direction);//255,255,128 pampkin 255, 117, 24
-           //         }
+                if (displaychar[tentx, tenty] == Etilesprite.MAP_SNOW)
+                {
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true))
+                    {//DODGY - WAS ' '
+                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1+lil.randi(0,3);
+                        //do_fov_foralight(outx, outy, 3, walllight);
 
-            //    }
-            //    else {
-            //        if (shootrays(tentx, tenty, Etilesprite.WALL, out outx, out outy, out direction))
-             //       {
-             //           displaychar[outx, outy] = lil.dirchar_rev[direction];
-             //           do_fov_foralight(outx, outy, 9, walllight, lil.opdir[direction]);//255,255,128
-            //        }
-            //    }
+    }
+
+}
+                else {
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction))
+                    {
+                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
+                       // do_fov_foralight(outx, outy, 3, walllight);
+                    }
+               }
 
             }
         }
 
-
+                        //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
+                        //do_fov_foralight(outx, outy, 3, walllight);
 
 
 

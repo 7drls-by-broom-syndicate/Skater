@@ -1,0 +1,32 @@
+music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
+
+music that's faster for combat. same music or different? anyway it speeds up in combat and goes back to normal later
+
+make house simple rectangle with one hole. you can make multi room houses later if you want but this is not a critical feature
+
+do barrels drunken walk. greater chance of barrels in house. check floodfill of level before barrels because they can be destroyed. the more barrels you generate the lower the chance of getting something
+
+do cairns from free spaces- ice or snow
+
+push lanterns to walls fix background to snow?
+
+cairns and barrels have to be drawn on background actually so maybe make lanterns do it too
+
+if you ever destroy a lantern regen lighting
+
+stop player turning lantern on and off it's always on
+
+remove lights from free spaces or gen them from the free spaces
+
+do boulders
+
+movement: if you press any direction you go in that direction except for straight back, which just stops you. you need this so you can stop in front of cairns, barrels etc.
+
+stretch goals:
+mobs other than polarmoops and skaters are now stretch goals
+actually having to go through the game 4 times with same levels is stretch goal
+
+
+eventually, not 7drl:
+
+procedural blood
