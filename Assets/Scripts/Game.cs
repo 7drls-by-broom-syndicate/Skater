@@ -287,8 +287,10 @@ public partial class Game : MonoBehaviour {
             {
                 Etilesprite et = map.displaychar.AtGet(x, y);
                 int pango = (int)et;
-               // if (pango < 1 || pango > 255) Debug.Log("bad pango " + pango);
-                map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)et]);
+                // if (pango < 1 || pango > 255) Debug.Log("bad pango " + pango);
+
+                if (map.itemgrid[x, y] != null) map.minimap.SetPixel(x, y, (Color) map.minimapcolours[(int)map.itemgrid[x, y].tile]);
+                else map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)et]);
             }
         }
         //end cheat 

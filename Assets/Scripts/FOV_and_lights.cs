@@ -12,6 +12,7 @@ public partial class RLMap
     };
     static Color walllight = new Color(1.0f, 0.30859375f, 0f);
     static Color gatelight = lil.rgb_unitycolour(184, 133, 217);
+    static Color lightgrey = new Color(0.7f, 0.7f, 0.7f);
     //    static Color walllight = new Color(1.0f/8f, 0.30859375f/8f, 0f);
     public static Color memorylight = new Color(0f, 0f, 0.3f);
     //static Color walllight = new Color(1.0f, 0.30859375f, 0.5f);
@@ -108,7 +109,8 @@ public partial class RLMap
             Etilesprite et = displaychar.AtGet(xx, yy);
             playermemory.AtSet(xx, yy, et);
 
-            minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)et]);
+            if (itemgrid[xx, yy] != null) minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)itemgrid[xx, yy].tile]);
+            else minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)et]);
             //if (et == Etilesprite.WALL) minimap.SetPixel(xx, yy, Color.grey);
             //else if (et == Etilesprite.FLOOR) minimap.SetPixel(xx, yy, Color.black);
 

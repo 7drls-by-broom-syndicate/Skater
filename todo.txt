@@ -1,8 +1,10 @@
-bug: started in building. it's cool but shouldn't be possible
+
 
 purple cairn: need to make a 2nd one to teleport to for each one
 
 need to store for barrels if it's good or not.
+
+(for above 2 things- maybe "extradata" 2d array for map- store things like if a barrel contains something and where teleport twin is)
 
 do something about lanterns. maybe outside buildings
 

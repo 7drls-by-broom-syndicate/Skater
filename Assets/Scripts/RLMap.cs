@@ -20,7 +20,7 @@ public partial class RLMap  {
     public Texture2D minimap;
 
 
-
+    public Array2D<Cell> extradata;
     public int width, height;                               //width and height of the map
     public Array2D<Etilesprite> displaychar;                                    //ascii char for each cell
     public Array2D<bool> passable;                                      //can player and mobs move through this square yes or no
@@ -120,7 +120,7 @@ public partial class RLMap  {
         //setup minimap colours
         for (int i = 0; i < 256; i++)
         {
-            minimapcolours[i] = Color.gray;
+            minimapcolours[i] = lightgrey;
         }
 
         minimapcolours[(int)Etilesprite.MAP_SNOW] = Color.white;
@@ -128,9 +128,13 @@ public partial class RLMap  {
         minimapcolours[(int)Etilesprite.MAP_ICE] = lil.rgb_unitycolour(101, 147, 232);
         minimapcolours[(int)Etilesprite.MAP_THIN_ICE] = lil.rgb_unitycolour(188, 212, 255);
         minimapcolours[(int)Etilesprite.ITEM_WARP_GATE_ANIM_1] = lil.rgb_unitycolour(184, 133, 217);
+        minimapcolours[(int)Etilesprite.ITEM_CAIRN_BLUE ]= Color.blue;
+        minimapcolours[(int)Etilesprite.ITEM_CAIRN_RED ]= Color.red;
+        minimapcolours[(int)Etilesprite.ITEM_CAIRN_GREEN] = Color.green;
+        minimapcolours[(int)Etilesprite.ITEM_CAIRN_PURPLE] = lil.rgb_unitycolour(100,27,136) ;
 
         //locked=new BitArray(width*height,false);
-        itemgrid=new Array2D<item_instance>(width, height,null);
+        itemgrid =new Array2D<item_instance>(width, height,null);
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
         blocks_sight=new Array2D<bool>(width,height,false);
@@ -143,6 +147,7 @@ public partial class RLMap  {
         fogoffog = new Array2D<bool>(width, height, false);
         staticlight = new Array2D<Color>( width, height,Color.black);
         dynamiclight = new Array2D<Color>(width, height, Color.black);
+        extradata = new Array2D<Cell>(width, height, null);
 
         switch (dgt) {
             case DungeonGenType.Splitter2013:

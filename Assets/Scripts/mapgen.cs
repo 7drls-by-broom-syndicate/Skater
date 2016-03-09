@@ -746,7 +746,20 @@ public partial class RLMap
             FreeSpace(out cx, out cy);
             passable[cx, cy] = false;
             blocks_sight[cx, cy] = true;
-            itemgrid[cx, cy] = new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
+            int whichcairn = lil.randi(0, 3);
+            itemgrid[cx, cy] = new item_instance(Etilesprite.ITEM_CAIRN_RED + whichcairn);
+            if (whichcairn == 3)
+            {
+                //if random cairn chosen was purple then make a twin to teleport to
+                int a, b;
+                FreeSpace(out a, out b);
+                itemgrid[a,b] = new item_instance(Etilesprite.ITEM_CAIRN_PURPLE);
+                passable[a,b] = false;
+                blocks_sight[a,b] = true;
+                //use extradata to point cairns to each other
+                extradata[cx, cy] = new Cell(a, b);
+                extradata[a, b] = new Cell(cx, cy);
+            }
         }
 
 
@@ -861,7 +874,7 @@ public partial class RLMap
                     {
                         if (newpatch.cells[x, y] != Etilesprite.EMPTY)
                         {                         
-                            emptyspaces.RemoveAll(i => i.x == x && i.y == y);  //remove square if it exists in the freespaces list
+                            emptyspaces.RemoveAll(i => i.x == x+cc.x && i.y == y+cc.y);  //remove square if it exists in the freespaces list
                             displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
                             if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
                             {
