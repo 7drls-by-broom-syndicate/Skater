@@ -894,6 +894,8 @@ public partial class RLMap
         if (spaceinbild.Count > 0) spaceinbild.Shuffle();
 
         //let's do barrels. barrels are fun. i love barrels. do you love barrels, broom? broom loves barrels.
+        List<Cell> barrels = new List<Cell>();
+
         while (NUMBEROF_BARRELS > 0)
         {
             int tx, ty;
@@ -908,9 +910,23 @@ public partial class RLMap
 
             itemgrid[tx, ty] = new item_instance(Etilesprite.ITEM_BARREL);
             passable[tx, ty] = false;
+            barrels.Add(new Cell(tx, ty));
             NUMBEROF_BARRELS--;
         }
-        
+
+        if (barrels.Count == 0)
+        {
+            Debug.Log("suspiciously there are no barrels in the list of barrels");
+        } else
+        {
+            barrels.Shuffle();
+            for (int i = 0; i < NUMBEROF_BARRELS_THAT_HAVE_ITEMS; i++)
+            {
+                Cell c = barrels.OneFromTheTop();
+                extradata[c.x, c.y] = new Cell(1, 1);
+                //so a barrel with extradata of 1,1 has something in it and extradata of null means empty! yay magic numbers.
+            }
+        }
 
         //map all done- generate the static light map
         dostaticlights();
