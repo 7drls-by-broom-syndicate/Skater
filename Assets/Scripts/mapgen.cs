@@ -13,6 +13,19 @@ public class Patch
     public float posx, posy;
     public bool out_of_bounds = false;
     public bool stamped_down = false;
+    public bool AnyMatching(int x, int y, Etilesprite ets)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            int tempx = x + lil.deltax[i];
+            int tempy = y + lil.deltay[i];
+            if (tempx > 0 && tempy > 0 && tempx < cells.width - 1 && tempy < cells.height - 1)
+                if (cells[tempx, tempy] == ets) return true;
+
+        }
+        return false;
+
+    }
     public Patch(int w, int h)
     {
         cells = new Array2D<Etilesprite>(w, h, Etilesprite.MAP_STONE_WALL_RUIN); //2016 was wall
@@ -23,7 +36,7 @@ public class Patch
         {
             Debug.Log("drawchar out of bounds!");
         }
-        cells.AtSet(x, y, Etilesprite.MAP_SNOW);//2016 was floor
+        cells.AtSet(x, y, Etilesprite.MAP_STONE_FLOOR_RUIN);//2016 was floor
     }
     void fillrect(int x0, int y0, int w, int h)
     {
@@ -138,7 +151,7 @@ public class Patch
         {
             for (int x = 0; x < cells.width; x++)
             {
-                if (cells.AtGet(x, y) == Etilesprite.MAP_SNOW)
+                if (cells.AtGet(x, y) == Etilesprite.MAP_STONE_FLOOR_RUIN)
                 {//2016 was floor
                     cellcount++;
                     if (cellcount > 3) return true;
@@ -569,7 +582,7 @@ public partial class RLMap
         const int NUMBEROF_BARRELS_THAT_HAVE_ITEMS = 5;
         //number of moops on level is not set, hence number of moop crates not set, but:
         const int PERCENT_CHANCE_MOOP_CRATE_NOT_EMPTY = 30;
-        
+
         //
         emptyspaces = new List<Cell>();
 
@@ -578,7 +591,7 @@ public partial class RLMap
         float r = lil.randf(-1000, 1000);
         float r2 = lil.randf(-1000, 1000);
 
-        int highpoint_x=0, highpoint_y=0;
+        int highpoint_x = 0, highpoint_y = 0;
         float high = -100;
 
         for (int y = 0; y < height; y++)
@@ -594,7 +607,7 @@ public partial class RLMap
                 if (n > high)
                 {
                     high = n;
-                    highpoint_x = x;highpoint_y = y;
+                    highpoint_x = x; highpoint_y = y;
                 }
 
                 if (n < -0.7)
@@ -602,7 +615,7 @@ public partial class RLMap
                     displaychar.AtSet(x, y, Etilesprite.MAP_WATER);
                     passable.AtSet(x, y, false);
                     blocks_sight.AtSet(x, y, false);
-                    
+
                 }
                 else if (n < -0.5)
                 {
@@ -620,28 +633,28 @@ public partial class RLMap
                 }
                 else if (n < 0.3)
                 {
-                  //  if (lil.randi(1, 200) > 199)
-                  //  {
-                  //      displaychar.AtSet(x, y, Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
-                  //      passable.AtSet(x, y, false);
-                  //      blocks_sight.AtSet(x, y, false);
-                  //  }
-                  //  else
-                   // {
-                        displaychar.AtSet(x, y, Etilesprite.MAP_ICE);
-                        passable.AtSet(x, y, true);
-                        blocks_sight.AtSet(x, y, false);
-                        emptyspaces.Add(new Cell(x, y));
-                   // }
+                    //  if (lil.randi(1, 200) > 199)
+                    //  {
+                    //      displaychar.AtSet(x, y, Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
+                    //      passable.AtSet(x, y, false);
+                    //      blocks_sight.AtSet(x, y, false);
+                    //  }
+                    //  else
+                    // {
+                    displaychar.AtSet(x, y, Etilesprite.MAP_ICE);
+                    passable.AtSet(x, y, true);
+                    blocks_sight.AtSet(x, y, false);
+                    emptyspaces.Add(new Cell(x, y));
+                    // }
                 }
-                else if(n<0.9)
+                else if (n < 0.9)
                 {
                     if (n2 > 0.9)
                     {
                         displaychar[x, y] = Etilesprite.MAP_SNOW;
-                        itemgrid[x,y]=new item_instance(Etilesprite.MAP_TREE_BARE_1+lil.randi(0,3));                       
+                        itemgrid[x, y] = new item_instance(Etilesprite.MAP_TREE_BARE_1 + lil.randi(0, 3));
                         passable.AtSet(x, y, false);
-                        blocks_sight.AtSet(x, y, true);                        
+                        blocks_sight.AtSet(x, y, true);
                     }
                     else {
                         displaychar.AtSet(x, y, Etilesprite.MAP_SNOW);
@@ -652,7 +665,7 @@ public partial class RLMap
                 }
                 else if (n < 0.91)
                 {
-                    displaychar.AtSet(x, y, Etilesprite.MAP_HENGE_STONE_1+lil.randi(0,3));
+                    displaychar.AtSet(x, y, Etilesprite.MAP_HENGE_STONE_1 + lil.randi(0, 3));
                     passable.AtSet(x, y, false);
                     blocks_sight.AtSet(x, y, true);
                 }
@@ -671,7 +684,7 @@ public partial class RLMap
         passable.AtSet(highpoint_x, highpoint_y, false);
         blocks_sight.AtSet(highpoint_x, highpoint_y, true);
         //need to remove this square from emptyspaces!! urgent
-       // Debug.Log("empty spaces " + emptyspaces.Count);
+        // Debug.Log("empty spaces " + emptyspaces.Count);
         emptyspaces.RemoveAll(i => i.x == highpoint_x && i.y == highpoint_y);
         //Debug.Log("empty spaces NOW " + emptyspaces.Count);
         //do_fov_foralight(highpoint_x, highpoint_y, 3, gatelight);//do all lights at end of map gen
@@ -705,14 +718,14 @@ public partial class RLMap
                 {
                     if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true))
                     {//DODGY - WAS ' '
-                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1+lil.randi(0,3);
+                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
                         blocks_sight[outx, outy] = true;
                         passable[outx, outy] = false;
                         //do_fov_foralight(outx, outy, 3, walllight);
 
-    }
+                    }
 
-}
+                }
                 else {
                     if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction))
                     {
@@ -721,7 +734,7 @@ public partial class RLMap
                         passable[outx, outy] = false;
                         // do_fov_foralight(outx, outy, 3, walllight);
                     }
-               }
+                }
 
             }
         }
@@ -733,16 +746,117 @@ public partial class RLMap
             FreeSpace(out cx, out cy);
             passable[cx, cy] = false;
             blocks_sight[cx, cy] = true;
-            itemgrid[cx,cy]=new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
+            itemgrid[cx, cy] = new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
         }
+
+
+        //stone building
+        Patch patch = new Patch(10, 10);                         //make a new patch and
+        patch.posx = (width - 10) / 2;                          //position patch in the middle of the map
+        patch.posy = (height - 10) / 2;
+        tryagain:
+        patch.patchfill();                                                  //put room shapes into the patch
+        if (!patch.CellCountTest())
+        {
+            //Debug.Log("cellcount fail"); 
+            goto tryagain;                          //must have >=4 cells 
+        }
+        //if (!patch->FloodConnectTest())goto tryagain;						//all cells must be connected
+        if (!patch.cells.FloodTest(Etilesprite.MAP_STONE_FLOOR_RUIN, Etilesprite.FLOODTEMP))
+        {
+            //Debug.Log("Floodtest fail");
+            goto tryagain;
+        }
+        //copy patch into bigger patch to ensure walls all the way round
+        Patch newpatch = new Patch(12, 12);
+        for (int y = 0; y < 10; y++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                newpatch.cells[x + 1, y + 1] = patch.cells[x, y];
+            }
+        }
+        //remove unneeded walls
+        for (int y = 0; y < 12; y++)
+        {
+            for (int x = 0; x < 12; x++)
+            {
+                if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN &&
+                !newpatch.AnyMatching(x, y, Etilesprite.MAP_STONE_FLOOR_RUIN))
+                    newpatch.cells[x, y] = Etilesprite.EMPTY;
+            }
+        }
+        //make a list of candidate wall sections that can become a door
+        List<Cell> cl = new List<Cell>();
+        for (int y = 0; y < 12; y++)
+        {
+            for (int x = 0; x < 12; x++)
+            {
+                if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                {
+                    int count = 0;
+                    if (x > 0 && newpatch.cells[x - 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                    if (y > 0 && newpatch.cells[x, y - 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                    if (x < newpatch.cells.width - 1 && newpatch.cells[x + 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                    if (y < newpatch.cells.height - 1 && newpatch.cells[x, y + 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                    if (count == 1) cl.Add(new Cell(x, y));
+                }
+            }
+        }
+        //pick a door
+        if (cl.Count == 0) { Debug.Log("ERROR NO CANDIDATE WALL SECTION TO USE AS DOOR FOUND"); }
+        else
+        {
+            Cell barbaras = lil.randmember(cl);
+            newpatch.cells[barbaras.x, barbaras.y] = Etilesprite.EMPTY;
+        }
+        
+        
+        //attempt to stamp down the ruin onto the map
+        //each square has to be snow or snow-topped rock and there has to be no item (which so far is tree or cairn
+        int candx = lil.randi(0, width - newpatch.cells.width - 1);
+        int candy = lil.randi(0, height - newpatch.cells.height - 1);
+        bool violation = false;
+        for (int y = 0; y < 12; y++)
+            {
+                for (int x = 0; x < 12; x++)
+                {
+                    if (displaychar[x+candx, y+candy] != Etilesprite.MAP_SNOW && displaychar[x+candx, y+candy] != Etilesprite.MAP_SNOW_COVERED_ROCK_1)
+                        { violation = true; goto pangos_considered_harmful; }
+                    if(itemgrid[x,y]!=null)
+                        { violation = true; goto pangos_considered_harmful; }
+                }
+            }
+        pangos_considered_harmful:
+        if (!violation)
+        {
+
+            for (int y = 0; y < 12; y++)
+            {
+                for (int x = 0; x < 12; x++)
+                {
+                    if (newpatch.cells[x, y] != Etilesprite.EMPTY)
+                    {
+                        displaychar[x+candx, y+candy] = newpatch.cells[x, y];
+                        if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                        {
+                            passable[x+candx, y+candy] = false;
+                            blocks_sight[x+candx, y+candy] = true;
+                        }
+                    }
+
+                }
+            }
+        }
+
         //map all done- generate the static light map
         dostaticlights();
 
 
 
 
-                        //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
-                        //do_fov_foralight(outx, outy, 3, walllight);
+        //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
+        //do_fov_foralight(outx, outy, 3, walllight);
 
 
 

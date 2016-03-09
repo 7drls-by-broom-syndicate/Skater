@@ -8,9 +8,9 @@ do barrels drunken walk. greater chance of barrels in house. check floodfill of 
 
 
 
-push lanterns to walls fix background to snow?
 
-cairns and barrels have to be drawn on background actually so maybe make lanterns do it too
+
+ripples on pond
 
 if you ever destroy a lantern regen lighting
 when you activate a cairn, redo lighting (dostaticlights())
@@ -18,12 +18,13 @@ when you activate a cairn, redo lighting (dostaticlights())
 stop player turning lantern on and off it's always on
 
 
-
+make walls item not map feature so you can blow em up
 
 
 movement: if you press any direction you go in that direction except for straight back, which just stops you. you need this so you can stop in front of cairns, barrels etc.
 
 pathfinding crash. check a* code in both 
+also warning/error on clicking somewhere unreachable
 
 
 another idea: item: fishing kit: get fish from water. hp back
