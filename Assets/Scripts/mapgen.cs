@@ -749,121 +749,125 @@ public partial class RLMap
             itemgrid[cx, cy] = new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
         }
 
+        int numbilds = lil.randi(0, 3);
+        for (int bilds = 0; bilds < numbilds; bilds++)
+        {
 
-        //stone building
-        Patch patch = new Patch(10, 10);                         //make a new patch and
-        patch.posx = (width - 10) / 2;                          //position patch in the middle of the map
-        patch.posy = (height - 10) / 2;
-        tryagain:
-        patch.patchfill();                                                  //put room shapes into the patch
-        if (!patch.CellCountTest())
-        {
-            //Debug.Log("cellcount fail"); 
-            goto tryagain;                          //must have >=4 cells 
-        }
-        //if (!patch->FloodConnectTest())goto tryagain;						//all cells must be connected
-        if (!patch.cells.FloodTest(Etilesprite.MAP_STONE_FLOOR_RUIN, Etilesprite.FLOODTEMP))
-        {
-            //Debug.Log("Floodtest fail");
-            goto tryagain;
-        }
-        //copy patch into bigger patch to ensure walls all the way round
-        Patch newpatch = new Patch(12, 12);
-        for (int y = 0; y < 10; y++)
-        {
-            for (int x = 0; x < 10; x++)
+
+            //stone building
+            Patch patch = new Patch(10, 10);                         //make a new patch and
+            patch.posx = (width - 10) / 2;                          //position patch in the middle of the map
+            patch.posy = (height - 10) / 2;
+            tryagain:
+            patch.patchfill();                                                  //put room shapes into the patch
+            if (!patch.CellCountTest())
             {
-                newpatch.cells[x + 1, y + 1] = patch.cells[x, y];
+                //Debug.Log("cellcount fail"); 
+                goto tryagain;                          //must have >=4 cells 
             }
-        }
-        //remove unneeded walls
-        for (int y = 0; y < 12; y++)
-        {
-            for (int x = 0; x < 12; x++)
+            //if (!patch->FloodConnectTest())goto tryagain;						//all cells must be connected
+            if (!patch.cells.FloodTest(Etilesprite.MAP_STONE_FLOOR_RUIN, Etilesprite.FLOODTEMP))
             {
-                if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN &&
-                !newpatch.AnyMatching(x, y, Etilesprite.MAP_STONE_FLOOR_RUIN))
-                    newpatch.cells[x, y] = Etilesprite.EMPTY;
+                //Debug.Log("Floodtest fail");
+                goto tryagain;
             }
-        }
-        //make a list of candidate wall sections that can become a door
-        List<Cell> cl = new List<Cell>();
-        for (int y = 0; y < 12; y++)
-        {
-            for (int x = 0; x < 12; x++)
+            //copy patch into bigger patch to ensure walls all the way round
+            Patch newpatch = new Patch(12, 12);
+            for (int y = 0; y < 10; y++)
             {
-                if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                for (int x = 0; x < 10; x++)
                 {
-                    int count = 0;
-                    if (x > 0 && newpatch.cells[x - 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
-                    if (y > 0 && newpatch.cells[x, y - 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
-                    if (x < newpatch.cells.width - 1 && newpatch.cells[x + 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
-                    if (y < newpatch.cells.height - 1 && newpatch.cells[x, y + 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
-                    if (count == 1) cl.Add(new Cell(x, y));
+                    newpatch.cells[x + 1, y + 1] = patch.cells[x, y];
                 }
             }
-        }
-        //pick a door
-        if (cl.Count == 0) { Debug.Log("ERROR NO CANDIDATE WALL SECTION TO USE AS DOOR FOUND"); }
-        else
-        {
-            Cell barbaras = lil.randmember(cl);
-            newpatch.cells[barbaras.x, barbaras.y] = Etilesprite.EMPTY;
-        }
-
-
-        //attempt to stamp down the ruin onto the map
-        //each square has to be snow or snow-topped rock and there has to be no item (which so far is tree or cairn
-        // int candx = lil.randi(0, width - newpatch.cells.width - 1);
-        // int candy = lil.randi(0, height - newpatch.cells.height - 1);
-
-        List<Cell> candspaces = new List<Cell>();
-
-        for (int candy = 0; candy < height - newpatch.cells.height; candy++)
-        {
-            for (int candx = 0; candx < width - newpatch.cells.width; candx++)
-            {
-                bool violation = false;
-                for (int y = 0; y < 12; y++)
-                {
-                    for (int x = 0; x < 12; x++)
-                    {
-                        if (displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW && displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW_COVERED_ROCK_1)
-                        { violation = true; goto pangos_considered_harmful; }
-                        if (itemgrid[x+candx, y+candy] != null)
-                        { violation = true; goto pangos_considered_harmful; }
-                    }
-                }
-                pangos_considered_harmful:
-                if (!violation) candspaces.Add(new Cell(candx, candy));
-        }
-        }
-        Debug.Log("number of cand spaces=" + candspaces.Count);
-       // goto wazok;
-
-        if (candspaces.Count>0)
-        {
-            Cell cc = lil.randmember(candspaces);
-
+            //remove unneeded walls
             for (int y = 0; y < 12; y++)
             {
                 for (int x = 0; x < 12; x++)
                 {
-                    if (newpatch.cells[x, y] != Etilesprite.EMPTY)
-                    {
-                        displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
-                        if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
-                        {
-                            passable[x + cc.x, y + cc.y] = false;
-                            blocks_sight[x + cc.x, y + cc.y] = true;
-                        }
-                    }
-
+                    if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN &&
+                    !newpatch.AnyMatching(x, y, Etilesprite.MAP_STONE_FLOOR_RUIN))
+                        newpatch.cells[x, y] = Etilesprite.EMPTY;
                 }
             }
-        }
+            //make a list of candidate wall sections that can become a door
+            List<Cell> cl = new List<Cell>();
+            for (int y = 0; y < 12; y++)
+            {
+                for (int x = 0; x < 12; x++)
+                {
+                    if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                    {
+                        int count = 0;
+                        if (x > 0 && newpatch.cells[x - 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                        if (y > 0 && newpatch.cells[x, y - 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                        if (x < newpatch.cells.width - 1 && newpatch.cells[x + 1, y] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                        if (y < newpatch.cells.height - 1 && newpatch.cells[x, y + 1] == Etilesprite.MAP_STONE_FLOOR_RUIN) count++;
+                        if (count == 1) cl.Add(new Cell(x, y));
+                    }
+                }
+            }
+            //pick a door
+            if (cl.Count == 0) { Debug.Log("ERROR NO CANDIDATE WALL SECTION TO USE AS DOOR FOUND"); }
+            else
+            {
+                Cell barbaras = lil.randmember(cl);
+                newpatch.cells[barbaras.x, barbaras.y] = Etilesprite.EMPTY;
+            }
 
-       // wazok:
+
+            //attempt to stamp down the ruin onto the map
+            //each square has to be snow or snow-topped rock and there has to be no item (which so far is tree or cairn
+            // int candx = lil.randi(0, width - newpatch.cells.width - 1);
+            // int candy = lil.randi(0, height - newpatch.cells.height - 1);
+
+            List<Cell> candspaces = new List<Cell>();
+
+            for (int candy = 0; candy < height - newpatch.cells.height; candy++)
+            {
+                for (int candx = 0; candx < width - newpatch.cells.width; candx++)
+                {
+                    bool violation = false;
+                    for (int y = 0; y < 12; y++)
+                    {
+                        for (int x = 0; x < 12; x++)
+                        {
+                            if (displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW && displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW_COVERED_ROCK_1)
+                            { violation = true; goto pangos_considered_harmful; }
+                            if (itemgrid[x + candx, y + candy] != null)
+                            { violation = true; goto pangos_considered_harmful; }
+                        }
+                    }
+                    pangos_considered_harmful:
+                    if (!violation) candspaces.Add(new Cell(candx, candy));
+                }
+            }
+            // Debug.Log("number of cand spaces=" + candspaces.Count);
+
+
+            if (candspaces.Count > 0)
+            {
+                Cell cc = lil.randmember(candspaces);
+
+                for (int y = 0; y < 12; y++)
+                {
+                    for (int x = 0; x < 12; x++)
+                    {
+                        if (newpatch.cells[x, y] != Etilesprite.EMPTY)
+                        {
+                            displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
+                            if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                            {
+                                passable[x + cc.x, y + cc.y] = false;
+                                blocks_sight[x + cc.x, y + cc.y] = true;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
 
         //map all done- generate the static light map
         dostaticlights();
