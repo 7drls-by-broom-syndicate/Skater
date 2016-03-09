@@ -560,7 +560,17 @@ public partial class RLMap
     public void genlevelskaterstyle()
     {
 
-
+        //handy item/powerup balancing in terms of numbers
+        const int NUMBEROF_CAIRNS = 5;
+        //barrels have a min and a max because the number of barrels with items in is set separately to the number of barrels
+        const int NUMBEROF_BARRELS_MIN = 5;
+        const int NUMBEROF_BARRELS_MAX = 20;
+        int NUMBEROF_BARRELS = lil.randi(NUMBEROF_BARRELS_MIN, NUMBEROF_BARRELS_MAX);
+        const int NUMBEROF_BARRELS_THAT_HAVE_ITEMS = 5;
+        //number of moops on level is not set, hence number of moop crates not set, but:
+        const int PERCENT_CHANCE_MOOP_CRATE_NOT_EMPTY = 30;
+        
+        //
         emptyspaces = new List<Cell>();
 
         regen:
@@ -663,45 +673,7 @@ public partial class RLMap
        // Debug.Log("empty spaces " + emptyspaces.Count);
         emptyspaces.RemoveAll(i => i.x == highpoint_x && i.y == highpoint_y);
         //Debug.Log("empty spaces NOW " + emptyspaces.Count);
-        do_fov_foralight(highpoint_x, highpoint_y, 3, gatelight);
-
-
-        //add lanterns
-        for (int ly = 0; ly < this.height; ly += 10)
-        {
-            for (int lx = 0; lx < this.width; lx += 10)
-            {
-                int tentx = lx + lil.randi(0, 9);
-                int tenty = ly + lil.randi(0, 9);
-                if (tentx >= this.width || tenty >= this.height) Debug.Log("ERROR OUT OF BOUNDS");
-                //move light to wall
-                int outx, outy;
-                sbyte direction;
-                //bool suc;
-                if (displaychar[tentx, tenty] == Etilesprite.MAP_SNOW)
-                {
-                    if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true))
-                    {//DODGY - WAS ' '
-                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1+lil.randi(0,3);
-                        //do_fov_foralight(outx, outy, 3, walllight);
-
-    }
-
-}
-                else {
-                    if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction))
-                    {
-                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
-                       // do_fov_foralight(outx, outy, 3, walllight);
-                    }
-               }
-
-            }
-        }
-
-                        //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
-                        //do_fov_foralight(outx, outy, 3, walllight);
-
+        //do_fov_foralight(highpoint_x, highpoint_y, 3, gatelight);//do all lights at end of map gen
 
 
 
@@ -711,6 +683,67 @@ public partial class RLMap
             goto regen;
         }
         emptyspaces.Shuffle();
+
+
+        //add snow-topped rocks
+        for (int ly = 0; ly < this.height; ly += 10)
+        {
+            for (int lx = 0; lx < this.width; lx += 10)
+            {
+                //  int tentx = lx + lil.randi(0, 9);
+                //  int tenty = ly + lil.randi(0, 9);
+                int tentx, tenty;
+                FreeSpace(out tentx, out tenty);
+
+                if (tentx >= this.width || tenty >= this.height) Debug.Log("ERROR OUT OF BOUNDS");
+                //move rock to snow/ice border
+                int outx, outy;
+                sbyte direction;
+                //bool suc;
+                if (displaychar[tentx, tenty] == Etilesprite.MAP_SNOW)
+                {
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true))
+                    {//DODGY - WAS ' '
+                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1+lil.randi(0,3);
+                        blocks_sight[outx, outy] = true;
+                        passable[outx, outy] = false;
+                        //do_fov_foralight(outx, outy, 3, walllight);
+
+    }
+
+}
+                else {
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction))
+                    {
+                        displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
+                        blocks_sight[outx, outy] = true;
+                        passable[outx, outy] = false;
+                        // do_fov_foralight(outx, outy, 3, walllight);
+                    }
+               }
+
+            }
+        }
+        //do cairns
+        int cx, cy;
+
+        for (int i = 0; i < NUMBEROF_CAIRNS; i++)
+        {
+            FreeSpace(out cx, out cy);
+            displaychar[cx, cy] = Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3);
+        }
+        //map all done- generate the static light map
+        dostaticlights();
+
+
+
+
+                        //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
+                        //do_fov_foralight(outx, outy, 3, walllight);
+
+
+
+
 
 
         //cleanup

@@ -144,7 +144,7 @@ public partial class RLMap {
 		for (uint i = 0; i < 8; i++) {
 			cast_light(callx, cally, radius, 1, 1.0f, 0.0f, multipliers[0,i],
 				multipliers[1,i], multipliers[2,i], multipliers[3,i],
-				ff
+				ff//crash
 				);
 		}
 		ff(callx, cally);
@@ -202,6 +202,7 @@ public partial class RLMap {
 		ff(callx, cally);
 	}
 
+    //recalc lighting
     public void dostaticlights(){
 			staticlight.Fill(Color.black);
 			for (int y = 0; y < height; y++){
@@ -210,14 +211,27 @@ public partial class RLMap {
                       
 			
 					case Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON:
-					
-				
-                    		do_fov_foralight(x, y, 3, walllight);//never referenced
+                    		do_fov_foralight(x, y, 3, walllight);
 						break;
-				//	case 'L':
-				//		do_fov_foralight(x, y, 5, new Color( 255, 0, 0 ));
-				//		break;
-					}
+                    case Etilesprite.ITEM_WARP_GATE_ANIM_1:
+                        do_fov_foralight(x, y, 3, gatelight);
+                        break;
+                    case Etilesprite.ITEM_CAIRN_RED:
+                        do_fov_foralight(x, y, 3, Color.red);
+                        break;
+                    case Etilesprite.ITEM_CAIRN_GREEN:
+                        do_fov_foralight(x, y, 3, Color.green);
+                        break;
+                    case Etilesprite.ITEM_CAIRN_BLUE:
+                        do_fov_foralight(x, y, 3, Color.blue);
+                        break;
+                    case Etilesprite.ITEM_CAIRN_PURPLE:
+                        do_fov_foralight(x, y, 3, Color.magenta);
+                        break;
+                        //	case 'L':
+                        //		do_fov_foralight(x, y, 5, new Color( 255, 0, 0 ));
+                        //		break;
+                }
 				}
 			}
 		}
