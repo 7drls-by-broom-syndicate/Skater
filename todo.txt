@@ -1,3 +1,14 @@
+bug: started in building. it's cool but shouldn't be possible
+
+purple cairn: need to make a 2nd one to teleport to for each one
+
+need to store for barrels if it's good or not.
+
+do something about lanterns. maybe outside buildings
+
+for the love of god, skating
+
+
 music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
 
 music that's faster for combat. same music or different? anyway it speeds up in combat and goes back to normal later
@@ -6,7 +17,10 @@ music that's faster for combat. same music or different? anyway it speeds up in 
 
 do barrels drunken walk. greater chance of barrels in house. check floodfill of level before barrels because they can be destroyed. the more barrels you generate the lower the chance of getting something
 
+some things missing from minimap: cairns, trees
 
+sometimes can't get into house because door inaccessible
+ due to edge of map
 
 make henge stones items too so can bomb? or floodtest
 

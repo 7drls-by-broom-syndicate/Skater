@@ -749,6 +749,11 @@ public partial class RLMap
             itemgrid[cx, cy] = new item_instance(Etilesprite.ITEM_CAIRN_RED + lil.randi(0, 3));
         }
 
+
+        //0-3 buildings
+        //keep track of spaces generated in a building
+        List<Cell> spaceinbild = new List<Cell>();
+
         int numbilds = lil.randi(0, 3);
         for (int bilds = 0; bilds < numbilds; bilds++)
         {
@@ -821,6 +826,7 @@ public partial class RLMap
             // int candx = lil.randi(0, width - newpatch.cells.width - 1);
             // int candy = lil.randi(0, height - newpatch.cells.height - 1);
 
+            //make a list of places the building could go
             List<Cell> candspaces = new List<Cell>();
 
             for (int candy = 0; candy < height - newpatch.cells.height; candy++)
@@ -844,30 +850,54 @@ public partial class RLMap
             }
             // Debug.Log("number of cand spaces=" + candspaces.Count);
 
-
+            //Debug.Log("free1 " + emptyspaces.Count);
             if (candspaces.Count > 0)
             {
-                Cell cc = lil.randmember(candspaces);
+                Cell cc = lil.randmember(candspaces);//pick a candidate space at random
 
                 for (int y = 0; y < 12; y++)
                 {
                     for (int x = 0; x < 12; x++)
                     {
                         if (newpatch.cells[x, y] != Etilesprite.EMPTY)
-                        {
+                        {                         
+                            emptyspaces.RemoveAll(i => i.x == x && i.y == y);  //remove square if it exists in the freespaces list
                             displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
                             if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
                             {
                                 passable[x + cc.x, y + cc.y] = false;
                                 blocks_sight[x + cc.x, y + cc.y] = true;
                             }
+                            else spaceinbild.Add(new Cell(x + cc.x, y + cc.y));
                         }
 
                     }
                 }
             }
+           // Debug.Log("free2 " + emptyspaces.Count);
 
         }
+
+        if (spaceinbild.Count > 0) spaceinbild.Shuffle();
+
+        //let's do barrels. barrels are fun. i love barrels. do you love barrels, broom? broom loves barrels.
+        while (NUMBEROF_BARRELS > 0)
+        {
+            int tx, ty;
+            if (spaceinbild.Count > 0)
+            {
+                Cell c = spaceinbild.OneFromTheTop();
+                tx = c.x;ty = c.y;
+            } else
+            {
+                FreeSpace(out tx, out ty);
+            }
+
+            itemgrid[tx, ty] = new item_instance(Etilesprite.ITEM_BARREL);
+            passable[tx, ty] = false;
+            NUMBEROF_BARRELS--;
+        }
+        
 
         //map all done- generate the static light map
         dostaticlights();
