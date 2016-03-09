@@ -810,26 +810,40 @@ public partial class RLMap
             Cell barbaras = lil.randmember(cl);
             newpatch.cells[barbaras.x, barbaras.y] = Etilesprite.EMPTY;
         }
-        
-        
+
+
         //attempt to stamp down the ruin onto the map
         //each square has to be snow or snow-topped rock and there has to be no item (which so far is tree or cairn
-        int candx = lil.randi(0, width - newpatch.cells.width - 1);
-        int candy = lil.randi(0, height - newpatch.cells.height - 1);
-        bool violation = false;
-        for (int y = 0; y < 12; y++)
-            {
-                for (int x = 0; x < 12; x++)
-                {
-                    if (displaychar[x+candx, y+candy] != Etilesprite.MAP_SNOW && displaychar[x+candx, y+candy] != Etilesprite.MAP_SNOW_COVERED_ROCK_1)
-                        { violation = true; goto pangos_considered_harmful; }
-                    if(itemgrid[x,y]!=null)
-                        { violation = true; goto pangos_considered_harmful; }
-                }
-            }
-        pangos_considered_harmful:
-        if (!violation)
+        // int candx = lil.randi(0, width - newpatch.cells.width - 1);
+        // int candy = lil.randi(0, height - newpatch.cells.height - 1);
+
+        List<Cell> candspaces = new List<Cell>();
+
+        for (int candy = 0; candy < height - newpatch.cells.height; candy++)
         {
+            for (int candx = 0; candx < width - newpatch.cells.width; candx++)
+            {
+                bool violation = false;
+                for (int y = 0; y < 12; y++)
+                {
+                    for (int x = 0; x < 12; x++)
+                    {
+                        if (displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW && displaychar[x + candx, y + candy] != Etilesprite.MAP_SNOW_COVERED_ROCK_1)
+                        { violation = true; goto pangos_considered_harmful; }
+                        if (itemgrid[x+candx, y+candy] != null)
+                        { violation = true; goto pangos_considered_harmful; }
+                    }
+                }
+                pangos_considered_harmful:
+                if (!violation) candspaces.Add(new Cell(candx, candy));
+        }
+        }
+        Debug.Log("number of cand spaces=" + candspaces.Count);
+       // goto wazok;
+
+        if (candspaces.Count>0)
+        {
+            Cell cc = lil.randmember(candspaces);
 
             for (int y = 0; y < 12; y++)
             {
@@ -837,17 +851,19 @@ public partial class RLMap
                 {
                     if (newpatch.cells[x, y] != Etilesprite.EMPTY)
                     {
-                        displaychar[x+candx, y+candy] = newpatch.cells[x, y];
+                        displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
                         if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
                         {
-                            passable[x+candx, y+candy] = false;
-                            blocks_sight[x+candx, y+candy] = true;
+                            passable[x + cc.x, y + cc.y] = false;
+                            blocks_sight[x + cc.x, y + cc.y] = true;
                         }
                     }
 
                 }
             }
         }
+
+       // wazok:
 
         //map all done- generate the static light map
         dostaticlights();

@@ -2,13 +2,13 @@ music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing t
 
 music that's faster for combat. same music or different? anyway it speeds up in combat and goes back to normal later
 
-make house simple rectangle with one hole. you can make multi room houses later if you want but this is not a critical feature
+
 
 do barrels drunken walk. greater chance of barrels in house. check floodfill of level before barrels because they can be destroyed. the more barrels you generate the lower the chance of getting something
 
 
 
-
+make henge stones items too so can bomb? or floodtest
 
 ripples on pond
 
