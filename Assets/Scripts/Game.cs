@@ -46,12 +46,13 @@ class Pangotimer
 
 public enum Egamestate : int { initializing, titlescreen, playing, gameover }
 
-public enum CradleOfTime{   dormant, ready_to_process_turn, waiting_for_player, player_is_done, processing_other_actors}
+public enum CradleOfTime { dormant, ready_to_process_turn, waiting_for_player, player_is_done, processing_other_actors }
 
 public partial class Game : MonoBehaviour
 {
 
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
+    byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
     Color whiteblendvariable = new Color(0.9f, 0.1f, 0.1f, 0f);
     Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
@@ -83,13 +84,14 @@ public partial class Game : MonoBehaviour
     //vars for drawing sprites 
     const float xratio = 1f / 32f;
     const float yratio = 1f / 8f;
-    float spriteratio;
+    float spriteratio,spriteratio3;
     static Rect rbigtext = new Rect(0, 0, (12 * 6) * zoomfactor, (20 * 12) * zoomfactor);
 
     static Rect r = new Rect(0, 0, 6 * zoomfactor, 12 * zoomfactor);
     static Rect r2 = new Rect(0, 0, xratio, yratio);
     static Rect r3 = new Rect(0, 0, 16 * zoomfactor, 16 * zoomfactor);
     static Rect r3b = new Rect(0, 0, 8 * zoomfactor, 8 * zoomfactor);
+ static Rect r3c= new Rect(0, 0, 3 * zoomfactor, 3 * zoomfactor);
     static Rect r4 = new Rect(0, 0, 0, 1f);
     static Rect r4reverse = new Rect(0, 0, 0, 1f);
     static Rect r5 = new Rect(0, 0, 0, 1f);
@@ -115,7 +117,7 @@ public partial class Game : MonoBehaviour
 
     static Rect wholescreen = new Rect(0, 0, 640 * zoomfactor, 360 * zoomfactor);
 
-    #if FLICKERING_LANTERN
+#if FLICKERING_LANTERN
     float LF_period=0.1f; //frequency of lantern flicker
     float LF_timer = 0.0f; //progression towards period
     float LF_amount=0.0f; //deviation from full light
@@ -127,11 +129,66 @@ public partial class Game : MonoBehaviour
     void OnGUI()
     {
 
+        Action<int, int, byte[]> PrintString = (int xx, int yy, byte[] b) =>
+        {
+            for (int x = 0; x < b.Length; x++)
+            {
+                int y = 0;
+                byte c = b[x];
+                int xpos = c % 32;
+                int ypos = 7 - (c / 32);
+                r.x = (xx + (x * 6)) * zoomfactor;
+                r.y = yy * zoomfactor;
+
+                r2.x = xratio * xpos;
+                r2.y = yratio * ypos;
+
+                GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2);
+
+            }
+        };
+
+        Action<int, int, int> PrintNumber = (int xx, int yy, int value) =>
+        {
+         //   Action<int, int, int> DrawSprite_pixelaccurate = (int x, int y, int s) => {
+         //       r3.x = x * zoomfactor;
+         //       r3.y = y * zoomfactor;
+         //       r4.x = spriteratio * s;
+         //       GUI.DrawTextureWithTexCoords(r3, sprites, r4);
+         //   };
+
+            for (int x = 0; x < 3; x++)
+            {//48 is 0
+                int y = 0;
+                byte c = 0; 
+                switch (x)
+                {
+                    case 0:c = (byte)(48+(value / 100)); break;
+                    case 1:c=(byte)(48+((value%100)/10)); break;
+                    case 2:c = (byte)(48 + (value % 10)); break;
+                }
+                int xpos = c % 32;
+                int ypos = 7 - (c / 32);
+                r.x = (xx + (x * 6)) * zoomfactor;
+                r.y = yy * zoomfactor;
+
+                r2.x = xratio * xpos;
+                r2.y = yratio * ypos;
+
+                GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2);
+
+              //  DrawSprite_pixelaccurate(x, y, 3 + (value / 100));
+               // DrawSprite_pixelaccurate(x + 16, y, 3 + ((value % 100) / 10));
+               // DrawSprite_pixelaccurate(x + 32, y, 3 + (value % 10));
+            }
+        };
+
+
         GUI.color = Color.white;
         switch (gamestate)
         {
             case Egamestate.titlescreen:
-                GUI.DrawTexture(wholescreen,titlescreen);
+                GUI.DrawTexture(wholescreen, titlescreen);
 
                 GUI.color = whiteblendvariable;
                 whiteblendvariable.a = 0.5f + ((((Time.time / 2) - (int)(Time.time / 2))) / 2);
@@ -178,14 +235,14 @@ public partial class Game : MonoBehaviour
                     r3.x = x * zoomfactorx16;
                     r3.y = y * zoomfactorx16;
                     r4.x = spriteratio * (s - 1);//s-1 is new for 2016
-            GUI.DrawTextureWithTexCoords(r3, sprites, r4);
+                    GUI.DrawTextureWithTexCoords(r3, sprites, r4);
                 };
                 Action<int, int, int> DrawSpriteReverse = (int x, int y, int s) =>
                 {
                     r3.x = x * zoomfactorx16;
                     r3.y = y * zoomfactorx16;
                     r4reverse.x = spriteratio * (s);//s-1 is new for 2016
-            GUI.DrawTextureWithTexCoords(r3, sprites, r4reverse);
+                    GUI.DrawTextureWithTexCoords(r3, sprites, r4reverse);
                 };
                 Action<int, int, int> DrawSprite_Particle = (int x, int y, int s) =>
                 {
@@ -198,7 +255,17 @@ public partial class Game : MonoBehaviour
                     r5.height = 0.5f;
                     GUI.DrawTextureWithTexCoords(r3b, sprites, r5);
                 };
+                Action<int, int> DrawSprite3x3 = (int x, int y) => {
+                    r3c.x = x * zoomfactor;
+                    r3c.y = y * zoomfactor;
 
+                    r5.x = spriteratio * 44;           //s
+                    r5.y = (1f / 16f) * 10f;
+                    r5.width = spriteratio3;
+                    r5.height = (1f / 16f) * 3f;//0.5f;
+                    GUI.DrawTextureWithTexCoords(r3c, sprites, r5);
+                };
+            
                 originx = (player.posx < XHALF) ? 0 : player.posx - XHALF;
                 originy = (player.posy < YHALF) ? 0 : player.posy - YHALF;
 
@@ -338,6 +405,11 @@ public partial class Game : MonoBehaviour
 
                 }
 
+                //statusline
+
+                GUI.color = Color.white;
+                PrintString(0, 359 - 12, statusline);
+                PrintNumber(24, 359 - 12, player.hp);
 
                 //tooltipz. the last thing to do!
                 //31,214 (*zoomfactor)
@@ -502,9 +574,10 @@ public partial class Game : MonoBehaviour
         pressstartx = (640 - (bstrPressStart.Length * 6)) / 2;
         bool wtf = PlayerPrefs.GetInt("Screenmanager Is Fullscreen mode") == 1 ? true : false;
 
-       // Screen.SetResolution(640 * zoomfactor, 360 * zoomfactor, fullscreenp);
-        
+        // Screen.SetResolution(640 * zoomfactor, 360 * zoomfactor, fullscreenp);
+
         spriteratio = 1f / (float)(sprites.width / 16);
+   spriteratio3=(spriteratio / 16) * 3;
         r4.width = spriteratio;
         r4reverse.width = -spriteratio;
         particle = new Texture2D(1, 1, TextureFormat.ARGB32, false, false);//zoomfactor by zoomfactor
@@ -518,7 +591,8 @@ public partial class Game : MonoBehaviour
         gamestate = Egamestate.titlescreen;
     }
 
-    void StartAGame() {
+    void StartAGame()
+    {
         log = new MessageLog(50, 15);
         log.Printline("Skater by The Broom Institute: 7DRL 2016");
         lil.seednow();
@@ -526,7 +600,8 @@ public partial class Game : MonoBehaviour
 
         NextLevel();
     }
-    void NextLevel() { 
+    void NextLevel()
+    {
 
         map = new RLMap(player, DungeonGenType.Skater2016);
         r_minimap = new Rect(336 * zoomfactor, 0, map.width * 2 * zoomfactor, map.height * 2 * zoomfactor);//was 339

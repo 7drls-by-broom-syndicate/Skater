@@ -584,7 +584,7 @@ public partial class RLMap
         int NUMBEROF_BARRELS = lil.randi(NUMBEROF_BARRELS_MIN, NUMBEROF_BARRELS_MAX);
         const int NUMBEROF_BARRELS_THAT_HAVE_ITEMS = 5;
         //number of moops on level is not set, hence number of moop crates not set, but:
-        const int PERCENT_CHANCE_MOOP_CRATE_NOT_EMPTY = 30;
+        const int PERCENT_CHANCE_MOOP_CRATE_NOT_EMPTY = 30;//this needs to be somewhere more scoped out.
 
         //
         emptyspaces = new List<Cell>();

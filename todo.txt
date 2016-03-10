@@ -1,6 +1,11 @@
-do something about lanterns. maybe outside buildings
-
 for the love of god, skating
+
+general suspicious slowdown after adding game state code
+check vsync
+
+there is no general text printing to screen function!
+do health as "hp" sprite plus hearts?
+
 
 music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
 
@@ -33,6 +38,11 @@ another idea: item: fishing kit: get fish from water. hp back
 or even eat fish - low hp regain, be standing on blood when
 ignited, fish gets fried. full hp back on eat. almost becomes
 like an adventure game
+
+bugs that don't matter that much. resist urge to fix!
+problem:trees generating in snow-topped boulders
+reason:boulders take a free space then slide to the edge. they need to 
+put that free space back or only peek at it if possible, then they need to unfreespace what they land on. the slide has to check for trees and cairns by checking itemgrid is null, not just check displaychar
 
 stretch goals:
 mobs other than polarmoops and skaters are now stretch goals
