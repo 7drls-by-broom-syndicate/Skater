@@ -756,9 +756,9 @@ public partial class RLMap
                 //if random cairn chosen was purple then make a twin to teleport to
                 int a, b;
                 FreeSpace(out a, out b);
-                itemgrid[a,b] = new item_instance(Etilesprite.ITEM_CAIRN_PURPLE);
-                passable[a,b] = false;
-                blocks_sight[a,b] = true;
+                itemgrid[a, b] = new item_instance(Etilesprite.ITEM_CAIRN_PURPLE);
+                passable[a, b] = false;
+                blocks_sight[a, b] = true;
                 //use extradata to point cairns to each other
                 extradata[cx, cy] = new Cell(a, b);
                 extradata[a, b] = new Cell(cx, cy);
@@ -829,12 +829,24 @@ public partial class RLMap
                 }
             }
             //pick a door
+
             if (cl.Count == 0) { Debug.Log("ERROR NO CANDIDATE WALL SECTION TO USE AS DOOR FOUND"); }
             else
             {
-                Cell barbaras = lil.randmember(cl);
-                newpatch.cells[barbaras.x, barbaras.y] = Etilesprite.EMPTY;
+                Cell bar = lil.randmember(cl);
+                newpatch.cells[bar.x, bar.y] = Etilesprite.EMPTY;
+                //place lanterns
+                for (int y = bar.y-1; y < bar.y+2; y++)
+                {
+                    for (int x = bar.x-1; x < bar.x+2; x++)
+                    {
+                        if (x > -1 && y > -1 && x < newpatch.cells.width && y < newpatch.cells.height
+                            && newpatch.cells[x, y] == Etilesprite.EMPTY && x != bar.x && y != bar.y)
+                            newpatch.cells[x, y] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
+                    }
+                }
             }
+
 
 
             //attempt to stamp down the ruin onto the map
@@ -870,27 +882,36 @@ public partial class RLMap
             if (candspaces.Count > 0)
             {
                 Cell cc = lil.randmember(candspaces);//pick a candidate space at random
-
+                //stamp it down
                 for (int y = 0; y < 12; y++)
                 {
                     for (int x = 0; x < 12; x++)
                     {
                         if (newpatch.cells[x, y] != Etilesprite.EMPTY)
-                        {                         
-                            emptyspaces.RemoveAll(i => i.x == x+cc.x && i.y == y+cc.y);  //remove square if it exists in the freespaces list
-                            displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
-                            if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN)
+                        {
+                            emptyspaces.RemoveAll(i => i.x == x + cc.x && i.y == y + cc.y);  //remove square if it exists in the freespaces list
+                            if (newpatch.cells[x, y] == Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON)
+                            {
+                                itemgrid[x+cc.x, y+cc.y] = new item_instance(Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON);
+                            } else
+                            {
+                                displaychar[x + cc.x, y + cc.y] = newpatch.cells[x, y];
+                            }
+                            
+                            if (newpatch.cells[x, y] == Etilesprite.MAP_STONE_WALL_RUIN||newpatch.cells[x,y]==Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON)
                             {
                                 passable[x + cc.x, y + cc.y] = false;
                                 blocks_sight[x + cc.x, y + cc.y] = true;
                             }
                             else spaceinbild.Add(new Cell(x + cc.x, y + cc.y));
+
+
                         }
 
                     }
                 }
             }
-           // Debug.Log("free2 " + emptyspaces.Count);
+            // Debug.Log("free2 " + emptyspaces.Count);
 
         }
 
@@ -898,30 +919,33 @@ public partial class RLMap
 
         //let's do barrels. barrels are fun. i love barrels. do you love barrels, broom? broom loves barrels.
         List<Cell> barrels = new List<Cell>();
-            bool outsidevirgin = true;
-            int lastoutx = 0;int lastouty = 0;
+        bool outsidevirgin = true;
+        int lastoutx = 0; int lastouty = 0;
 
         while (NUMBEROF_BARRELS > 0)
         {
-           
+
             int tx, ty;
             if (spaceinbild.Count > 0)
             {
                 Cell c = spaceinbild.OneFromTheTop();
-                tx = c.x;ty = c.y;
-            } else
+                tx = c.x; ty = c.y;
+            }
+            else
             {
-                if (!outsidevirgin && lil.randi(1, 100) > 25) 
+                if (!outsidevirgin && lil.randi(1, 100) > 25)
                 {
                     Cell ctt = Random9way(lastoutx, lastouty);
-                    if (ctt==null){                       
-                        FreeSpace(out tx, out ty);                      
-                    } else { tx = ctt.x; ty = ctt.y; emptyspaces.RemoveAll(i => i.x == tx && i.y == ty); }
+                    if (ctt == null)
+                    {
+                        FreeSpace(out tx, out ty);
+                    }
+                    else { tx = ctt.x; ty = ctt.y; emptyspaces.RemoveAll(i => i.x == tx && i.y == ty); }
                 }
-                else { 
+                else {
                     FreeSpace(out tx, out ty);
                     outsidevirgin = false;
-                   // lastoutx = tx; lastouty = ty;
+                    // lastoutx = tx; lastouty = ty;
                 }
                 lastoutx = tx; lastouty = ty;
             }
@@ -935,7 +959,8 @@ public partial class RLMap
         if (barrels.Count == 0)
         {
             Debug.Log("suspiciously there are no barrels in the list of barrels");
-        } else
+        }
+        else
         {
             barrels.Shuffle();//CRASH
             for (int i = 0; i < NUMBEROF_BARRELS_THAT_HAVE_ITEMS; i++)
