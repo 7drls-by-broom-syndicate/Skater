@@ -53,13 +53,13 @@ public partial class Game : MonoBehaviour
 
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
-    Color whiteblendvariable = new Color(0.9f, 0.9f, 1f, 0f);
+    Color whiteblendvariable = new Color(0.9f, 0.1f, 0.1f, 0f);
     Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
     byte[] bstrPressStart;//=System.Text.Encoding.ASCII.GetBytes("why won't you work") ;
 
 
     int pressstartx = 0;
-    int pressstarty = 180 - 6;
+    int pressstarty = 350 - 6;//180
 
     //AudioSource[] soundfx;
 
@@ -131,7 +131,7 @@ public partial class Game : MonoBehaviour
         switch (gamestate)
         {
             case Egamestate.titlescreen:
-                GUI.DrawTexture(wholescreen, titlescreen);
+                GUI.DrawTexture(wholescreen,titlescreen);
 
                 GUI.color = whiteblendvariable;
                 whiteblendvariable.a = 0.5f + ((((Time.time / 2) - (int)(Time.time / 2))) / 2);
