@@ -129,7 +129,8 @@ public partial class RLMap  {
 
     public RLMap(Player pp,DungeonGenType dgt) {
         player = pp;
-        switch( dgt) {
+        player.dunlevel++;
+        switch ( dgt) {
             case DungeonGenType.Splitter2013:
                 width = 90; height = 90;
                 break;

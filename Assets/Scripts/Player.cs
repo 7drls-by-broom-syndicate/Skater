@@ -15,7 +15,7 @@ public class Player {
     //char stasis = 0;
     //bool devcheat = false;
 
-    int turns = 0;
+    public int turns = 0;
 
     public mob mob;
 
