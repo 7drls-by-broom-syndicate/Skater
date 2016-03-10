@@ -3,8 +3,7 @@ for the love of god, skating
 general suspicious slowdown after adding game state code
 check vsync
 
-there is no general text printing to screen function!
-do health as "hp" sprite plus hearts?
+
 
 
 music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
