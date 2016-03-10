@@ -144,7 +144,7 @@ public partial class RLMap {
 		distance[goalx, goaly] = 0;
 
 		while (!todolist.Empty()){
-			Cell t = todolist.Begin();
+			Cell t = todolist.Begin();//crash- if click inaccessible maybe?
 
 			for (int f = 0; f < dircount; f += 2){
 				int scanx = t.x + dxdy[f];

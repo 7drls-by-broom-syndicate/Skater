@@ -65,6 +65,7 @@ public partial class Game : MonoBehaviour {
     static Rect r3 = new Rect(0, 0, 16 * zoomfactor, 16 * zoomfactor);
     static Rect r3b = new Rect(0, 0, 8 * zoomfactor, 8 * zoomfactor);
     static Rect r4 = new Rect(0, 0, 0, 1f);
+    static Rect r4reverse = new Rect(0, 0, 0, 1f);
     static Rect r5 = new Rect(0, 0, 0, 1f);
     static Rect Rectparticle = new Rect(0,0,zoomfactor,zoomfactor);
     static Rect Rectparticle2 = new Rect(0, 0, zoomfactor, zoomfactor);
@@ -115,6 +116,12 @@ public partial class Game : MonoBehaviour {
             r3.y = y * zoomfactorx16;
             r4.x = spriteratio * (s-1);//s-1 is new for 2016
             GUI.DrawTextureWithTexCoords(r3, sprites, r4);
+        };
+        Action<int, int, int> DrawSpriteReverse = (int x, int y, int s) => {
+            r3.x = x * zoomfactorx16;
+            r3.y = y * zoomfactorx16;
+            r4reverse.x = spriteratio * (s);//s-1 is new for 2016
+            GUI.DrawTextureWithTexCoords(r3, sprites, r4reverse);
         };
         Action<int, int, int> DrawSprite_Particle = (int x, int y, int s) => {
             r3b.x = x;
@@ -200,7 +207,7 @@ public partial class Game : MonoBehaviour {
                     //player
                     if (player.posx == xx && player.posy == yy) {
                         GUI.color = Color.white;
-                        DrawSprite(screenx, screeny, 2);
+                        DrawSpriteReverse(screenx, screeny, 2);
                     }
 
                     //smoke/cloud/gas
@@ -263,6 +270,7 @@ public partial class Game : MonoBehaviour {
         log = new MessageLog(50,15);
         spriteratio = 1f / (float)(sprites.width / 16);
         r4.width = spriteratio;
+        r4reverse.width = -spriteratio;
         particle = new Texture2D(1,1, TextureFormat.ARGB32, false, false);//zoomfactor by zoomfactor
         particle.filterMode = FilterMode.Point;
        // for (int f = 0; f < zoomfactor; f++)
