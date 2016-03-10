@@ -4,26 +4,37 @@ using System.Collections;
 public class Player {
     public int posx, posy;
     public bool lantern;
-    sbyte hp, mana;
+    public int hp;//int mana;
     //item_instance* held = nullptr;
-    int score;
+    public int score;
     public bool stealthed = false;
-    int charlevel = 0; int dunlevel = 0;
+    //int charlevel = 0;
+    public int dunlevel = 0;
+    public bool reversesprite = false;
 
     //char stasis = 0;
     //bool devcheat = false;
 
     int turns = 0;
 
-    public Player() {
-        init();
+    public mob mob;
+
+    public Player(int which=0) {
+        init(which);
     }
 
-    void init(){
-		posx = 0; posy = 0;
+    void init(int which){
+        mob = new mob((Emobtype)which);
+        
+        posx = 0; posy = 0;
 		lantern = true; stealthed = false;
-		hp = 10; mana = 0; //stasis = 0;
-        score = 0; charlevel = 0; dunlevel = 0;
+		hp = mob.hp;// mana = 0; //stasis = 0;
+       
+        
+
+        score = 0;
+        //charlevel = 0;
+        dunlevel = 0;
         turns = 0;
 	}
 

@@ -31,7 +31,7 @@ public class mobarchetype
 
 public class mob {
 
-    static mobarchetype[] archetypes =
+    public static mobarchetype[] archetypes =
     {//                    name       wep       hp  hostp hoste unded   skates flies    tile,deadtile,undeadtile
         new mobarchetype("pango","sword",       40, false,true,false,   true,false,     Etilesprite.PLAYER_PANGO_PANGOLIN,Etilesprite.EMPTY,Etilesprite.EMPTY),
         new mobarchetype("marsby","assegai",    40, false,true,false,   true,false,     Etilesprite.PLAYER_REGINALD_MARSBY,Etilesprite.EMPTY,Etilesprite.EMPTY),
@@ -65,30 +65,35 @@ public class mob {
 
 
 
-    mobarchetype archetype;
-    int hp;
-    int posx, posy;//maybe not needed
+    public mobarchetype archetype;
+    public int hp;
+    public int posx, posy;//maybe not needed
 
-    bool hostile_toplayer_currently;
-    bool hostile_toenemies_currently;
-    bool undead_currently;
-    bool flies_currently;
-    bool skates_currently;
+    public Etilesprite tile;
 
-    int facing;
-    int speed;
+    public bool hostile_toplayer_currently;
+    public bool hostile_toenemies_currently;
+    public bool undead_currently;
+    public bool flies_currently;
+    public bool skates_currently;
+
+    public int facing;
+    public int speed;
 
 	public mob(Emobtype typ)
     {
+        
         mobarchetype at = archetypes[(int)typ];
+        archetype = at;
         hp = at.hp;
+        tile = at.tile;
         hostile_toenemies_currently = at.hostile_toenemies;
         hostile_toplayer_currently = at.hostile_toplayer;
         undead_currently = at.undead;
         flies_currently = at.flies;
         skates_currently = at.skates;
 
-        facing = lil.randi(0, 7);
+        facing = 0;
         speed = 0;
     }
 }

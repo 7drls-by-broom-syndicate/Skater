@@ -5,46 +5,70 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-class FloatingTextItem {
+class FloatingTextItem
+{
     public byte[] message;
     public Color colour;
-    public float fade=1.0f;
-    
-    public int rise=0;
+    public float fade = 1.0f;
+
+    public int rise = 0;
     public int sqx, sqy;
     public int mwoffset;
 
-    public FloatingTextItem(string m, int _sqx, int _sqy, Color c) {
-        message =   System.Text.Encoding.ASCII.GetBytes(m);
+    public FloatingTextItem(string m, int _sqx, int _sqy, Color c)
+    {
+        message = System.Text.Encoding.ASCII.GetBytes(m);
         colour = c;
         sqx = _sqx;
         sqy = _sqy;
-        mwoffset = (m.Length*6)/2;
+        mwoffset = (m.Length * 6) / 2;
     }
 
 }
 
-class Pangotimer{
-    public float period=0;
-    public float timer=0;
-    public Pangotimer(float p){
-        period=p;
+class Pangotimer
+{
+    public float period = 0;
+    public float timer = 0;
+    public Pangotimer(float p)
+    {
+        period = p;
     }
-    public bool test(){
-        return (Time.time>timer);
+    public bool test()
+    {
+        return (Time.time > timer);
     }
-    public void reset(){
-        timer=Time.time+period;
+    public void reset()
+    {
+        timer = Time.time + period;
     }
 }
 
+public enum Egamestate : int { initializing, titlescreen, playing, gameover }
 
-public partial class Game : MonoBehaviour {
-    
-    
+public enum CradleOfTime{   dormant, ready_to_process_turn, waiting_for_player, player_is_done, processing_other_actors}
+
+public partial class Game : MonoBehaviour
+{
+
+    byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
+    Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
+    Color whiteblendvariable = new Color(0.9f, 0.9f, 1f, 0f);
+    Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
+    byte[] bstrPressStart;//=System.Text.Encoding.ASCII.GetBytes("why won't you work") ;
+
+
+    int pressstartx = 0;
+    int pressstarty = 180 - 6;
+
+    //AudioSource[] soundfx;
+
+    public Egamestate gamestate = Egamestate.initializing;
+    CradleOfTime TimeEngine = CradleOfTime.dormant;
+
     public Texture wednesdayfont;
     public Texture sprites;
-    
+    public Texture titlescreen;
     public Texture2D particle;
 
     float[] StoredNoise = new float[640];
@@ -67,7 +91,7 @@ public partial class Game : MonoBehaviour {
     static Rect r4 = new Rect(0, 0, 0, 1f);
     static Rect r4reverse = new Rect(0, 0, 0, 1f);
     static Rect r5 = new Rect(0, 0, 0, 1f);
-    static Rect Rectparticle = new Rect(0,0,zoomfactor,zoomfactor);
+    static Rect Rectparticle = new Rect(0, 0, zoomfactor, zoomfactor);
     static Rect Rectparticle2 = new Rect(0, 0, zoomfactor, zoomfactor);
 
     static Rect r_minimap; //= new Rect(339 * zoomfactor, 0, 80 * 2 * zoomfactor, 50 * 2 * zoomfactor);
@@ -93,15 +117,17 @@ public partial class Game : MonoBehaviour {
     float LF_amount=0.0f; //deviation from full light
 #endif
 
-   
 
 
-    void OnGUI() {
-     
-       
+
+    void OnGUI()
+    {
+
+
         int curnoi = 0;
 
-        for (int f = 0; f < 640 * zoomfactor; f += zoomfactor) {
+        for (int f = 0; f < 640 * zoomfactor; f += zoomfactor)
+        {
             float ff = (float)(((float)f / (640.0f * (float)zoomfactor)) * 2.0f) - 1.0f;
             float gg = Time.time;
             //Rectparticle.x = f; 
@@ -111,25 +137,28 @@ public partial class Game : MonoBehaviour {
             //GUI.DrawTextureWithTexCoords(Rectparticle, particle, Rectparticle2);
         }
 
-        Action<int, int, int> DrawSprite = (int x, int y, int s) => {
+        Action<int, int, int> DrawSprite = (int x, int y, int s) =>
+        {
             r3.x = x * zoomfactorx16;
             r3.y = y * zoomfactorx16;
-            r4.x = spriteratio * (s-1);//s-1 is new for 2016
+            r4.x = spriteratio * (s - 1);//s-1 is new for 2016
             GUI.DrawTextureWithTexCoords(r3, sprites, r4);
         };
-        Action<int, int, int> DrawSpriteReverse = (int x, int y, int s) => {
+        Action<int, int, int> DrawSpriteReverse = (int x, int y, int s) =>
+        {
             r3.x = x * zoomfactorx16;
             r3.y = y * zoomfactorx16;
             r4reverse.x = spriteratio * (s);//s-1 is new for 2016
             GUI.DrawTextureWithTexCoords(r3, sprites, r4reverse);
         };
-        Action<int, int, int> DrawSprite_Particle = (int x, int y, int s) => {
+        Action<int, int, int> DrawSprite_Particle = (int x, int y, int s) =>
+        {
             r3b.x = x;
             r3b.y = y;
 
             r5.x = spriteratio * s;
             r5.y = 0.5f;
-            r5.width = spriteratio/2;
+            r5.width = spriteratio / 2;
             r5.height = 0.5f;
             GUI.DrawTextureWithTexCoords(r3b, sprites, r5);
         };
@@ -142,11 +171,13 @@ public partial class Game : MonoBehaviour {
 
         //draw message log
         int currentline = log.GetCurrentLine();
-        for (int y = 0; y < 15; y++) {
-            for (int x = 0; x < 50; x++) {
+        for (int y = 0; y < 15; y++)
+        {
+            for (int x = 0; x < 50; x++)
+            {
                 byte c = log.screenmap[x, currentline];
                 int xpos = c % 32;
-                int ypos = 7- (c / 32);
+                int ypos = 7 - (c / 32);
                 r.x = (339 + (x * 6)) * zoomfactor;
                 r.y = (180 + (y * 12)) * zoomfactor;
                 r2.x = xratio * xpos;
@@ -167,12 +198,15 @@ public partial class Game : MonoBehaviour {
         //draw user interface: lives, score , statuses, held items etc.
 
         int screenx = 0; int screeny = 0;
-        for (int yy = originy; yy < originy + VIEWPORT_HEIGHT; yy++) {
-            for (int xx = originx; xx < originx + VIEWPORT_WIDTH; xx++) {
+        for (int yy = originy; yy < originy + VIEWPORT_HEIGHT; yy++)
+        {
+            for (int xx = originx; xx < originx + VIEWPORT_WIDTH; xx++)
+            {
 
-                if (map.in_FOV.AtGet(xx, yy)) {
+                if (map.in_FOV.AtGet(xx, yy))
+                {
 
-                   #if FLICKERING_LANTERN
+#if FLICKERING_LANTERN
                     if (Time.time > LF_timer) {
                         if (lil.randi(1, 100) > 50) {
                             LF_amount -= 0.1f; if (LF_amount < 0.0f) LF_amount = 0.0f;
@@ -187,7 +221,7 @@ public partial class Game : MonoBehaviour {
                     c.b -= LF_amount; if (c.b < 0) c.b = 0;
                     GUI.color = lil.colouradd(c, map.staticlight.AtGet(xx, yy));
 #else
-    GUI.color = lil.colouradd(map.staticlight[xx, yy], map.dynamiclight[xx, yy]);
+                    GUI.color = lil.colouradd(map.staticlight[xx, yy], map.dynamiclight[xx, yy]);
 #endif
 
                     if (map.displaychar.AtGet(xx, yy) == Etilesprite.ITEM_WARP_GATE_ANIM_1)
@@ -205,27 +239,34 @@ public partial class Game : MonoBehaviour {
                     }
 
                     //player
-                    if (player.posx == xx && player.posy == yy) {
+                    if (player.posx == xx && player.posy == yy)
+                    {
                         GUI.color = Color.white;
-                        DrawSpriteReverse(screenx, screeny, 2);
+                        if (player.reversesprite)
+                            DrawSpriteReverse(screenx, screeny, (int)player.mob.tile);
+                        else DrawSprite(screenx, screeny,(int)player.mob.tile);
                     }
 
                     //smoke/cloud/gas
                     GUI.color = new Color(GUI.color.r, 255, GUI.color.b, 0.3f);
-                    if (map.fogoffog[xx, yy]) { 
-                    for (int f = 0; f < 8; f++) {
-                        float tx = (StoredNoise[(screenx * 16) + f] + 1.0f) * 4.5f;
-                        float ty = (StoredNoise[(screeny * 16) + f + 8] + 1.0f) * 4.5f;
+                    if (map.fogoffog[xx, yy])
+                    {
+                        for (int f = 0; f < 8; f++)
+                        {
+                            float tx = (StoredNoise[(screenx * 16) + f] + 1.0f) * 4.5f;
+                            float ty = (StoredNoise[(screeny * 16) + f + 8] + 1.0f) * 4.5f;
 
-                        DrawSprite_Particle((screenx* 16 * zoomfactor) + zoomfactor * (int)tx, (screeny* 16 * zoomfactor) + zoomfactor * (int)ty, 13);
+                            DrawSprite_Particle((screenx * 16 * zoomfactor) + zoomfactor * (int)tx, (screeny * 16 * zoomfactor) + zoomfactor * (int)ty, 13);
+                        }
                     }
+
+
+
+
                 }
-
-
-
-
-                } else {
-                    if (!map.fogofwar.AtGet(xx, yy)) {
+                else {
+                    if (!map.fogofwar.AtGet(xx, yy))
+                    {
                         GUI.color = RLMap.memorylight;
                         DrawSprite(screenx, screeny, (int)map.playermemory.AtGet(xx, yy));
                     }
@@ -234,25 +275,27 @@ public partial class Game : MonoBehaviour {
             }
             screeny++; screenx = 0;
         }
-    
-       //floating text
-        for (int f = 0; f < FloatingTextItems.Count; f++) {
+
+        //floating text
+        for (int f = 0; f < FloatingTextItems.Count; f++)
+        {
             FloatingTextItem fti = FloatingTextItems[f];
-            int myx = (((fti.sqx - originx) * 16) - fti.mwoffset+8) * zoomfactor;
-            int myy = (((fti.sqy - originy) * 16) - fti.rise+5) * zoomfactor;
+            int myx = (((fti.sqx - originx) * 16) - fti.mwoffset + 8) * zoomfactor;
+            int myy = (((fti.sqy - originy) * 16) - fti.rise + 5) * zoomfactor;
 
             fti.colour.a = fti.fade;
             GUI.color = fti.colour;
 
-            for (int x = 0; x < fti.message.Length; x++) {
+            for (int x = 0; x < fti.message.Length; x++)
+            {
                 byte c = fti.message[x];
                 int xpos = c % 32;
                 int ypos = 7 - (c / 32);
-                r.x = myx+(6*x*zoomfactor);
+                r.x = myx + (6 * x * zoomfactor);
                 r.y = myy;
                 r2.x = xratio * xpos;
                 r2.y = yratio * ypos;
-              
+
                 GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2);
             }
 
@@ -260,36 +303,37 @@ public partial class Game : MonoBehaviour {
         }
 
     }
-   
+
     //0 -> -1, (640*zoomfactor) -> 1
     //map the whole thing to go from 0 to 1
     //x/(640*zoomfactor)
 
-    void Start() {
+    void Start()
+    {
         Screen.SetResolution(640 * zoomfactor, 360 * zoomfactor, fullscreenp);
-        log = new MessageLog(50,15);
+        
         spriteratio = 1f / (float)(sprites.width / 16);
         r4.width = spriteratio;
         r4reverse.width = -spriteratio;
-        particle = new Texture2D(1,1, TextureFormat.ARGB32, false, false);//zoomfactor by zoomfactor
+        particle = new Texture2D(1, 1, TextureFormat.ARGB32, false, false);//zoomfactor by zoomfactor
         particle.filterMode = FilterMode.Point;
-       // for (int f = 0; f < zoomfactor; f++)
-       //     for (int g = 0; g < zoomfactor;g++ )
+        // for (int f = 0; f < zoomfactor; f++)
+        //     for (int g = 0; g < zoomfactor;g++ )
         //        particle.SetPixel(f,g, Color.white);
-        particle.SetPixel(0,0, Color.white);          
+        particle.SetPixel(0, 0, Color.white);
         particle.Apply();
 
-
-        log.Printline("Welcome to genericRL");
-
+        gamestate = Egamestate.titlescreen;
+    }
+    void StartAGame() { 
+       log = new MessageLog(50, 15);
+        log.Printline("Skater by The Broom Institute: 7DRL 2016");
         lil.seednow();
-
         map = new RLMap(player, DungeonGenType.Skater2016);
         r_minimap = new Rect(336 * zoomfactor, 0, map.width * 2 * zoomfactor, map.height * 2 * zoomfactor);//was 339
 
         //take this map reveal cheat out 
-        
-        for (int y= 0; y < map.height; y++)
+        for (int y = 0; y < map.height; y++)
         {
             for (int x = 0; x < map.width; x++)
             {
@@ -297,7 +341,7 @@ public partial class Game : MonoBehaviour {
                 int pango = (int)et;
                 // if (pango < 1 || pango > 255) Debug.Log("bad pango " + pango);
 
-                if (map.itemgrid[x, y] != null) map.minimap.SetPixel(x, y, (Color) map.minimapcolours[(int)map.itemgrid[x, y].tile]);
+                if (map.itemgrid[x, y] != null) map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)map.itemgrid[x, y].tile]);
                 else map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)et]);
             }
         }
@@ -307,38 +351,39 @@ public partial class Game : MonoBehaviour {
         int freex, freey;
         map.FreeSpace(out freex, out freey);
         player.emerge(freex, freey);
-        
+
         moveplayer();
 
-        log.Printline("number of spaces free: " + map.emptyspaces.Count);
-        log.Printline("player @ " + freex + " , " + freey);
-        log.Printline("underneath is " + map.displaychar.AtGet(freex, freey));
-        log.Printline("passable=" + (map.passable.AtGet(freex, freey) == true ? "true" : "false"));
-        log.Printline("blocks sight=" + (map.blocks_sight.AtGet(freex, freey) == true ? "true" : "false"));
-        log.Printline("staticlight @ player=" + map.staticlight.AtGet(freex, freey).r + " " + map.staticlight.AtGet(freex, freey).g + " " + map.staticlight.AtGet(freex, freey).b);
-        log.Printline("dynamiclight @ player=" + map.dynamiclight.AtGet(freex, freey).r + " " + map.dynamiclight.AtGet(freex, freey).g + " " + map.dynamiclight.AtGet(freex, freey).b);
+       // log.Printline("number of spaces free: " + map.emptyspaces.Count);
+       // log.Printline("player @ " + freex + " , " + freey);
+       // log.Printline("underneath is " + map.displaychar.AtGet(freex, freey));
+       // log.Printline("passable=" + (map.passable.AtGet(freex, freey) == true ? "true" : "false"));
+       // log.Printline("blocks sight=" + (map.blocks_sight.AtGet(freex, freey) == true ? "true" : "false"));
+       // log.Printline("staticlight @ player=" + map.staticlight.AtGet(freex, freey).r + " " + map.staticlight.AtGet(freex, freey).g + " " + map.staticlight.AtGet(freex, freey).b);
+       // log.Printline("dynamiclight @ player=" + map.dynamiclight.AtGet(freex, freey).r + " " + map.dynamiclight.AtGet(freex, freey).g + " " + map.dynamiclight.AtGet(freex, freey).b);
+       
 
-     
-      
+
     }
 
 
 
 
-    void moveplayer(){
-	    map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
-	    map.dynamiclight.Fill(Color.black);
-	    if (player.lantern)
-		    map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);//was 9
-  
-	    if (lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy))== 0f &&
-		    lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f)
-		    player.stealthed = true;
-	    else
-		    player.stealthed = false;
+    void moveplayer()
+    {
+        map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
+        map.dynamiclight.Fill(Color.black);
+        if (player.lantern)
+            map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);//was 9
+
+        if (lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f &&
+            lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f)
+            player.stealthed = true;
+        else
+            player.stealthed = false;
     }
-    
-    float nextfire=0.0f;
+
+    float nextfire = 0.0f;
     float firerate = 0.2f;
     float initialdelay = 0.5f;
     int currentcommand = -1;
@@ -346,58 +391,74 @@ public partial class Game : MonoBehaviour {
     bool firstpress = false;
     bool mauswalking = false;
 
-    void Update() {
-        if (floating_text_timer.test()) {
-            for (int f = FloatingTextItems.Count-1; f > -1; f--) {
+    void Update()
+    {
+        if (floating_text_timer.test())
+        {
+            for (int f = FloatingTextItems.Count - 1; f > -1; f--)
+            {
                 FloatingTextItem fti = FloatingTextItems[f];
                 fti.fade -= 0.01f;
                 fti.rise++;
                 if (fti.fade <= 0) FloatingTextItems.Remove(fti);
-           }
+            }
 
-           floating_text_timer.reset();
+            floating_text_timer.reset();
         }
-    
-        if (Input.GetMouseButtonDown(0)) {
-            int fx=(int)Input.mousePosition.x; int fy=(int)((360*zoomfactor)-1-Input.mousePosition.y);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            int fx = (int)Input.mousePosition.x; int fy = (int)((360 * zoomfactor) - 1 - Input.mousePosition.y);
             //log.Printline("x = " + fx.ToString() + " y = " + fy.ToString());
             int x = fx / zoomfactorx16;
-            int y =fy / zoomfactorx16;
-           
-            if (x < VIEWPORT_WIDTH && y < VIEWPORT_HEIGHT) {
+            int y = fy / zoomfactorx16;
+
+            if (x < VIEWPORT_WIDTH && y < VIEWPORT_HEIGHT)
+            {
                 x = originx + x; y = originy + y;
-                if (map.passable[x, y] && !(x == player.posx && y == player.posy)) {
-                    bool worked = map.PathfindAStar(player.posx, player.posy, x, y, true,true);
-                    if (worked) {
+                if (map.passable[x, y] && !(x == player.posx && y == player.posy))
+                {
+                    bool worked = map.PathfindAStar(player.posx, player.posy, x, y, true, true);
+                    if (worked)
+                    {
                         mauswalking = true;
                         //log.Printline("And we're walking!");
                     } //else log.Printline("didn't work");
                 } //else log.Printline("not passable or clicked player");
-            } else {//outside viewport
-                int mmx=((fx/zoomfactor)-336)/2;
-                int mmy=((fy/zoomfactor)/2);
+            }
+            else {//outside viewport
+                int mmx = ((fx / zoomfactor) - 336) / 2;
+                int mmy = ((fy / zoomfactor) / 2);
                 //log.Printline(mmx.ToString() + " " + mmy.ToString() + " ");
-                if (mmx >= 0 && mmx < map.width && mmy >= 0 && mmy < map.height) {
-                    if (map.passable[mmx, mmy] && !(mmx == player.posx && mmy == player.posy)) {
+                if (mmx >= 0 && mmx < map.width && mmy >= 0 && mmy < map.height)
+                {
+                    if (map.passable[mmx, mmy] && !(mmx == player.posx && mmy == player.posy))
+                    {
                         bool worked = map.PathfindAStar(player.posx, player.posy, mmx, mmy, true, true);
-                        if (worked) {
+                        if (worked)
+                        {
                             mauswalking = true;
                         }
                     }
                 }
             }
-        } else if (Input.GetMouseButtonDown(1)){
-             FloatingTextItems.Add(new FloatingTextItem("-10 hp",player.posx,player.posy,Color.red));
-           // FloatingTextItems.Add(new FloatingTextItem("In the valleh of the shadow of death", player.posx, player.posy, Color.red));
         }
+       // else if (Input.GetMouseButtonDown(1))
+       // {
+           // FloatingTextItems.Add(new FloatingTextItem("-10 hp", player.posx, player.posy, Color.red));
+            // FloatingTextItems.Add(new FloatingTextItem("In the valleh of the shadow of death", player.posx, player.posy, Color.red));
+       // }
         //todo: fix it so if you press a key or press the maus when mauswalking it breaks the auto walk
 
-        if (mauswalking) {
+        if (mauswalking)
+        {
             //log.Printline(map.lastpath.Count.ToString());
-            if (map.lastpath.Count < 1) {
+            if (map.lastpath.Count < 1)
+            {
                 mauswalking = false;
                 currentcommand = -1;
-            } else {
+            }
+            else {
                 Cell next = map.lastpath.Dequeue();
                 if (next.x == player.posx && next.y < player.posy) { currentcommand = 0; nextfire = 0.0f; firstpress = false; } //up
                 else if (next.x == player.posx && next.y > player.posy) { currentcommand = 1; nextfire = 0.0f; firstpress = false; }//down
@@ -408,48 +469,61 @@ public partial class Game : MonoBehaviour {
                 else if (next.x < player.posx && next.y > player.posy) { currentcommand = 8; nextfire = 0.0f; firstpress = false; }//downleft
                 else if (next.x > player.posx && next.y > player.posy) { currentcommand = 9; nextfire = 0.0f; firstpress = false; }//downright
             }
-        } else {
-            if (Input.GetButtonDown("up")) { currentcommand = 0; nextfire = 0.0f; firstpress = true; } 
-            else if (Input.GetButtonDown("down")) { currentcommand = 1; nextfire = 0.0f; firstpress = true; } 
-            else if (Input.GetButtonDown("left")) { currentcommand = 2; nextfire = 0.0f; firstpress = true; } 
+        }
+        else {
+            if (Input.GetButtonDown("up")) { currentcommand = 0; nextfire = 0.0f; firstpress = true; }
+            else if (Input.GetButtonDown("down")) { currentcommand = 1; nextfire = 0.0f; firstpress = true; }
+            else if (Input.GetButtonDown("left")) { currentcommand = 2; nextfire = 0.0f; firstpress = true; }
             else if (Input.GetButtonDown("right")) { currentcommand = 3; nextfire = 0.0f; firstpress = true; }
-            else if (Input.GetButtonDown("lantern")) { currentcommand = 4; nextfire = 0.0f; firstpress = true; } 
-            else if (Input.GetButtonDown("wait")) { currentcommand = 5; nextfire = 0.0f; firstpress = true; } 
+            else if (Input.GetButtonDown("lantern")) { currentcommand = 4; nextfire = 0.0f; firstpress = true; }
+            else if (Input.GetButtonDown("wait")) { currentcommand = 5; nextfire = 0.0f; firstpress = true; }
             else if (Input.GetButtonDown("upleft")) { currentcommand = 6; nextfire = 0.0f; firstpress = true; }
-            else if (Input.GetButtonDown("upright")) { currentcommand = 7; nextfire = 0.0f; firstpress = true; } 
+            else if (Input.GetButtonDown("upright")) { currentcommand = 7; nextfire = 0.0f; firstpress = true; }
             else if (Input.GetButtonDown("downleft")) { currentcommand = 8; nextfire = 0.0f; firstpress = true; }
             else if (Input.GetButtonDown("downright")) { currentcommand = 9; nextfire = 0.0f; firstpress = true; }
         }
 
-        if (currentcommand > -1 && Time.time > nextfire ) {
-            switch (currentcommand) {
-                case 0: trytomove(0, -1);
+        if (currentcommand > -1 && Time.time > nextfire)
+        {
+            switch (currentcommand)
+            {
+                case 0:
+                    trytomove(0, -1);
                     break;
-                case 1: trytomove(0,1);
+                case 1:
+                    trytomove(0, 1);
                     break;
-                case 2: trytomove(-1, 0);
+                case 2:
+                    trytomove(-1, 0);
                     break;
-                case 3: trytomove(1, 0);
+                case 3:
+                    trytomove(1, 0);
                     break;
-                case 4: { player.lantern = !player.lantern; moveplayer(); }
+                case 4:
+                    { player.lantern = !player.lantern; moveplayer(); }
                     break;
-                case 5: log.Printline("You wait. Time passes");
+                case 5:
+                    log.Printline("You wait. Time passes");
                     break;
-                case 6: trytomove(-1, -1);
+                case 6:
+                    trytomove(-1, -1);
                     break;
-                case 7: trytomove(1, -1);
+                case 7:
+                    trytomove(1, -1);
                     break;
-                case 8: trytomove(-1, 1);
+                case 8:
+                    trytomove(-1, 1);
                     break;
-                case 9: trytomove(1, 1);
+                case 9:
+                    trytomove(1, 1);
                     break;
             }
             nextfire = Time.time + firerate;
             if (firstpress) { nextfire += initialdelay; firstpress = false; }
         }
 
-        if ( (Input.GetButtonUp("up")) ||
-        (Input.GetButtonUp("down")) || 
+        if ((Input.GetButtonUp("up")) ||
+        (Input.GetButtonUp("down")) ||
         (Input.GetButtonUp("left")) ||
       (Input.GetButtonUp("right")) ||
          (Input.GetButtonUp("lantern")) ||
@@ -457,7 +531,7 @@ public partial class Game : MonoBehaviour {
          (Input.GetButtonUp("upleft")) ||
         (Input.GetButtonUp("upright")) ||
          (Input.GetButtonUp("downleft")) ||
-        (Input.GetButtonUp("downright")) ){ currentcommand = -1; } 
-        
+        (Input.GetButtonUp("downright"))) { currentcommand = -1; }
+
     }
 }
