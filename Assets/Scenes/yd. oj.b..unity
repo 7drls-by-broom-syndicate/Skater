@@ -183,6 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3898873e10fe94580ef775b9587fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamestate: 0
   wednesdayfont: {fileID: 2800000, guid: 730db92399ad6144eacb0782f9d64983, type: 3}
   sprites: {fileID: 2800000, guid: d1d820716b7dec74daa0df89b4adfe0d, type: 3}
+  titlescreen: {fileID: 2800000, guid: cae26d4147701a0418800e30709d82df, type: 3}
   particle: {fileID: 0}

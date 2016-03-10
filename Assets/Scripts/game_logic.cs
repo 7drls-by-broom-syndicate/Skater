@@ -27,7 +27,7 @@ public partial class Game: MonoBehaviour {
         player.posx = tentx; player.posy = tenty;
         moveplayer();
         TimeEngine = CradleOfTime.player_is_done;
-        player.hp--;
+        //player.hp--;//was just a test
         return true;
     }
 
