@@ -46,7 +46,7 @@ public static class Speed {
     }
     public static int findrel(int x,int y,int x2,int y2)
     {
-        int deltax = x - x2;int deltay = y - y2;
+        int deltax = x2-x;int deltay = y2-y;
         if (deltax == -1)
         {
             if (deltay == -1) return 7;
