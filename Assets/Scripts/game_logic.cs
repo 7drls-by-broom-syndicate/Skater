@@ -45,7 +45,11 @@ public partial class Game: MonoBehaviour {
             log.Printline("The thin ice collapses!",Color.red);
             map.displaychar[player.posx, player.posy] = Etilesprite.MAP_WATER;
         }
-
+        else if (et != Etilesprite.MAP_ICE && et!= Etilesprite.MAP_THIN_ICE)
+        {
+            player.mob.speed -= 6;
+            if (player.mob.speed < 0) player.mob.speed = 0;
+        }
 
             TimeEngine = CradleOfTime.player_is_done;        
         return true;
