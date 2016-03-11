@@ -976,6 +976,19 @@ public partial class RLMap
 
 
 
+        //place mobs
+        const int MOBS_NUMBER_OF = 15;
+        for (int i = 0; i < MOBS_NUMBER_OF; i++)
+        {
+            int x = lil.randi(0, 4);
+            mob m = new mob(Emobtype.polarmoop + x);
+            int tentx, tenty;
+            FreeSpace(out tentx, out tenty);
+            m.posx = tentx;m.posy = tenty;
+            itemgrid[tentx, tenty] = new item_instance(m.tile);
+
+
+        }
 
         //displaychar[outx, outy] = Etilesprite.ITEM_LANTERN_ON_A_STICK_FOR_NO_REASON;
         //do_fov_foralight(outx, outy, 3, walllight);

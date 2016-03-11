@@ -26,14 +26,17 @@ public partial class Game: MonoBehaviour {
             return true;
         }
     */
-        if (!map.passable[tentx, tenty]&&player.mob.speed>0) return false;
+        //if (!map.passable[tentx, tenty]&&player.mob.speed>0) return false;
 
         if (!coasting) 
             Speed.SpeedAndDirectionChange(player.mob, rotdir);
 
-        if (player.mob.speed > 0) { 
-            player.posx = tentx; player.posy = tenty;
-            moveplayer();
+        if (player.mob.speed > 0) {
+            if (map.passable[tentx, tenty])
+            {
+                player.posx = tentx; player.posy = tenty;
+                moveplayer();
+            }
         }
 
         Etilesprite et = map.displaychar[player.posx, player.posy];

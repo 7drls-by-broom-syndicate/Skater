@@ -44,7 +44,7 @@ public partial class RLMap  {
     private Player player;
 
     public Array2D<item_instance> itemgrid;//if you want multiple objects on each square, need a 2d array of lists of items where each list can be null
-                                           //List<item_instance> moblist;//put mobs in with items? but this var is a list of mobs with no ref to where they are
+    public List<mob> moblist;                                      //List<item_instance> moblist;//put mobs in with items? but this var is a list of mobs with no ref to where they are
                                            //list<item_instance> bomblist // specific to sucker
 
     bool IsEmpty(int x, int y)
@@ -165,6 +165,7 @@ public partial class RLMap  {
 
         //locked=new BitArray(width*height,false);
         itemgrid =new Array2D<item_instance>(width, height,null);
+        moblist = new List<mob>();
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
         blocks_sight=new Array2D<bool>(width,height,false);

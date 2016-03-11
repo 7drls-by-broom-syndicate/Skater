@@ -1,18 +1,33 @@
-sound attributions
-http://www.freesound.org/people/escortmarius/sounds/172569/
-http://www.freesound.org/people/be_a_hero_not_a_patriot/sounds/331886/
-http://www.freesound.org/people/833-45/sounds/11725/
+shortcut feature: moving into warp gates leaves level
+
+we do need to fix that hillock thing- spawned in one, couldn't move
 
 make it so it's easier to turn on ice when stopped but not snow
 
-you can actually get stuck if you only have backwards as an option for
-movement
-
 why exactly does click move stop?
 
-being in water loses you hp
+being in water loses you hp- unless you are polarmoop
 
-add some moops for the love of gods!
+do cairns
+
+do breaking barrels. can actually do when moving
+
+add mobs
+
+do attackgrid thing
+
+do crashing into obstacles gives damage
+
+add concept of buffs and debuffs. 
+	freezing
+	bleeding
+	attack up, down
+	def up, down
+	shortcut: do warp beads as a buff
+	
+	
+change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class.
+
 
 to use something, open crate etc. you need to stop first, (alternative
 is to stop the player then use it, which uses one fewer turn)
@@ -20,7 +35,8 @@ maybe bumping an obstacle makes your speed go to zero and you take
 damage! so you will learn to stop yourself. AHAHAHAHHA
 eeeeeeexcellent
 
-
+a little pffffffft shower of snow particles when you turn and stop
+haha that's really going to happen in 7drl...
 
 
 general suspicious slowdown after adding game state code
