@@ -40,7 +40,10 @@ public partial class RLMap  {
     public int firststepx, firststepy;                             //used by pathfinding
     public List<Cell> emptyspaces;                                 //free squares
 
-
+    public bool passablecheck(int x,int y,mob m)
+    {
+        return (passable[x, y] || displaychar[x, y] == Etilesprite.MAP_WATER && m.archetype.heavy);
+    }
     private Player player;
 
     public Array2D<item_instance> itemgrid;//if you want multiple objects on each square, need a 2d array of lists of items where each list can be null

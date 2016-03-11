@@ -125,7 +125,7 @@ public partial class RLMap {
 
     readonly int[] dxdy = {0, -1, 1, 0, 0, 1, -1, 0, 1, -1, 1, 1, -1, 1, -1, -1 };
 
-    public bool PathfindAStar(int startx, int starty, int goalx, int goaly, bool diags = true, bool fillpath = false){
+    public bool PathfindAStar(int startx, int starty, int goalx, int goaly, bool diags = true, bool fillpath = false,bool crosswater=false){
 
 		int dircount = (diags) ? 16 : 8;
 		
@@ -157,7 +157,7 @@ public partial class RLMap {
 				if (visited[scanx, scany]){
 					continue;
 				}
-				if (!passable[scanx, scany]){
+				if (!passable[scanx, scany]&&!(displaychar[scanx,scany]==Etilesprite.MAP_WATER&&crosswater)){
 					//not a walkable square
 					visited[scanx, scany]= true;
 					continue;

@@ -37,7 +37,7 @@ public partial class Game : MonoBehaviour
 
         if (m.speed > 0)
         {
-            if (map.passable[tentx, tenty])
+            if (map.passablecheck(tentx, tenty, m))
             {
                 m.posx = tentx; m.posy = tenty;
                 if(m.isplayer)moveplayer();

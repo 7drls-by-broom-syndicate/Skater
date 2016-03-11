@@ -7,7 +7,7 @@ using System.Linq;
 
 //this is nowhere near being a generic multimap but it has nods to being generic such as letting you specify the types
 public class Multimap<K, V> {
-    int nodecount = 0;
+    public int nodecount = 0;
     SortedDictionary<K, Queue<V>> dic=new SortedDictionary<K,Queue<V>>(); //is there a way to say this type name = new whatever it is?
     
     public bool Empty() { return nodecount == 0; }
@@ -19,8 +19,9 @@ public class Multimap<K, V> {
     //returns first element and removes it
     public V Begin() {
         if (nodecount == 0) throw new SystemException("BROOM WARNZ JOO! Attempt to get first element of an empty multimap.");//LEARN MOAR ABOUT EXCEPTIONS
+        if (dic.Count == 0) throw new SystemException("BROOM WARNZ JOO! Attempt to get first element of an empty multimap.");//LEARN MOAR ABOUT EXCEPTIONS
         var kvp = dic.First();//kvp is a keyvaluepair of int to queue of v
-        V val = kvp.Value.Dequeue();
+        V val = kvp.Value.Dequeue(); nodecount--;
         if (kvp.Value.Count == 0) dic.Remove(kvp.Key);
         return val;
     }

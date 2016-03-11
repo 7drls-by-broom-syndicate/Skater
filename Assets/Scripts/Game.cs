@@ -720,9 +720,9 @@ public partial class Game : MonoBehaviour
                     if (x < VIEWPORT_WIDTH && y < VIEWPORT_HEIGHT)
                     {
                         x = originx + x; y = originy + y;
-                        if (map.passable[x, y] && !(x == player.posx && y == player.posy))
+                        if (map.passablecheck(x, y, player.mob) && !(x == player.posx && y == player.posy))//change this to check moop
                         {
-                            bool worked = map.PathfindAStar(player.posx, player.posy, x, y, true, true);
+                            bool worked = map.PathfindAStar(player.posx, player.posy, x, y, true, true,player.mob.archetype.heavy);
                             if (worked)
                             {
                                 mauswalking = true;
@@ -736,9 +736,9 @@ public partial class Game : MonoBehaviour
                         //log.Printline(mmx.ToString() + " " + mmy.ToString() + " ");
                         if (mmx >= 0 && mmx < map.width && mmy >= 0 && mmy < map.height)
                         {
-                            if (map.passable[mmx, mmy] && !(mmx == player.posx && mmy == player.posy))
+                            if (map.passablecheck(x, y, player.mob) && !(mmx == player.posx && mmy == player.posy))//change this to check moop
                             {
-                                bool worked = map.PathfindAStar(player.posx, player.posy, mmx, mmy, true, true);
+                                bool worked = map.PathfindAStar(player.posx, player.posy, mmx, mmy, true, true,player.mob.archetype.heavy);
                                 if (worked)
                                 {
                                     mauswalking = true;
