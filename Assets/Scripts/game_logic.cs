@@ -7,7 +7,9 @@ public partial class Game: MonoBehaviour {
 
 
     // bool trytomove(int deltax, int deltay) {
-    bool trytomove(int rotdir) {
+    bool trytomove(int rotdir,bool coasting=false) {
+        if (coasting) rotdir = player.mob.facing;
+
         int deltax = lil.rot_deltax[rotdir];
         int deltay = lil.rot_deltay[rotdir];
         int tentx = player.posx + deltax;
@@ -25,8 +27,9 @@ public partial class Game: MonoBehaviour {
         }
     */
         if (!map.passable[tentx, tenty]) return false;
-      
-        Speed.SpeedAndDirectionChange(player.mob, rotdir);
+
+        if (coasting) player.mob.speed--;
+        else Speed.SpeedAndDirectionChange(player.mob, rotdir);
 
         if (player.mob.speed > 0) { 
             player.posx = tentx; player.posy = tenty;

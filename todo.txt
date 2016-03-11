@@ -1,6 +1,9 @@
-just waiting or doing something that isn't moving will move you
+sound attributions
+http://www.freesound.org/people/escortmarius/sounds/172569/
+http://www.freesound.org/people/be_a_hero_not_a_patriot/sounds/331886/
+http://www.freesound.org/people/833-45/sounds/11725/
 
-change sprite direction
+just waiting or doing something that isn't moving will move you
 
 being in water loses you hp
 

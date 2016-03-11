@@ -806,7 +806,7 @@ public partial class Game : MonoBehaviour
                             { player.lantern = !player.lantern; moveplayer(); }
                             break;
                         case 5:
-                            log.Printline("You wait. Time passes");
+                            log.Printline("You wait. Time passes");trytomove(0, true);
                             break;
                         case 6:
                             trytomove(7);//trytomove(-1, -1);// NW
