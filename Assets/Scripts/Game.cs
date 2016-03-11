@@ -52,7 +52,7 @@ public partial class Game : MonoBehaviour
 {
 
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
-    byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:");
+    byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:     SPEED:");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
     Color whiteblendvariable = new Color(0.9f, 0.1f, 0.1f, 0f);
     Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
@@ -412,7 +412,8 @@ public partial class Game : MonoBehaviour
 
                 GUI.color = Color.white;
                 PrintString(0, 359 - 12, statusline);
-                PrintNumber(24, 359 - 12, player.hp);
+                PrintNumber(3*6, 359 - 12, player.hp);
+                PrintNumber(14 * 6, 359 - 12, player.mob.speed);
 
                 //tooltipz. the last thing to do!
                 //31,214 (*zoomfactor)

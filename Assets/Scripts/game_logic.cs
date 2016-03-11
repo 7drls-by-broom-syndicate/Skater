@@ -6,13 +6,13 @@ public partial class Game: MonoBehaviour {
     Color colour_damage = new Color(0.85f, 0.05f, 0.125f, 0.5f);
 
 
-   // bool trytomove(int deltax, int deltay) {
-   bool trytomove(int rotdir) {
+    // bool trytomove(int deltax, int deltay) {
+    bool trytomove(int rotdir) {
         int deltax = lil.rot_deltax[rotdir];
         int deltay = lil.rot_deltay[rotdir];
         int tentx = player.posx + deltax;
         int tenty = player.posy + deltay;
-        
+
         if (tentx < 0 || tentx >= map.width || tenty < 0 || tenty >= map.height) return false;
 
         /*
@@ -25,14 +25,22 @@ public partial class Game: MonoBehaviour {
         }
     */
 
-        if (!map.passable[tentx,tenty]) return false;
+        if (!map.passable[tentx, tenty]) return false;
 
         //facing
-        player.mob.facing = rotdir;
+
+
+        Speed.SpeedAndDirectionChange(player.mob, rotdir);
+
+
+
+        if (player.mob.speed > 0) { 
         player.posx = tentx; player.posy = tenty;
         moveplayer();
+    }
         TimeEngine = CradleOfTime.player_is_done;
-        //player.hp--;//was just a test
+        
+
         return true;
     }
 
