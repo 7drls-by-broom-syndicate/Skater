@@ -1,3 +1,9 @@
+mobs moving
+check if mob is a skater
+moops can cross water so need to check in pathfinding if tile is passable or tile is water and mob is a moop
+
+idea for another potion: coldproof for crossing water
+
 shortcut feature: moving into warp gates leaves level
 
 we do need to fix that hillock thing- spawned in one, couldn't move

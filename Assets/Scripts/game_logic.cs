@@ -10,6 +10,8 @@ public partial class Game : MonoBehaviour
     // bool trytomove(int deltax, int deltay) {
     bool trytomove(mob m,int rotdir, bool coasting = false)
     {
+        if (coasting && !m.skates_currently && m.isplayer) goto playercoastingbutnotaskater;
+
         if (coasting) rotdir = m.facing;
 
         int deltax = lil.rot_deltax[rotdir];
@@ -43,19 +45,20 @@ public partial class Game : MonoBehaviour
         }
 
         Etilesprite et = map.displaychar[m.posx, m.posy];
-        if (et == Etilesprite.MAP_THIN_ICE && m.speed == 0)
+        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0||(m.archetype.heavy&&!m.flies_currently)))
         {
             if(m.isplayer)log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
+            map.passable[m.posx, m.posy] = false;
         }
-        else if (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE)
+        else if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
         {
             Speed.change(m, -6);
         }
 
         if (coasting)
             Speed.change(m, -1);
-
+playercoastingbutnotaskater:
         if(m.isplayer)TimeEngine = CradleOfTime.player_is_done;
         return true;
     }
