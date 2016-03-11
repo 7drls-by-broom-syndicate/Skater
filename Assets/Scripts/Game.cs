@@ -787,16 +787,16 @@ public partial class Game : MonoBehaviour
                     switch (currentcommand)
                     {
                         case 0:
-                            trytomove(0, -1);
+                            trytomove(0);//trytomove(0, -1);//N
                             break;
                         case 1:
-                            trytomove(0, 1);
+                            trytomove(4);// trytomove(0, 1);//S
                             break;
                         case 2:
-                            trytomove(-1, 0);
+                            trytomove(6);// trytomove(-1, 0);//W
                             break;
                         case 3:
-                            trytomove(1, 0);
+                            trytomove(2);// trytomove(1, 0);//E
                             break;
                         case 4:
                             { player.lantern = !player.lantern; moveplayer(); }
@@ -805,16 +805,16 @@ public partial class Game : MonoBehaviour
                             log.Printline("You wait. Time passes");
                             break;
                         case 6:
-                            trytomove(-1, -1);
+                            trytomove(7);//trytomove(-1, -1);// NW
                             break;
                         case 7:
-                            trytomove(1, -1);
+                            trytomove(1);//trytomove(1, -1);//NE
                             break;
                         case 8:
-                            trytomove(-1, 1);
+                            trytomove(5);// trytomove(-1, 1);//SW
                             break;
                         case 9:
-                            trytomove(1, 1);
+                            trytomove(3);// trytomove(1, 1);//SE
                             break;
                     }
                     nextfire = Time.time + firerate;

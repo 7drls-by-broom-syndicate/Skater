@@ -6,7 +6,10 @@ public partial class Game: MonoBehaviour {
     Color colour_damage = new Color(0.85f, 0.05f, 0.125f, 0.5f);
 
 
-    bool trytomove(int deltax, int deltay) {
+   // bool trytomove(int deltax, int deltay) {
+   bool trytomove(int rotdir) {
+        int deltax = lil.rot_deltax[rotdir];
+        int deltay = lil.rot_deltay[rotdir];
         int tentx = player.posx + deltax;
         int tenty = player.posy + deltay;
         

@@ -7,6 +7,12 @@ using System.Collections.Generic;
 enum direction { UP,DOWN,RIGHT,LEFT}
 
 public static class lil {
+    //rotational style
+    public static int[] rot_deltax = {  0, 1, 1, 1, 0, -1, -1, -1 };
+    public static int[] rot_deltay = {  -1, -1, 0, 1, 1, 1, 0, -1 };
+    //public string[] dir = { "-none-", "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+    public static int[] rot_lookup = { 0, 1, 2, 3, 4, -3, -2, -1 };
+
     //up down right left
     public  static sbyte[] deltax = { 0, 0, 1, -1,    -1,1,-1,1 };
 	public  static sbyte[] deltay = { -1, 1, 0, 0,     -1,-1,1,1 };
