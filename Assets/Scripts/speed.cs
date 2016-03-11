@@ -37,4 +37,11 @@ public static class Speed {
         else if (m.facing > 4) m.reversesprite = true;
 
     }
+    public static void change(mob x,int amount)
+    {
+        x.speed += amount;
+        if (x.speed < min) x.speed = min;
+        else if (x.speed > max) x.speed = max;
+        
+    }
 }

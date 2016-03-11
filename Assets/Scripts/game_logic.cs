@@ -28,8 +28,8 @@ public partial class Game: MonoBehaviour {
     */
         if (!map.passable[tentx, tenty]) return false;
 
-        if (coasting) player.mob.speed--;
-        else Speed.SpeedAndDirectionChange(player.mob, rotdir);
+        if (!coasting) 
+            Speed.SpeedAndDirectionChange(player.mob, rotdir);
 
         if (player.mob.speed > 0) { 
             player.posx = tentx; player.posy = tenty;
@@ -44,11 +44,13 @@ public partial class Game: MonoBehaviour {
         }
         else if (et != Etilesprite.MAP_ICE && et!= Etilesprite.MAP_THIN_ICE)
         {
-            player.mob.speed -= 6;
-            if (player.mob.speed < 0) player.mob.speed = 0;
+            Speed.change(player.mob, -6);
         }
 
-        TimeEngine = CradleOfTime.player_is_done;        
+        if (coasting)
+            Speed.change(player.mob, -1);
+
+            TimeEngine = CradleOfTime.player_is_done;        
         return true;
     }
 
