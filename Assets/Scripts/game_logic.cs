@@ -26,7 +26,7 @@ public partial class Game: MonoBehaviour {
             return true;
         }
     */
-        if (!map.passable[tentx, tenty]) return false;
+        if (!map.passable[tentx, tenty]&&player.mob.speed>0) return false;
 
         if (!coasting) 
             Speed.SpeedAndDirectionChange(player.mob, rotdir);
