@@ -29,18 +29,25 @@ public partial class Game: MonoBehaviour {
 
         //facing
 
-
+       
         Speed.SpeedAndDirectionChange(player.mob, rotdir);
 
 
 
         if (player.mob.speed > 0) { 
-        player.posx = tentx; player.posy = tenty;
-        moveplayer();
-    }
-        TimeEngine = CradleOfTime.player_is_done;
-        
+            player.posx = tentx; player.posy = tenty;
+            moveplayer();
+        }
 
+        Etilesprite et = map.displaychar[player.posx, player.posy];
+        if (et == Etilesprite.MAP_THIN_ICE && player.mob.speed == 0)
+        {
+            log.Printline("The thin ice collapses!",Color.red);
+            map.displaychar[player.posx, player.posy] = Etilesprite.MAP_WATER;
+        }
+
+
+            TimeEngine = CradleOfTime.player_is_done;        
         return true;
     }
 
