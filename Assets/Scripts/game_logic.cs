@@ -10,6 +10,7 @@ public partial class Game : MonoBehaviour
     // bool trytomove(int deltax, int deltay) {
     bool trytomove(mob m,int rotdir, bool coasting = false)
     {
+       // Debug.Log(m.archetype.name + " " + rotdir);
         if (coasting && !m.skates_currently && m.isplayer) goto playercoastingbutnotaskater;
 
         if (coasting) rotdir = m.facing;
@@ -39,8 +40,18 @@ public partial class Game : MonoBehaviour
         {
             if (map.passablecheck(tentx, tenty, m))
             {
-                m.posx = tentx; m.posy = tenty;
-                if(m.isplayer)moveplayer();
+               
+                if (m.isplayer)
+                {
+                    m.posx = tentx; m.posy = tenty;
+                    moveplayer();
+                }
+                else
+                {
+                    map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
+                    map.itemgrid[m.posx, m.posy] = null;
+                    m.posx = tentx; m.posy = tenty;
+                }
             }
         }
 
@@ -106,15 +117,18 @@ playercoastingbutnotaskater:
     }
     void MobGetsToAct(mob e)
     {
-        map.passable[e.posx, e.posy] = true;//THIS WAS CHANGED RECENTLY SO COULD BE SOURCE OF PROBLEMS
+        map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
 
         //attempt to move 
         if (map.PathfindAStar(e.posx, e.posy, player.posx, player.posy, false))
         {
+            int reldir = Speed.findrel(e.posx, e.posy, map.firststepx, map.firststepy);
+            trytomove(e, reldir);
             //  MoveMob(e, map.firststepx, map.firststepy);
             return;
         }
-        map.passable[e.posx, e.posy] = false;//THIS WAS CHANGED RECENTLY SO COULD BE SOURCE OF PROBLEMS
+        map.passable[e.posx, e.posy] = false;//we can't do this though- this hard sets the square to not passable. 
+        //or can we? is mob's new position... are we setting initial mob pos to not passable?
     }
 
     //void MoveMob(mob e, int newx, int newy)

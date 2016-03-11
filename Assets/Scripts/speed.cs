@@ -44,4 +44,28 @@ public static class Speed {
         else if (x.speed > max) x.speed = max;
         
     }
+    public static int findrel(int x,int y,int x2,int y2)
+    {
+        int deltax = x - x2;int deltay = y - y2;
+        if (deltax == -1)
+        {
+            if (deltay == -1) return 7;
+            else if (deltay == 0) return 6;
+            else if (deltay == 1) return 5;
+        }
+        else if (deltax == 0)
+        {
+             if (deltay == -1) return 0;
+            //else if (deltay == 0) return 6; that would be the square itself, no direction
+            else if (deltay == 1) return 4;
+        }
+        if (deltax == 1)
+        {
+            if (deltay == -1) return 1;
+            else if (deltay == 0) return 2;
+            else if (deltay == 1) return 3;
+        }
+        Debug.Log("SHOULD NEVER BE HERE");
+        return 9999999;
+    }
 }

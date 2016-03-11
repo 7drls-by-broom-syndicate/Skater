@@ -601,7 +601,7 @@ public partial class Game : MonoBehaviour
         log = new MessageLog(50, 15);
         log.Printline("Skater by The Broom Institute: 7DRL 2016");
         lil.seednow();
-        player = new Player(3);
+        player = new Player(0);
 
         NextLevel();
     }

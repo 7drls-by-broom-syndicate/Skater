@@ -987,6 +987,7 @@ public partial class RLMap
             m.posx = tentx;m.posy = tenty;
             itemgrid[tentx, tenty] = new item_instance(m.tile,true);
             passable[tentx, tenty] = false;
+            moblist.Add(m);
 
         }
 
