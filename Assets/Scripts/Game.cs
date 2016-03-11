@@ -348,6 +348,9 @@ public partial class Game : MonoBehaviour
                                 if (player.reversesprite)
                                     DrawSpriteReverse(screenx, screeny, (int)player.mob.tile);
                                 else DrawSprite(screenx, screeny, (int)player.mob.tile);
+
+                                //draw facing
+                                DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_DIRECTION_INDICATOR_1 + player.mob.facing);
                             }
 
                             //smoke/cloud/gas

@@ -27,6 +27,8 @@ public partial class Game: MonoBehaviour {
 
         if (!map.passable[tentx,tenty]) return false;
 
+        //facing
+        player.mob.facing = rotdir;
         player.posx = tentx; player.posy = tenty;
         moveplayer();
         TimeEngine = CradleOfTime.player_is_done;
