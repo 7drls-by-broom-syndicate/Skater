@@ -985,7 +985,7 @@ public partial class RLMap
             int tentx, tenty;
             FreeSpace(out tentx, out tenty);
             m.posx = tentx;m.posy = tenty;
-            itemgrid[tentx, tenty] = new item_instance(m.tile,true);
+            itemgrid[tentx, tenty] = new item_instance(m.tile,true,m);
             passable[tentx, tenty] = false;
             moblist.Add(m);
 

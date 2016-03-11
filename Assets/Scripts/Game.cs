@@ -338,7 +338,17 @@ public partial class Game : MonoBehaviour
                             //item layer
                             if (map.itemgrid[xx, yy] != null)
                             {
-                                DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+
+
+                                if (map.itemgrid[xx, yy].ismob)
+                                {
+                                    if (map.itemgrid[xx, yy].mob.reversesprite)
+                                        DrawSpriteReverse(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+                                    else
+                                        DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+                                    DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_DIRECTION_INDICATOR_1 + map.itemgrid[xx, yy].mob.facing);
+                                }
+                                else DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
                             }
 
                             //player
