@@ -791,34 +791,34 @@ public partial class Game : MonoBehaviour
                     switch (currentcommand)
                     {
                         case 0:
-                            trytomove(0);//trytomove(0, -1);//N
+                            trytomove(player.mob,0);//trytomove(0, -1);//N
                             break;
                         case 1:
-                            trytomove(4);// trytomove(0, 1);//S
+                            trytomove(player.mob, 4);// trytomove(0, 1);//S
                             break;
                         case 2:
-                            trytomove(6);// trytomove(-1, 0);//W
+                            trytomove(player.mob, 6);// trytomove(-1, 0);//W
                             break;
                         case 3:
-                            trytomove(2);// trytomove(1, 0);//E
+                            trytomove(player.mob, 2);// trytomove(1, 0);//E
                             break;
                         case 4:
                             { player.lantern = !player.lantern; moveplayer(); }
                             break;
                         case 5:
-                            log.Printline("You wait. Time passes");trytomove(0, true);
+                            log.Printline("You wait. Time passes");trytomove(player.mob, 0,true);
                             break;
                         case 6:
-                            trytomove(7);//trytomove(-1, -1);// NW
+                            trytomove(player.mob, 7);//trytomove(-1, -1);// NW
                             break;
                         case 7:
-                            trytomove(1);//trytomove(1, -1);//NE
+                            trytomove(player.mob, 1);//trytomove(1, -1);//NE
                             break;
                         case 8:
-                            trytomove(5);// trytomove(-1, 1);//SW
+                            trytomove(player.mob, 5);// trytomove(-1, 1);//SW
                             break;
                         case 9:
-                            trytomove(3);// trytomove(1, 1);//SE
+                            trytomove(player.mob, 3);// trytomove(1, 1);//SE
                             break;
                     }
                     nextfire = Time.time + firerate;

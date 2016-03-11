@@ -9,7 +9,7 @@ public class mobarchetype
 {
    
     public string name;
-    public string weaponname;
+    public string weaponname;   
     public bool skates;
     public bool flies;
     public bool hostile_toplayer;
@@ -64,7 +64,7 @@ public class mob {
            
  };
 
-
+    public bool isplayer=false;
     public bool reversesprite = false;
     public mobarchetype archetype;
     public int hp;

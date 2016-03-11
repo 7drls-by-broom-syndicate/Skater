@@ -2,9 +2,23 @@
 using System.Collections;
 
 public class Player {
-    public int posx, posy;
+    public int posx {
+        get { return mob.posx; }
+        set { mob.posx = value;  }
+    }
+    
+    public int posy
+    {
+        get { return mob.posy; }
+        set { mob.posy = value; }
+    }
+    public int hp
+    {
+        get { return mob.hp; }
+        set { mob.hp = value; }
+    }
     public bool lantern;
-    public int hp;//int mana;
+    
     //item_instance* held = nullptr;
     public int score;
     public bool stealthed = false;
@@ -25,10 +39,11 @@ public class Player {
 
     void init(int which){
         mob = new mob((Emobtype)which);
+        mob.isplayer = true;
         
         posx = 0; posy = 0;
 		lantern = true; stealthed = false;
-		hp = mob.hp;// mana = 0; //stasis = 0;
+		//hp = mob.hp;// mana = 0; //stasis = 0;
        
         
 

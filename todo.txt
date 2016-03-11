@@ -6,13 +6,16 @@ make it so it's easier to turn on ice when stopped but not snow
 
 why exactly does click move stop?
 
+bug: you can speed up by revving into solid objects.
+
 being in water loses you hp- unless you are polarmoop
+
+before starting the game, see if any mobs too close to player and if
+so walk them away from the player like flee style
 
 do cairns
 
 do breaking barrels. can actually do when moving
-
-add mobs
 
 do attackgrid thing
 
