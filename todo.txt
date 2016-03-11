@@ -1,4 +1,19 @@
-for the love of god, skating
+just waiting or doing something that isn't moving will move you
+
+change sprite direction
+
+being in water loses you hp
+
+add some moops for the love of gods!
+
+to use something, open crate etc. you need to stop first, (alternative
+is to stop the player then use it, which uses one fewer turn)
+maybe bumping an obstacle makes your speed go to zero and you take 
+damage! so you will learn to stop yourself. AHAHAHAHHA
+eeeeeeexcellent
+
+
+
 
 general suspicious slowdown after adding game state code
 
@@ -10,7 +25,7 @@ music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing t
 
 music that's faster for combat. same music or different? anyway it speeds up in combat and goes back to normal later
 
-
+sound effect - hum of warp gate increases with proximity
 
 check floodfill of level before barrels because they can be destroyed. 
 

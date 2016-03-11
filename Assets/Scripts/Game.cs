@@ -345,7 +345,7 @@ public partial class Game : MonoBehaviour
                             if (player.posx == xx && player.posy == yy)
                             {
                                 GUI.color = Color.white;
-                                if (player.reversesprite)
+                                if (player.mob.reversesprite)
                                     DrawSpriteReverse(screenx, screeny, (int)player.mob.tile);
                                 else DrawSprite(screenx, screeny, (int)player.mob.tile);
 

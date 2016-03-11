@@ -10,7 +10,7 @@ public class Player {
     public bool stealthed = false;
     //int charlevel = 0;
     public int dunlevel = 0;
-    public bool reversesprite = false;
+    
 
     //char stasis = 0;
     //bool devcheat = false;

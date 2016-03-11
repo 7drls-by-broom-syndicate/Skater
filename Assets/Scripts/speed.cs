@@ -27,8 +27,14 @@ public static class Speed {
         if (m.speed < min) m.speed = min;
         else if (m.speed > max) m.speed = max;
 
+      //  int oldfacing = m.facing;
+
         m.facing += ROTATIONdeltasbyrelativeheading[reldir];
         if (m.facing < 0) m.facing += 8;
         else if (m.facing > 7) m.facing -= 8;
+
+        if (m.facing > 0 && m.facing < 4) m.reversesprite = false;
+        else if (m.facing > 4) m.reversesprite = true;
+
     }
 }

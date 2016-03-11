@@ -7,6 +7,7 @@ public enum Emobtype { playerpango, playermarsby, playerpapa, playermoop,
 
 public class mobarchetype
 {
+   
     public string name;
     public string weaponname;
     public bool skates;
@@ -64,7 +65,7 @@ public class mob {
  };
 
 
-
+    public bool reversesprite = false;
     public mobarchetype archetype;
     public int hp;
     public int posx, posy;//maybe not needed

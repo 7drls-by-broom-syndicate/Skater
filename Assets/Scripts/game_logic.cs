@@ -24,15 +24,9 @@ public partial class Game: MonoBehaviour {
             return true;
         }
     */
-
         if (!map.passable[tentx, tenty]) return false;
-
-        //facing
-
-       
+      
         Speed.SpeedAndDirectionChange(player.mob, rotdir);
-
-
 
         if (player.mob.speed > 0) { 
             player.posx = tentx; player.posy = tenty;
@@ -51,7 +45,7 @@ public partial class Game: MonoBehaviour {
             if (player.mob.speed < 0) player.mob.speed = 0;
         }
 
-            TimeEngine = CradleOfTime.player_is_done;        
+        TimeEngine = CradleOfTime.player_is_done;        
         return true;
     }
 
