@@ -14,6 +14,8 @@ public enum DungeonGenType { Splitter2013, Sucker2014,Synthesizer2015_nothere, S
 public partial class RLMap  {
     // public static Color?[] minimapcolours = { new Color (0.25f,0.25f,0.25f), Color.grey, null, null, Color.grey, Color.grey, Color.grey, Color.grey,
     //                                          Color.yellow,Color.yellow,Color.yellow,Color.yellow,new Color (0.25f,0.25f,0.25f)};
+    public Array2D<Color> gridflashcolour;
+    public Array2D<float> gridflashtime;
 
     public Color?[] minimapcolours;
 
@@ -182,7 +184,8 @@ public partial class RLMap  {
         staticlight = new Array2D<Color>( width, height,Color.black);
         dynamiclight = new Array2D<Color>(width, height, Color.black);
         extradata = new Array2D<Cell>(width, height, null);
-
+        gridflashcolour = new Array2D<Color>(width, height, Color.clear);
+        gridflashtime = new Array2D<float>(width, height, 0f);
         switch (dgt) {
             case DungeonGenType.Splitter2013:
                // genlevelsplitterstyle();

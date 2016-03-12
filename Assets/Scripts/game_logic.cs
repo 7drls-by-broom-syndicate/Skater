@@ -119,10 +119,42 @@ playercoastingbutnotaskater:
         TimeEngine = CradleOfTime.ready_to_process_turn;
 
     }
-    void MobGetsToAct(mob e)
+    void FloatingDamage(mob victim, mob attacker, int amount, string explanation = "", bool flashsupress = false)
     {
-        map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
+        Color c;
 
+        if (amount == 0) c = Color.grey;
+        else c = (amount < 0) ? Color.red : Color.green;
+
+        FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));        
+        log.Printline(victim.archetype.name, Color.black);
+        if (amount <= 0) log.Print(" takes ");
+        else log.Print(" gains ");
+        log.Print(amount + " from " +attacker.archetype.name, c);
+        if (explanation.Length > 0) log.Print("[" + explanation + "]");
+
+        //actually do the damage
+        victim.hp += amount;
+        c.a = 0.5f;
+        map.gridflashcolour[victim.posx, victim.posy] = c;
+        map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
+    }
+
+    void MobAttacksMob(mob attacker, mob target)
+    {
+        int damage = attacker.speed - target.speed;
+        if (damage < 1) damage = 1;
+        FloatingDamage(target, attacker, -damage,attacker.archetype.weaponname);
+    }
+        void MobGetsToAct(mob e)
+    {
+
+        if (e.IsAdjacentTo(player.mob))
+        {
+
+        }
+
+        map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
         //attempt to move 
         if (map.PathfindAStar(e.posx, e.posy, player.posx, player.posy, false))
         {

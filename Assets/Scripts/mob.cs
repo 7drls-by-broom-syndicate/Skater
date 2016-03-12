@@ -98,4 +98,12 @@ public class mob {
         facing = 0;
         speed = 0;
     }
+
+    public bool IsAdjacentTo(mob other)
+    {
+        return (
+            (Mathf.Abs(posx - other.posx) == 1 && posy == other.posy) ||
+            (Mathf.Abs(posy - other.posy) == 1 && posx == other.posx)
+            );
+    }
 }

@@ -388,10 +388,27 @@ public partial class Game : MonoBehaviour
                                 DrawSprite(screenx, screeny, (int)map.playermemory.AtGet(xx, yy));
                             }
                         }
+
+                        //draw the brief colour overlay on squares that is used for snake spit and 
+                        //wizard bomb (if we get round to bomb that is)
+                        if (map.gridflashtime[xx, yy] > Time.time)
+                        {
+                            GUI.color = map.gridflashcolour[xx, yy];
+                            DrawSprite(screenx, screeny, 27);
+                        }
+
+
+
+
+
+
                         screenx++;
                     }
                     screeny++; screenx = 0;
                 }
+
+              
+
 
                 //floating text
                 for (int f = 0; f < FloatingTextItems.Count; f++)
