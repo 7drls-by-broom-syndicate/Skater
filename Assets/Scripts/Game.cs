@@ -345,6 +345,11 @@ public partial class Game : MonoBehaviour
                             {
                                 if (map.itemgrid[xx, yy].ismob)
                                 {
+                                    if (map.itemgrid[xx, yy].mob.noticedyou == false)
+                                    {
+                                        map.itemgrid[xx, yy].mob.noticedyou = true;
+                                        log.Printline(map.itemgrid[xx, yy].mob.archetype.name + " noticed you!");
+                                    }
                                     if (map.itemgrid[xx, yy].mob.reversesprite)
                                         DrawSpriteReverse(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
                                     else

@@ -153,7 +153,7 @@ playercoastingbutnotaskater:
     }
         void MobGetsToAct(mob e)
     {
-
+        if (!e.noticedyou) return; //METAL MOOP SOLID
         if (e.IsAdjacentTo(player.mob))
         {
             MobAttacksMob(e, player.mob);

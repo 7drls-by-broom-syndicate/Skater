@@ -6,13 +6,12 @@ why do some enemies face north and never move until you get closer?
 i suspect a nonpassable invisible
 
 bug: you can speed up by revving into solid objects.
-
 do crashing into obstacles gives damage
 
 check for enemy death
-no blood in water
 
-enemies have to notice you.
+
+deal with offscreen damage messages being ridiculously off edge
 
 although water is not passable for skaters, they should fall into it
 if coasting

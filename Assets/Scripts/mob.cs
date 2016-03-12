@@ -70,7 +70,7 @@ public class mob {
     public mobarchetype archetype;
     public int hp;
     public int posx, posy;//maybe not needed
-
+    public bool noticedyou = false;
     public Etilesprite tile;
 
     public bool hostile_toplayer_currently;
