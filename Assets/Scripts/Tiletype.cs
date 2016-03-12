@@ -144,5 +144,6 @@ public enum Etilesprite : int
     MAP_HENGE_STONE_1,
     MAP_HENGE_STONE_2,
     MAP_HENGE_STONE_3,
-    MAP_HENGE_STONE_4
+    MAP_HENGE_STONE_4,
+    EFFECT_FULLSQUARE
 }

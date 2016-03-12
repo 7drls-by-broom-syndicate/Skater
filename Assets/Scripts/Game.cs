@@ -163,9 +163,9 @@ public partial class Game : MonoBehaviour
                 byte c = 0; 
                 switch (x)
                 {
-                    case 0:c = (byte)(48+(value / 100)); break;
-                    case 1:c=(byte)(48+((value%100)/10)); break;
-                    case 2:c = (byte)(48 + (value % 10)); break;
+                    case 0:c = (value<0)?(byte)45:(byte)(48+(value / 100)); break;
+                    case 1:c= (value < 0) ? (byte)45 : (byte)(48+((value%100)/10)); break;
+                    case 2:c = (value < 0) ? (byte)45 : (byte)(48 + (value % 10)); break;
                 }
                 int xpos = c % 32;
                 int ypos = 7 - (c / 32);
@@ -394,7 +394,7 @@ public partial class Game : MonoBehaviour
                         if (map.gridflashtime[xx, yy] > Time.time)
                         {
                             GUI.color = map.gridflashcolour[xx, yy];
-                            DrawSprite(screenx, screeny, 27);
+                            DrawSprite(screenx, screeny,(int) Etilesprite.EFFECT_FULLSQUARE);
                         }
 
 

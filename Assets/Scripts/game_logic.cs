@@ -151,7 +151,8 @@ playercoastingbutnotaskater:
 
         if (e.IsAdjacentTo(player.mob))
         {
-
+            MobAttacksMob(e, player.mob);
+            return;
         }
 
         map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
