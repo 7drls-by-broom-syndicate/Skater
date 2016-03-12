@@ -8,6 +8,26 @@ public partial class Game : MonoBehaviour
 
 
     // bool trytomove(int deltax, int deltay) {
+
+    void movemob(mob m, int tentx, int tenty)
+    {
+        if (m.isplayer)
+        {
+            m.posx = tentx; m.posy = tenty;
+            moveplayer();
+        }
+        else
+        {
+            if (m.posx != tentx || m.posy != tenty)
+            {
+                map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
+                map.itemgrid[m.posx, m.posy] = null;
+                m.posx = tentx; m.posy = tenty;
+            }
+
+        }
+    }
+
     bool trytomove(mob m, int rotdir, bool coasting = false)
     {
         // Debug.Log(m.archetype.name + " " + rotdir);
@@ -44,40 +64,60 @@ public partial class Game : MonoBehaviour
         {
             if (map.passablecheck(tentx, tenty, m))
             {
-
-                if (m.isplayer)
+                movemob(m, tentx, tenty);
+            }
+            else
+            {//not passable
+                //this could be a mob, water or something like a tree, cairn or wall
+                //1.is there a mob there:
+                item_instance i = map.itemgrid[tentx, tenty];
+                if (i != null)
                 {
-                    m.posx = tentx; m.posy = tenty;
-                    moveplayer();
+                    if (i.ismob)
+                    {
+                        //mob crashes into mob! this could need changing
+                        m.speed = 0;
+                    }
+                    else
+                    {//item there but not a mob, so cairn, tree, ?
+                     //take damage
+                        FloatingDamage(m, m, m.speed / 2, "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
+                        m.speed = 0;
+                    }
                 }
                 else
-                {
-                    if (m.posx != tentx || m.posy != tenty)
+                {//no mob or item to crash into but maybe non-passable map tile or water
+                    if (map.displaychar[tentx, tenty] == Etilesprite.MAP_WATER)
                     {
-                        map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
-                        map.itemgrid[m.posx, m.posy] = null;
-                        m.posx = tentx; m.posy = tenty;
+                        movemob(m, tentx, tenty);
+                        m.speed = 0;
+                        log.Printline(m.archetype.name + " skids into the water!", Color.magenta);
                     }
-
                 }
-            }
+            }//end of not passable
         }
-
+        //if on thin ice and no speed, or if moop, fall through
         Etilesprite et = map.displaychar[m.posx, m.posy];
         if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy && !m.flies_currently)))
         {
             if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
             map.passable[m.posx, m.posy] = false;
-            if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
-        }
-        else if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
-        {
-            Speed.change(m, -6);
+            //if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
         }
 
+        //general if you are in water you get damaged line
+        if(map.displaychar[m.posx,m.posy]==Etilesprite.MAP_WATER)
+            if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
+
+        //if not on ice or thin ice, reduce speed such that it is gone in 2 turns
+        else if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
+        {
+            Speed.change(m, Speed.nonice);
+        }
+        //coasting reduces speed by 1
         if (coasting)
-            Speed.change(m, -1);
+            Speed.change(m, Speed.coasting);
         playercoastingbutnotaskater:
         if (m.isplayer) TimeEngine = CradleOfTime.player_is_done;
         return true;
@@ -150,6 +190,7 @@ public partial class Game : MonoBehaviour
     }
 
     void MobAttacksMob(mob attacker, mob target)
+
     {
         int damage = attacker.speed - target.speed;
         if (damage < 1) damage = 1;
@@ -165,7 +206,7 @@ public partial class Game : MonoBehaviour
         }
 
         map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
-        //attempt to move 
+                                            //attempt to move 
         if (map.PathfindAStar(e.posx, e.posy, player.posx, player.posy, false))
         {
             int reldir = Speed.findrel(e.posx, e.posy, map.firststepx, map.firststepy);

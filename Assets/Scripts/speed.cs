@@ -10,6 +10,8 @@ public static class Speed {
     public const int turn90 = -6;
     public const int turn135 = -9;
     public const int turn180 = -Speed.max;
+    public const int coasting = -1;
+    public const int nonice = -6;
 
     public static int[] deltasbyrelativeheading = { samecourse, turn45, turn90, turn135, turn180, turn135, turn90, turn45 };
     public static int[] ROTATIONdeltasbyrelativeheading = { 0, 1, 1, 2, 0, -2, -1, -1 };
