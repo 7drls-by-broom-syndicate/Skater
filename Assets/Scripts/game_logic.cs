@@ -197,7 +197,18 @@ public partial class Game : MonoBehaviour
 
 
         //check for mob hp so dead
-
+        foreach (var f in map.moblist)
+        {
+            if (f.dead_currently==false && f.hp <= 0)
+            {
+                log.Printline("The " + f.archetype.name + " dies.", new Color(0.6f, 0, 0));
+                f.speed = 0;
+                f.dead_currently = true;
+                f.tile = f.archetype.tile_dead;
+                if (map.itemgrid[f.posx, f.posy] == null) Debug.Log("error map thing in mob dies thing");
+                else map.itemgrid[f.posx, f.posy].tile = f.tile;
+            }
+        }
         if (player.hp <= 0)
         {
             log.Printline("<snarky game over message>", Color.red);
@@ -246,7 +257,7 @@ public partial class Game : MonoBehaviour
     }
     void MobGetsToAct(mob e)
     {
-        if (!e.noticedyou) return; //METAL MOOP SOLID
+        if (!e.noticedyou || e.dead_currently) return; //METAL MOOP SOLID
         if (e.IsAdjacentTo(player.mob))
         {
             MobAttacksMob(e, player.mob);

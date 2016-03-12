@@ -1,10 +1,19 @@
+check for enemy death
 
-bug: you can speed up by revving into solid objects.
-do crashing into obstacles gives damage
+you attack mobs
+
+enemy should skate up to you, can hit you and end up drifting past
+(enemies coast as they attack)
+
+do cairns
+
+moopwater is not being set to nopass
 
 enemy adjacent to you turns to face you
 
-enemy should skate up to you, can hit you and end up drifting past
+
+
+you can walk in water
 
 why do some enemies face north and never move until you get closer?
 i suspect a nonpassable invisible. new theory: it's a* cutting out as it 
@@ -12,13 +21,11 @@ does for player
 
 polarmoops in water need to check for other polarmoops for passablility
 
-check for enemy death
+
 
 
 deal with offscreen damage messages being ridiculously off edge
 
-although water is not passable for skaters, they should fall into it
-if coasting
 
 do attackgrid thing
 
@@ -37,7 +44,7 @@ why exactly does click move stop?
 before starting the game, see if any mobs too close to player and if
 so walk them away from the player like flee style
 
-do cairns
+
 
 do breaking barrels. can actually do when moving
 

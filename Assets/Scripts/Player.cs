@@ -20,7 +20,7 @@ public class Player {
     public bool lantern;
     
     //item_instance* held = nullptr;
-    public int score;
+    public int score=0;
     public bool stealthed = false;
     //int charlevel = 0;
     public int dunlevel = 0;

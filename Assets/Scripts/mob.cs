@@ -76,6 +76,7 @@ public class mob {
     public bool hostile_toplayer_currently;
     public bool hostile_toenemies_currently;
     public bool undead_currently;
+    public bool dead_currently = false;
     public bool flies_currently;
     public bool skates_currently;
 
