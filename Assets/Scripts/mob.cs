@@ -43,7 +43,7 @@ public class mob {
         new mobarchetype(true,"polarmoop","claws",   15, true,false,false,   false,false,    Etilesprite.ENEMY_POLARMOOP,Etilesprite.ENEMY_POLARMOOP_CORPSE,Etilesprite.ENEMY_POLARMOOP_SKELETON) ,
         new mobarchetype(false,"lancer","spear",      10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_SPEAR,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
         new mobarchetype(false,"antipaladin","sword", 10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_SWORDANDBOARD,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
-        new mobarchetype(false,"swinger","chain",     10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_SPEAR,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
+        new mobarchetype(false,"swinger","chain",     10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_CHAIN,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
         new mobarchetype(false,"tef-rog","dagger",    10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_DAGGER,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
         new mobarchetype(false,"kobby bomber","knife",5,  true,false,false,   false,false,    Etilesprite.ENEMY_KOBBY_BOMBER,Etilesprite.ENEMY_KOBBY_BOMBER_CORPSE,Etilesprite.ENEMY_KOBBY_BOMBER_SKELETON),
         new mobarchetype(false,"giant bat","fangs",   5,  true,false,false,   false,true,     Etilesprite.ENEMY_GIANTBAT,Etilesprite.ENEMY_GIANTBAT_CORPSE,Etilesprite.ENEMY_GIANTBAT_SKELETON),

@@ -8,9 +8,9 @@ public partial class Game : MonoBehaviour
 
 
     // bool trytomove(int deltax, int deltay) {
-    bool trytomove(mob m,int rotdir, bool coasting = false)
+    bool trytomove(mob m, int rotdir, bool coasting = false)
     {
-       // Debug.Log(m.archetype.name + " " + rotdir);
+        // Debug.Log(m.archetype.name + " " + rotdir);
         if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
 
         if (coasting) rotdir = m.facing;
@@ -40,7 +40,7 @@ public partial class Game : MonoBehaviour
         {
             if (map.passablecheck(tentx, tenty, m))
             {
-               
+
                 if (m.isplayer)
                 {
                     m.posx = tentx; m.posy = tenty;
@@ -54,15 +54,15 @@ public partial class Game : MonoBehaviour
                         map.itemgrid[m.posx, m.posy] = null;
                         m.posx = tentx; m.posy = tenty;
                     }
-           
+
                 }
             }
         }
 
         Etilesprite et = map.displaychar[m.posx, m.posy];
-        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0||(m.archetype.heavy&&!m.flies_currently)))
+        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy && !m.flies_currently)))
         {
-            if(m.isplayer)log.Printline("The thin ice collapses!", Color.red);
+            if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
             map.passable[m.posx, m.posy] = false;
             if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
@@ -74,8 +74,8 @@ public partial class Game : MonoBehaviour
 
         if (coasting)
             Speed.change(m, -1);
-playercoastingbutnotaskater:
-        if(m.isplayer)TimeEngine = CradleOfTime.player_is_done;
+        playercoastingbutnotaskater:
+        if (m.isplayer) TimeEngine = CradleOfTime.player_is_done;
         return true;
     }
 
@@ -127,18 +127,18 @@ playercoastingbutnotaskater:
         if (amount == 0) c = Color.grey;
         else c = (amount < 0) ? Color.red : Color.green;
 
-        FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));        
+        FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
         log.Printline(victim.archetype.name, Color.gray);
         if (amount <= 0) log.Print(" takes ");
         else log.Print(" gains ");
         if (victim == attacker) log.Print(amount + " ");
-        else log.Print(amount + " from " +attacker.archetype.name, c);
+        else log.Print(amount + " from " + attacker.archetype.name, c);
         if (explanation.Length > 0) log.Print("[" + explanation + "]");
 
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
-        if(map.displaychar[victim.posx,victim.posy]!=Etilesprite.MAP_WATER)
+        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER)
             map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3);
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
@@ -149,9 +149,9 @@ playercoastingbutnotaskater:
     {
         int damage = attacker.speed - target.speed;
         if (damage < 1) damage = 1;
-        FloatingDamage(target, attacker, -damage,attacker.archetype.weaponname);
+        FloatingDamage(target, attacker, -damage, attacker.archetype.weaponname);
     }
-        void MobGetsToAct(mob e)
+    void MobGetsToAct(mob e)
     {
         if (!e.noticedyou) return; //METAL MOOP SOLID
         if (e.IsAdjacentTo(player.mob))
@@ -166,10 +166,10 @@ playercoastingbutnotaskater:
         {
             int reldir = Speed.findrel(e.posx, e.posy, map.firststepx, map.firststepy);
             trytomove(e, reldir);
-            //  MoveMob(e, map.firststepx, map.firststepy);
+            map.passable[e.posx, e.posy] = false;
             return;
         }
-        map.passable[e.posx, e.posy] = false;//we can't do this though- this hard sets the square to not passable. 
+        //map.passable[e.posx, e.posy] = false;//we can't do this though- this hard sets the square to not passable. 
         //or can we? is mob's new position... are we setting initial mob pos to not passable?
     }
 
