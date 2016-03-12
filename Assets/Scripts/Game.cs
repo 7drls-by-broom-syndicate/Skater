@@ -863,7 +863,7 @@ public partial class Game : MonoBehaviour
                             { player.lantern = !player.lantern; moveplayer(); }
                             break;
                         case 5:
-                            log.Printline("You wait. Time passes");trytomove(player.mob, 0,true);
+                            log.Printline((player.mob.speed>0)?"You coast.":"You wait.");trytomove(player.mob, 0,true);
                             break;
                         case 6:
                             trytomove(player.mob, 7);//trytomove(-1, -1);// NW

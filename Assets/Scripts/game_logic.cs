@@ -86,9 +86,17 @@ public partial class Game : MonoBehaviour
                 {//no mob or item to crash into but maybe non-passable map tile or water
                     if (map.displaychar[tentx, tenty] == Etilesprite.MAP_WATER)
                     {
+                      
+                        if(map.displaychar[m.posx,m.posy]==Etilesprite.MAP_WATER)
+                            log.Printline(m.archetype.name + " wades on, foolishly!", Color.magenta);
+                        else log.Printline(m.archetype.name + " skids into the water!", Color.magenta);
                         movemob(m, tentx, tenty);
                         m.speed = 0;
-                        log.Printline(m.archetype.name + " skids into the water!", Color.magenta);
+
+                    } else
+                    {//non-passable tile that isn't water, so probably snow-covered rock
+                        FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)map.displaychar[tentx,tenty] + 2]);
+                        m.speed = 0;
                     }
                 }
             }//end of not passable
@@ -169,12 +177,12 @@ public partial class Game : MonoBehaviour
         else c = (amount < 0) ? Color.red : Color.green;
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
-        log.Printline(victim.archetype.name, Color.gray);
-        if (amount <= 0) log.Print(" takes ");
-        else log.Print(" gains ");
-        if (victim == attacker) log.Print(amount + " ");
+        log.Printline(victim.archetype.name, c);
+        if (amount <= 0) log.Print(" takes ",c);
+        else log.Print(" gains ",c);
+        if (victim == attacker) log.Print(amount + " ",c);
         else log.Print(amount + " from " + attacker.archetype.name, c);
-        if (explanation.Length > 0) log.Print("[" + explanation + "]");
+        if (explanation.Length > 0) log.Print("[" + explanation + "]",c);
 
         //actually do the damage
         victim.hp += amount;
