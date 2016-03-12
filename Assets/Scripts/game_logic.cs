@@ -138,7 +138,8 @@ playercoastingbutnotaskater:
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
-        map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3);
+        if(map.displaychar[victim.posx,victim.posy]!=Etilesprite.MAP_WATER)
+            map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3);
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
 

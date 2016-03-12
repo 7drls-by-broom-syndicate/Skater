@@ -12,6 +12,8 @@ do crashing into obstacles gives damage
 check for enemy death
 no blood in water
 
+enemies have to notice you.
+
 although water is not passable for skaters, they should fall into it
 if coasting
 
@@ -23,7 +25,6 @@ we do need to fix that hillock thing- spawned in one, couldn't move
 
 make it so it's easier to turn on ice when stopped but not snow
 
-being in water loses you hp- unless you are polarmoop
 
 why exactly does click move stop?
 
