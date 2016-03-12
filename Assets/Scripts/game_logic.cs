@@ -11,7 +11,7 @@ public partial class Game : MonoBehaviour
     bool trytomove(mob m,int rotdir, bool coasting = false)
     {
        // Debug.Log(m.archetype.name + " " + rotdir);
-        if (coasting && !m.skates_currently && m.isplayer) goto playercoastingbutnotaskater;
+        if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
 
         if (coasting) rotdir = m.facing;
 
@@ -48,9 +48,13 @@ public partial class Game : MonoBehaviour
                 }
                 else
                 {
-                    map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
-                    map.itemgrid[m.posx, m.posy] = null;
-                    m.posx = tentx; m.posy = tenty;
+                    if (m.posx != tentx || m.posy != tenty)
+                    {
+                        map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
+                        map.itemgrid[m.posx, m.posy] = null;
+                        m.posx = tentx; m.posy = tenty;
+                    }
+           
                 }
             }
         }
