@@ -667,6 +667,7 @@ public partial class Game : MonoBehaviour
         r_minimap = new Rect(336 * zoomfactor, 0, map.width * 2 * zoomfactor, map.height * 2 * zoomfactor);//was 339
 
         //take this map reveal cheat out 
+        /*
         for (int y = 0; y < map.height; y++)
         {
             for (int x = 0; x < map.width; x++)
@@ -678,7 +679,7 @@ public partial class Game : MonoBehaviour
                 if (map.itemgrid[x, y] != null) map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)map.itemgrid[x, y].tile]);
                 else map.minimap.SetPixel(x, y, (Color)map.minimapcolours[(int)et]);
             }
-        }
+        }*/
         //end cheat 
 
 

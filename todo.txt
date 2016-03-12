@@ -1,12 +1,16 @@
+
+bug: you can speed up by revving into solid objects.
+do crashing into obstacles gives damage
+
 enemy adjacent to you turns to face you
 
 enemy should skate up to you, can hit you and end up drifting past
 
 why do some enemies face north and never move until you get closer?
-i suspect a nonpassable invisible
+i suspect a nonpassable invisible. new theory: it's a* cutting out as it 
+does for player
 
-bug: you can speed up by revving into solid objects.
-do crashing into obstacles gives damage
+polarmoops in water need to check for other polarmoops for passablility
 
 check for enemy death
 

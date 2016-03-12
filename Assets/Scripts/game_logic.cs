@@ -67,21 +67,18 @@ public partial class Game : MonoBehaviour
                 movemob(m, tentx, tenty);
             }
             else
-            {//not passable
-                //this could be a mob, water or something like a tree, cairn or wall
-                //1.is there a mob there:
-                item_instance i = map.itemgrid[tentx, tenty];
+            {//not passable this could be a mob, water or something like a tree, cairn or wall                            
+                item_instance i = map.itemgrid[tentx, tenty]; //1.is there a mob there:
                 if (i != null)
                 {
-                    if (i.ismob)
-                    {
-                        //mob crashes into mob! this could need changing
+                    if (i.ismob)//mob crashes into mob! this could need changing
+                    {                        
                         m.speed = 0;
                     }
                     else
                     {//item there but not a mob, so cairn, tree, ?
                      //take damage
-                        FloatingDamage(m, m, m.speed / 2, "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
+                        FloatingDamage(m, m,-( m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
                         m.speed = 0;
                     }
                 }
@@ -95,10 +92,10 @@ public partial class Game : MonoBehaviour
                     }
                 }
             }//end of not passable
-        }
-        //if on thin ice and no speed, or if moop, fall through
+        }//end speed >0
+        //if on thin ice and no speed, or if moop, and not flying fall through
         Etilesprite et = map.displaychar[m.posx, m.posy];
-        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy && !m.flies_currently)))
+        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy) && !m.flies_currently))
         {
             if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
@@ -111,7 +108,7 @@ public partial class Game : MonoBehaviour
             if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
 
         //if not on ice or thin ice, reduce speed such that it is gone in 2 turns
-        else if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
+        if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
         {
             Speed.change(m, Speed.nonice);
         }
