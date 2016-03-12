@@ -72,13 +72,13 @@ public partial class Game : MonoBehaviour
                 if (i != null)
                 {
                     if (i.ismob)//mob crashes into mob! this could need changing
-                    {                        
+                    {
                         m.speed = 0;
                     }
                     else
                     {//item there but not a mob, so cairn, tree, ?
-                     //take damage
-                        FloatingDamage(m, m,-( m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
+                     //take damage                        
+                        FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
                         m.speed = 0;
                         if (i.tile == Etilesprite.ITEM_BARREL)
                         {
@@ -87,41 +87,53 @@ public partial class Game : MonoBehaviour
                                 log.Printline("Inside the barrel was a something!", Color.blue);
                                 i.tile = Etilesprite.ITEM_WARP_BEADS;
                                 map.extradata[tentx, tenty] = null;
-                            } else
+                            }
+                            else
                             {
                                 log.Printline("Take that, you barrel bastard!", Color.gray);
                                 i.tile = Etilesprite.ITEM_BARREL_BROKEN;
-                                map.extradata[tentx, tenty] = null;                                
+                                map.extradata[tentx, tenty] = null;
                             }
-                        } else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
+                        }
+                        else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
                         {
-                            log.Printline(m.archetype.name+" plays cleanup!", Color.gray);
+                            log.Printline(m.archetype.name + " plays cleanup!", Color.gray);
                             map.itemgrid[tentx, tenty] = null;
                             map.passable[tentx, tenty] = true;
 
-                        } else if (i.tile == Etilesprite.ITEM_WARP_BEADS)
+                        }
+                        else if (i.tile == Etilesprite.ITEM_WARP_BEADS)
                         {
                             log.Printline(m.archetype.name + " collects the Warp Beads!", Color.magenta);
                             map.itemgrid[tentx, tenty] = null;
                             map.passable[tentx, tenty] = true;
                             m.hasbeads = true;
                         }
+
                     }
                 }
                 else
                 {//no mob or item to crash into but maybe non-passable map tile or water
                     if (map.displaychar[tentx, tenty] == Etilesprite.MAP_WATER)
                     {
-                      
-                        if(map.displaychar[m.posx,m.posy]==Etilesprite.MAP_WATER)
+
+                        if (map.displaychar[m.posx, m.posy] == Etilesprite.MAP_WATER)
                             log.Printline(m.archetype.name + " wades on, foolishly!", Color.magenta);
                         else log.Printline(m.archetype.name + " skids into the water!", Color.magenta);
                         movemob(m, tentx, tenty);
                         m.speed = 0;
 
-                    } else
+                    }
+                    else if (map.displaychar[tentx,tenty]== Etilesprite.ITEM_WARP_GATE_ANIM_1 && m.hasbeads)
+                    {//this means in theory, depending on how i coded this, a mob could get you to next level!
+                        log.Printline("I'm stepping through the door", Color.green);
+                        log.Printline("And I'm floating in a most peculiar way", Color.green);
+                        log.Printline("And the stars look very different today", Color.green);
+                        NextLevel();
+                    }
+               else
                     {//non-passable tile that isn't water, so probably snow-covered rock
-                        FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)map.displaychar[tentx,tenty] + 2]);
+                        FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)map.displaychar[tentx, tenty] + 2]);
                         m.speed = 0;
                     }
                 }
@@ -143,7 +155,7 @@ public partial class Game : MonoBehaviour
         }
 
         //general if you are in water you get damaged line
-        if(map.displaychar[m.posx,m.posy]==Etilesprite.MAP_WATER)
+        if (map.displaychar[m.posx, m.posy] == Etilesprite.MAP_WATER)
             if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
 
         //if not on ice or thin ice, reduce speed such that it is gone in 2 turns
@@ -209,16 +221,16 @@ public partial class Game : MonoBehaviour
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
         log.Printline(victim.archetype.name, c);
-        if (amount <= 0) log.Print(" takes ",c);
-        else log.Print(" gains ",c);
-        if (victim == attacker) log.Print(amount + " ",c);
+        if (amount <= 0) log.Print(" takes ", c);
+        else log.Print(" gains ", c);
+        if (victim == attacker) log.Print(amount + " ", c);
         else log.Print(amount + " from " + attacker.archetype.name, c);
-        if (explanation.Length > 0) log.Print("[" + explanation + "]",c);
+        if (explanation.Length > 0) log.Print("[" + explanation + "]", c);
 
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
-        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount>0)
+        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount > 0)
             map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3);
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
