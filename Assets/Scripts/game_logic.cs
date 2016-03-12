@@ -95,10 +95,16 @@ public partial class Game : MonoBehaviour
                             }
                         } else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
                         {
-                            log.Printline("Let's play barrel fragment cleanup!", Color.gray);
+                            log.Printline(m.archetype.name+" plays cleanup!", Color.gray);
                             map.itemgrid[tentx, tenty] = null;
                             map.passable[tentx, tenty] = true;
 
+                        } else if (i.tile == Etilesprite.ITEM_WARP_BEADS)
+                        {
+                            log.Printline(m.archetype.name + " collects the Warp Beads!", Color.magenta);
+                            map.itemgrid[tentx, tenty] = null;
+                            map.passable[tentx, tenty] = true;
+                            m.hasbeads = true;
                         }
                     }
                 }
