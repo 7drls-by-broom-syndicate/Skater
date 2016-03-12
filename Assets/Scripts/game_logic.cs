@@ -65,6 +65,7 @@ public partial class Game : MonoBehaviour
             if(m.isplayer)log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
             map.passable[m.posx, m.posy] = false;
+            if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
         }
         else if (!m.skates_currently || (et != Etilesprite.MAP_ICE && et != Etilesprite.MAP_THIN_ICE))
         {
@@ -130,7 +131,8 @@ playercoastingbutnotaskater:
         log.Printline(victim.archetype.name, Color.gray);
         if (amount <= 0) log.Print(" takes ");
         else log.Print(" gains ");
-        log.Print(amount + " from " +attacker.archetype.name, c);
+        if (victim == attacker) log.Print(amount + " ");
+        else log.Print(amount + " from " +attacker.archetype.name, c);
         if (explanation.Length > 0) log.Print("[" + explanation + "]");
 
         //actually do the damage
