@@ -1,4 +1,9 @@
-mobs moving
+make tooltips work
+
+enemy adjacent to you turns to face you
+
+enemy should skate up to you, can hit you and end up drifting past
+
 
 
 

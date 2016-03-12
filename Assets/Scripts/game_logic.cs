@@ -127,7 +127,7 @@ playercoastingbutnotaskater:
         else c = (amount < 0) ? Color.red : Color.green;
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));        
-        log.Printline(victim.archetype.name, Color.black);
+        log.Printline(victim.archetype.name, Color.gray);
         if (amount <= 0) log.Print(" takes ");
         else log.Print(" gains ");
         log.Print(amount + " from " +attacker.archetype.name, c);

@@ -446,44 +446,36 @@ public partial class Game : MonoBehaviour
 
                 //tooltipz. the last thing to do!
                 //31,214 (*zoomfactor)
-                /*
+                
                 int fx = (int)Input.mousePosition.x; int fy = (int)((360 * zoomfactor) - 1 - Input.mousePosition.y);
 
-                int mausx = ((fx / zoomfactor) - 31) / 16;//((fx) / zoomfactorx16);//-31;
-                int mausy = ((fy / zoomfactor) - 214) / 16;//((fy) / zoomfactorx16);//-214;
+                int mausx = ((fx / zoomfactor) - 0) / 16;//((fx) / zoomfactorx16);//-31;
+                int mausy = ((fy / zoomfactor) - 0) / 16;//((fy) / zoomfactorx16);//-214;
 
-
-
-                if (mausx >= 0 && mausy >= 0 && mausx < VIEWPORT_WIDTH && mausy < VIEWPORT_HEIGHT)
-                {
+                int mapx = mausx + originx;
+                int mapy = mausy + originy;
+                
+                if (mausx >= 0 && mausy >= 0 && mausx < VIEWPORT_WIDTH && mausy < VIEWPORT_HEIGHT && map.in_FOV[mapx,mapy])
+                {//general idea is setting s to be the string to display for tooltip
                     string s = "";
-                    bool itsamob = false;
-                    mob m = map.mobgrid[mausx, mausy];
-                    if (m != null)
-                    {
-                        itsamob = true;
-                        s = mob.mobname[(int)m.type] + " HP: " + m.hp;
-                    }
-                    else {
-                        int et = (int)map.displaychar[mausx, mausy];
-                        if (et >= 31 && et <= 43) s = powerupdesc[et - 31];
-                    }
+
+                    s = Tilestuff.tilestring[(int)map.displaychar[mapx, mapy]+1];
                     if (s != "")
                     {
                         //string s = mob.mobname[(int)m.type]+" HP: "+m.hp;
                         byte[] bstr = System.Text.Encoding.ASCII.GetBytes(s);
 
-                        int waffle = ((bstr.Length * 6) - 16) / 2;
+                        int waffle = -16-8;// ((bstr.Length * 6) - 16) / 2;
 
                         for (int x = 0; x < bstr.Length; x++)
                         {
-                            int y = (214 + (16 * mausy)) - 12 - 12;
+                            int y = (0 + (16 * mausy))+2;//- 12 - 12;
                             byte c = bstr[x];
                             int xpos = c % 32;
                             int ypos = 7 - (c / 32);
                             //   r.x =  ((31+(mausx*16) + (x * 6))-waffle) * zoomfactor;
 
-                            r.x = ((31 + (mausx * 16)) - waffle);
+                            r.x = ((0 + (mausx * 16)) - waffle);
                             if (r.x < 0) r.x = 0;
                             r.x = (r.x + (x * 6)) * zoomfactor;
 
@@ -496,19 +488,19 @@ public partial class Game : MonoBehaviour
                             GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2, false);
                             GUI.color = Color.white;
                             GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2, true);
-                            if (itsamob)
-                            {
-                                rango.y = (216 + (5 * m.entryontimegrid)) * zoomfactor;
+                          //  if (itsamob)
+                           // {
+                            //    rango.y = (216 + (5 * m.entryontimegrid)) * zoomfactor;
 
                                 //  rango.y = (216 + (5 * (3))) * zoomfactor;
 
-                                GUI.color = highlight;
-                                GUI.DrawTextureWithTexCoords(rango, particle, Roner);
-                            }
+                              //  GUI.color = highlight;
+                              //  GUI.DrawTextureWithTexCoords(rango, particle, Roner);
+                           // }
 
                         }
                     }
-                    effect e = map.effects[mausx, mausy];
+                   /* effect e = map.effects[mausx, mausy];
                     if (e != null)
                     {
                         string ss = effect.effectdesc[(int)e.type];
@@ -547,10 +539,11 @@ public partial class Game : MonoBehaviour
                             GUI.color = highlight;
                             GUI.DrawTextureWithTexCoords(rango, particle, Roner);
                         }
-                    }
+                    }*/
 
                 }
-                */
+                //end tooltips
+
                 if (gamestate == Egamestate.gameover)
                 {
                     GUI.color = whiteblend;
@@ -635,6 +628,15 @@ public partial class Game : MonoBehaviour
     }
     void NextLevel()
     {
+        //reset command like things 
+        nextfire = 0.0f;
+        firerate = 0.2f;
+        initialdelay = 0.5f;
+        currentcommand = -1;
+        keydown = false;
+        firstpress = false;
+        mauswalking = false;
+        //
 
         map = new RLMap(player, DungeonGenType.Skater2016);
         r_minimap = new Rect(336 * zoomfactor, 0, map.width * 2 * zoomfactor, map.height * 2 * zoomfactor);//was 339
