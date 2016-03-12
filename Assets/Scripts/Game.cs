@@ -700,6 +700,14 @@ public partial class Game : MonoBehaviour
         gamestate = Egamestate.playing;
         TimeEngine = CradleOfTime.ready_to_process_turn;
 
+        for (int y = 0; y <map.height; y++)
+        {
+            for (int x = 0; x <map.width; x++)
+            {
+                map.gridflashcolour[x,y] = new Color(lil.randf(0f, 1f), lil.randf(0f, 1f), lil.randf(0f, 1f),0.2f);
+                map.gridflashtime[x, y] = Time.time + lil.randf(0f, 1f);
+            }
+        }
 
 
     }

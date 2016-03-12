@@ -56,7 +56,7 @@ public class Player {
     //called when a new level has been generated and we want to put the player on it
     public void emerge(int x, int y) {//x and y are a free spot for player to appear on.
         posx = x; posy = y;
-        dunlevel++;
+        dunlevel++;       
     }
 
     /*void damage(int amount, bool willshieldhelp, string reason){
