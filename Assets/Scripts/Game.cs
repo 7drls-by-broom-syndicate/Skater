@@ -361,7 +361,7 @@ public partial class Game : MonoBehaviour
                                     else
                                         DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
 
-                                    DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_DIRECTION_INDICATOR_1 + map.itemgrid[xx, yy].mob.facing);
+                                   if(!map.itemgrid[xx,yy].mob.dead_currently) DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_DIRECTION_INDICATOR_1 + map.itemgrid[xx, yy].mob.facing);
                                 }
                                 else DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
                             }
@@ -480,7 +480,7 @@ public partial class Game : MonoBehaviour
                     if (i != null)
                     {
                         s = Tilestuff.tilestring[(int)i.tile + 2];
-                        if (i.ismob)
+                        if (i.ismob && !i.mob.dead_currently)
                         {
                             s += " HP: " + i.mob.hp + "/" + i.mob.archetype.hp;
                             if (i.mob.flies_currently) s += " (flying)";
