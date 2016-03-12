@@ -20,7 +20,11 @@ public partial class Game : MonoBehaviour
         int tentx = m.posx + deltax;
         int tenty = m.posy + deltay;
 
-        if (tentx < 0 || tentx >= map.width || tenty < 0 || tenty >= map.height) return false;
+        if (tentx < 0 || tentx >= map.width || tenty < 0 || tenty >= map.height)
+        {
+            Speed.change(m, -200);
+            return false;
+        }
 
         /*
          mob m=map.mobgrid[tentx,tenty];
