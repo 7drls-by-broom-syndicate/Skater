@@ -327,10 +327,16 @@ public partial class Game : MonoBehaviour
                             GUI.color = lil.colouradd(map.staticlight[xx, yy], map.dynamiclight[xx, yy]);
 #endif
 
-                            if (map.displaychar.AtGet(xx, yy) == Etilesprite.ITEM_WARP_GATE_ANIM_1)
+                            if (map.displaychar[xx, yy] == Etilesprite.ITEM_WARP_GATE_ANIM_1)
                             {
                                 int i = (int)(Time.time * 3.0f) % 3;
                                 DrawSprite(screenx, screeny, (int)Etilesprite.ITEM_WARP_GATE_ANIM_1 + i);
+
+                                if (player.mob.hasbeads)
+                                {
+                                    int ii = (int)(Time.time * 3.0f) % 2;
+                                    DrawSprite(screenx, screeny, (int)Etilesprite.ITEM_WARP_GATE_RAYS_1 + ii);
+                                }
                             }
                             else {
                                 DrawSprite(screenx, screeny, (int)map.displaychar.AtGet(xx, yy));
@@ -451,7 +457,9 @@ public partial class Game : MonoBehaviour
                 PrintNumber(3*6, 359 - 12, player.hp);
                 PrintNumber(14 * 6, 359 - 12, player.mob.speed);
                 PrintNumber(25 * 6, 359 - 12, player.dunlevel);
-
+                //DO YOU GOT THE BEEDZ, PANGO? THE BEEEEEDS! THE BEEEEEEEDS!
+                if (player.mob.hasbeads) { DrawSprite(15, 21, (int)Etilesprite.ITEM_WARP_BEADS); }
+            
                 //tooltipz. the last thing to do!
                 //31,214 (*zoomfactor)
                 
