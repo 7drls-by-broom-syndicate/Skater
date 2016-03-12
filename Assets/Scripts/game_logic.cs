@@ -108,6 +108,11 @@ public partial class Game : MonoBehaviour
             if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
             map.passable[m.posx, m.posy] = false;
+            if (map.bloodgrid[m.posx, m.posy] != null)
+            {
+                log.Printline("The blood disperses", new Color(0.5f, 0, 0));
+                map.bloodgrid[m.posx, m.posy] = null;
+            }
             //if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
         }
 
