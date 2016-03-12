@@ -81,7 +81,7 @@ public class mob {
 
     public int facing;
     public int speed;
-
+    public bool hasbeads = false;//sort this out better later but for now...
 	public mob(Emobtype typ)
     {
         

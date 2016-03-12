@@ -80,6 +80,26 @@ public partial class Game : MonoBehaviour
                      //take damage
                         FloatingDamage(m, m,-( m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
                         m.speed = 0;
+                        if (i.tile == Etilesprite.ITEM_BARREL)
+                        {
+                            if (map.extradata[tentx, tenty] != null)
+                            {
+                                log.Printline("Inside the barrel was a something!", Color.blue);
+                                i.tile = Etilesprite.ITEM_WARP_BEADS;
+                                map.extradata[tentx, tenty] = null;
+                            } else
+                            {
+                                log.Printline("Take that, you barrel bastard!", Color.gray);
+                                i.tile = Etilesprite.ITEM_BARREL_BROKEN;
+                                map.extradata[tentx, tenty] = null;                                
+                            }
+                        } else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
+                        {
+                            log.Printline("Let's play barrel fragment cleanup!", Color.gray);
+                            map.itemgrid[tentx, tenty] = null;
+                            map.passable[tentx, tenty] = true;
+
+                        }
                     }
                 }
                 else
