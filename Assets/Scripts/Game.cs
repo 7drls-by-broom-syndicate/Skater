@@ -459,7 +459,20 @@ public partial class Game : MonoBehaviour
                 {//general idea is setting s to be the string to display for tooltip
                     string s = "";
 
-                    s = Tilestuff.tilestring[(int)map.displaychar[mapx, mapy]+1];
+                    item_instance i = map.itemgrid[mapx, mapy];
+                    if (i != null)
+                    {
+                        s = Tilestuff.tilestring[(int)i.tile + 2];
+                        if (i.ismob)
+                        {
+                            s += " HP: " + i.mob.hp + "/" + i.mob.archetype.hp;
+                            if (i.mob.flies_currently) s += " (flying)";
+                            if (i.mob.skates_currently) s += " (skating)";
+                            s += "SPEED:" + i.mob.speed;
+                        }
+                        
+                    }
+                    else s = Tilestuff.tilestring[(int)map.displaychar[mapx, mapy] + 2];
                     if (s != "")
                     {
                         //string s = mob.mobname[(int)m.type]+" HP: "+m.hp;
