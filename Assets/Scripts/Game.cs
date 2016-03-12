@@ -52,7 +52,7 @@ public partial class Game : MonoBehaviour
 {
 
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
-    byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:     SPEED:     LEVEL:");
+    byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:     SPEED:     LEVEL:     SCORE:");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
     Color whiteblendvariable = new Color(0.9f, 0.1f, 0.1f, 0f);
     Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
@@ -457,6 +457,7 @@ public partial class Game : MonoBehaviour
                 PrintNumber(3*6, 359 - 12, player.hp);
                 PrintNumber(14 * 6, 359 - 12, player.mob.speed);
                 PrintNumber(25 * 6, 359 - 12, player.dunlevel);
+                PrintNumber(37 * 6, 359 - 12, player.score);
                 //DO YOU GOT THE BEEDZ, PANGO? THE BEEEEEDS! THE BEEEEEEEDS!
                 if (player.mob.hasbeads) { DrawSprite(15, 21, (int)Etilesprite.ITEM_WARP_BEADS); }
             

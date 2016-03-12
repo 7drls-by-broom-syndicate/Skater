@@ -202,6 +202,7 @@ public partial class Game : MonoBehaviour
             if (f.dead_currently==false && f.hp <= 0)
             {
                 log.Printline("The " + f.archetype.name + " dies.", new Color(0.6f, 0, 0));
+                player.score++;
                 f.speed = 0;
                 f.dead_currently = true;
                 f.tile = f.archetype.tile_dead;
