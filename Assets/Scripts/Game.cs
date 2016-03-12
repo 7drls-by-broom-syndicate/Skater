@@ -335,11 +335,14 @@ public partial class Game : MonoBehaviour
                             else {
                                 DrawSprite(screenx, screeny, (int)map.displaychar.AtGet(xx, yy));
                             }
+                            //blood layer
+                            if (map.bloodgrid[xx, yy] != null)
+                            {
+                                DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_BLOOD_1+(int) map.bloodgrid[xx, yy]);
+                            }
                             //item layer
                             if (map.itemgrid[xx, yy] != null)
                             {
-
-
                                 if (map.itemgrid[xx, yy].ismob)
                                 {
                                     if (map.itemgrid[xx, yy].mob.reversesprite)
@@ -468,11 +471,15 @@ public partial class Game : MonoBehaviour
                             s += " HP: " + i.mob.hp + "/" + i.mob.archetype.hp;
                             if (i.mob.flies_currently) s += " (flying)";
                             if (i.mob.skates_currently) s += " (skating)";
-                            s += "SPEED:" + i.mob.speed;
+                            s += " SPEED:" + i.mob.speed;
                         }
                         
                     }
                     else s = Tilestuff.tilestring[(int)map.displaychar[mapx, mapy] + 2];
+
+                    //debug:
+                    s += (map.passable[mapx, mapy]) ? " PASS" : " NOPASS";
+
                     if (s != "")
                     {
                         //string s = mob.mobname[(int)m.type]+" HP: "+m.hp;

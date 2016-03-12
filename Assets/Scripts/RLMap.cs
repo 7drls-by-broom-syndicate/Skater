@@ -21,7 +21,7 @@ public partial class RLMap  {
 
     public Texture2D minimap;
 
-
+    public Array2D<int?> bloodgrid;
     public Array2D<Cell> extradata;
     public int width, height;                               //width and height of the map
     public Array2D<Etilesprite> displaychar;                                    //ascii char for each cell
@@ -173,6 +173,7 @@ public partial class RLMap  {
         moblist = new List<mob>();
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
+        bloodgrid = new Array2D<int?>(width, height, null);
         blocks_sight=new Array2D<bool>(width,height,false);
         distance=new Array2D<int>(width,height);
 		in_FOV=new Array2D<bool>(width,height,false);

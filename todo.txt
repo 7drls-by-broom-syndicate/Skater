@@ -1,13 +1,18 @@
-make tooltips work
-
 enemy adjacent to you turns to face you
 
 enemy should skate up to you, can hit you and end up drifting past
 
+why do some enemies face north and never move until you get closer?
+i suspect a nonpassable invisible
 
+bug: you can speed up by revving into solid objects.
 
+do crashing into obstacles gives damage
 
-idea for another potion: coldproof for crossing water
+although water is not passable for skaters, they should fall into it
+if coasting
+
+do attackgrid thing
 
 shortcut feature: moving into warp gates leaves level
 
@@ -15,11 +20,12 @@ we do need to fix that hillock thing- spawned in one, couldn't move
 
 make it so it's easier to turn on ice when stopped but not snow
 
+being in water loses you hp- unless you are polarmoop
+
 why exactly does click move stop?
 
-bug: you can speed up by revving into solid objects.
 
-being in water loses you hp- unless you are polarmoop
+
 
 before starting the game, see if any mobs too close to player and if
 so walk them away from the player like flee style
@@ -28,9 +34,15 @@ do cairns
 
 do breaking barrels. can actually do when moving
 
-do attackgrid thing
 
-do crashing into obstacles gives damage
+
+
+
+
+
+
+
+
 
 add concept of buffs and debuffs. 
 	freezing
@@ -42,7 +54,7 @@ add concept of buffs and debuffs.
 	
 change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class.
 
-
+idea for another potion: coldproof for crossing water
 to use something, open crate etc. you need to stop first, (alternative
 is to stop the player then use it, which uses one fewer turn)
 maybe bumping an obstacle makes your speed go to zero and you take 
@@ -81,10 +93,9 @@ stop player turning lantern on and off it's always on
 
 make walls item not map feature so you can blow em up
 
-movement: if you press any direction you go in that direction except for straight back, which just stops you. you need this so you can stop in front of cairns, barrels etc.
 
-pathfinding crash. check a* code in both 
-also warning/error on clicking somewhere unreachable
+
+
 
 another idea: item: fishing kit: get fish from water. hp back
 or even eat fish - low hp regain, be standing on blood when
