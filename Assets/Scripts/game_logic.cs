@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class Game : MonoBehaviour
 {
@@ -237,13 +238,19 @@ public partial class Game : MonoBehaviour
         else c = (amount < 0) ? Color.red : Color.green;
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
-        log.Printline(victim.archetype.name, c);
-        if (amount <= 0) log.Print(" takes ", c);
-        else log.Print(" gains ", c);
-        if (victim == attacker) log.Print(amount + " ", c);
-        else log.Print(amount + " from " + attacker.archetype.name, c);
-        if (explanation.Length > 0) log.Print("[" + explanation + "]", c);
 
+        if (attacker == player.mob && victim != player.mob)
+        {
+            log.Printline(attacker.archetype.name + " deals " + (-amount) + " to " + victim.archetype.name + " [" + explanation + "]", Color.green);
+        }
+        else {
+            log.Printline(victim.archetype.name, c);
+            if (amount <= 0) log.Print(" takes ", c);
+            else log.Print(" gains ", c);
+            if (victim == attacker) log.Print(amount + " ", c);
+            else log.Print(amount + " from " + attacker.archetype.name, c);
+            if (explanation.Length > 0) log.Print("[" + explanation + "]", c);
+        }
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
@@ -253,7 +260,17 @@ public partial class Game : MonoBehaviour
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
 
     }
-
+    void BresLineColour(int startx, int starty, int endx, int endy, bool includestart, bool includeend, Color c)
+    {
+        List<Cell> celllist = map.BresLine(startx, starty, endx, endy);
+        for (int i = 0; i < celllist.Count; i++)
+        {
+            if (!includestart && startx == celllist[i].x && starty == celllist[i].y) continue;
+            if (!includeend && endx == celllist[i].x && endy == celllist[i].y) continue;
+            map.gridflashcolour[celllist[i].x, celllist[i].y] = c;
+            map.gridflashtime[celllist[i].x, celllist[i].y] = Time.time + 0.5f;
+        }
+    }
     void MobAttacksMob(mob attacker, mob target)
 
     {

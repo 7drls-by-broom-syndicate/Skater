@@ -81,7 +81,7 @@ public partial class RLMap  {
     }
 
 
-    List<Cell> BresLine(int x0, int y0, int x1, int y1){
+    public List<Cell> BresLine(int x0, int y0, int x1, int y1){
 
 		int dx = Math.Abs(x1 - x0);
 		int dy = Math.Abs(y1 - y0);
