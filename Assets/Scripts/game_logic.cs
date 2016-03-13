@@ -400,6 +400,8 @@ public partial class Game : MonoBehaviour
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
 
+        if (attacker.tile == Etilesprite.ENEMY_GIANTBAT && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");
+
         if (attacker == player.mob && victim != player.mob)
         {
             log.Printline(attacker.archetype.name + " deals " + (-amount) + " to " + victim.archetype.name + " [" + explanation + "]", Color.green);
