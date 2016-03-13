@@ -215,8 +215,8 @@ public partial class Game : MonoBehaviour
         }
         if (player.hp <= 0)
         {
-            log.Printline("This life no longer grips you.", Color.red);
-            log.Printline("Now you can into Sky Burrow.");
+            log.Printline("This life no longer grips you.", Color.magenta);
+            log.Printline("Now you can into Sky Burrow.",Color.magenta);
 
             TimeEngine = CradleOfTime.dormant;
             gamestate = Egamestate.gameover;

@@ -78,7 +78,8 @@ public partial class Game : MonoBehaviour
     public Texture titlescreen;
     public Texture2D particle;
     AudioSource MyAudioSource;
-    public AudioClip backmusic;
+    public AudioClip backmusic,titlemusic;
+
 
     float[] StoredNoise = new float[640];
     float[] StoredNoise2 = new float[640];
@@ -666,7 +667,7 @@ public partial class Game : MonoBehaviour
     {
         //music 
         MyAudioSource = GetComponent<AudioSource>();
-        MyAudioSource.clip = backmusic;
+        
 
         //experimental snow
         for (int i = 0; i < number_snow_particles; i++)
@@ -694,12 +695,18 @@ public partial class Game : MonoBehaviour
         particle.Apply();
 
         gamestate = Egamestate.titlescreen;
+        MyAudioSource.clip = titlemusic;
+        MyAudioSource.loop = true;
+        MyAudioSource.Play();
     }
 
     void StartAGame()
     {
+        //MyAudioSource.Stop();
+        MyAudioSource.clip =backmusic;
         MyAudioSource.loop = true;
         MyAudioSource.Play();
+
         log = new MessageLog(50, 15);
         log.Printline("Skater by The Broom Institute: 7DRL 2016");
         lil.seednow();
@@ -839,6 +846,9 @@ public partial class Game : MonoBehaviour
                     if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("start"))
                     {
                         gamestate = Egamestate.titlescreen;
+                        MyAudioSource.clip = titlemusic;
+                        MyAudioSource.loop = true;
+                        MyAudioSource.Play();
                         return;
                     }
                 }
