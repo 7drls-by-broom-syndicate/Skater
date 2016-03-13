@@ -107,13 +107,15 @@ public partial class Game : MonoBehaviour
             if(which<50 || (m.hasattackup && !m.hasdefenseup))
             {
                 log.Print(m.archetype.name+" gains the buff: defense up!", Color.blue);
-                if (m.hasdefenseup) log.Print("Which " + m.archetype.name + " already had, oh well.");
+                //if (m.hasdefenseup) log.Print("Which " + m.archetype.name + " already had, oh well.");
                 m.hasdefenseup = true;
+                m.defenseuptimer += 15;
             } else
             {
                 log.Print(m.archetype.name+" gains the buff: attack up!", Color.blue);
-                if (m.hasattackup) log.Print("Which " + m.archetype.name + " already had, oh well.");
+                //if (m.hasattackup) log.Print("Which " + m.archetype.name + " already had, oh well.");
                 m.hasattackup = true;
+                m.attackuptimer += 15;
             }           
             i.tile = Etilesprite.ITEM_CAIRN_USED_BLUE;
             map.dostaticlights();
@@ -161,7 +163,28 @@ public partial class Game : MonoBehaviour
         }
     }
     bool trytomove(mob m, int rotdir, bool coasting = false)
-    { if (coasting) rotdir = m.facing;
+    {
+        if (m.defenseuptimer > 0)
+        {
+            m.defenseuptimer--;
+            if (m.defenseuptimer == 0)
+            {
+                m.hasdefenseup = false;
+                log.Printline("Cairn defense is off.", Color.green);
+            }
+        }
+        if (m.attackuptimer > 0)
+        {
+            m.attackuptimer--;
+            if (m.attackuptimer == 0)
+            {
+                m.hasattackup = false;
+                log.Printline("Cairn offense is off.", Color.green);
+            }
+        }
+
+
+        if (coasting) rotdir = m.facing;
         int deltax = lil.rot_deltax[rotdir];
         int deltay = lil.rot_deltay[rotdir];
         int tentx = m.posx + deltax;
@@ -351,6 +374,24 @@ public partial class Game : MonoBehaviour
     void FloatingDamage(mob victim, mob attacker, int amount, string explanation = "", bool flashsupress = false)
     {
         Color c;
+        //deal with super buffs
+        if (victim != attacker)
+        {
+            if (attacker.hasattackup)
+            {
+                amount -= 100;
+                log.Printline("Aided by cairn power " + attacker.archetype.name + " strikes true!", Color.magenta);
+            }
+            if (victim.hasdefenseup)
+            {
+                if (amount < 0)
+                {
+                    amount = 0;
+                    log.Printline("The cairn power protects " + victim.archetype.name + "!", Color.magenta);
+                }
+            }
+
+        }
 
         if (amount == 0) c = Color.grey;
         else c = (amount < 0) ? Color.red : Color.green;

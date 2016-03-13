@@ -86,7 +86,8 @@ public class mob {
     public bool hasbeads = false;//sort this out better later but for now...
     public bool hasattackup = false;
     public bool hasdefenseup = false;
-
+    public int attackuptimer = 0;
+    public int defenseuptimer = 0;
 	public mob(Emobtype typ)
     {
         

@@ -473,8 +473,16 @@ public partial class Game : MonoBehaviour
                 //DO YOU GOT THE BEEDZ, PANGO? THE BEEEEEDS! THE BEEEEEEEDS!
                 if (player.mob.hasbeads) { DrawSprite(15, 21, (int)Etilesprite.ITEM_WARP_BEADS); }
                 //draw other buffs if applicz
-                if(player.mob.hasattackup) { DrawSprite(16, 21, (int)Etilesprite.ICON_ATTACK_UP); }
-                if (player.mob.hasdefenseup) { DrawSprite(17, 21, (int)Etilesprite.ICON_DEFENSE_UP); }
+                if(player.mob.hasattackup) {
+                    DrawSprite(16, 21, (int)Etilesprite.ICON_ATTACK_UP);
+                    GUI.color = Color.yellow;
+                    PrintNumber(16 * 16, 14+(21 * 16), player.mob.attackuptimer);
+                }
+                if (player.mob.hasdefenseup) {
+                    DrawSprite(17, 21, (int)Etilesprite.ICON_DEFENSE_UP);
+                    GUI.color = Color.yellow;
+                    PrintNumber(17 * 16, 14+(21 * 16), player.mob.defenseuptimer);
+                }
                 //later: def down and attack down too
 
                 //experimental snow
