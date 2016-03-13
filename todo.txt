@@ -1,5 +1,3 @@
-check for enemy death
-
 you attack mobs
 
 enemy should skate up to you, can hit you and end up drifting past
@@ -11,7 +9,9 @@ moopwater is not being set to nopass
 
 enemy adjacent to you turns to face you
 
+maybe snow
 
+game over screen for win
 
 you can walk in water
 
@@ -28,8 +28,6 @@ deal with offscreen damage messages being ridiculously off edge
 
 
 do attackgrid thing
-
-shortcut feature: moving into warp gates leaves level
 
 we do need to fix that hillock thing- spawned in one, couldn't move
 

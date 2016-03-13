@@ -51,6 +51,12 @@ public enum CradleOfTime { dormant, ready_to_process_turn, waiting_for_player, p
 public partial class Game : MonoBehaviour
 {
 
+
+    //experimental snow
+    const int number_snow_particles = 200;
+    float[] snowx = new float[number_snow_particles];
+    float[] snowy = new float[number_snow_particles];
+    //
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
     byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:     SPEED:     LEVEL:     SCORE:");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
@@ -73,6 +79,7 @@ public partial class Game : MonoBehaviour
     public Texture2D particle;
 
     float[] StoredNoise = new float[640];
+    float[] StoredNoise2 = new float[640];
     List<FloatingTextItem> FloatingTextItems = new List<FloatingTextItem>();
 
     const int zoomfactor = 2;           //1,2 or 3 for 640x360,1280x720 or 1920x1080
@@ -114,6 +121,7 @@ public partial class Game : MonoBehaviour
     Player player;
 
     Pangotimer floating_text_timer = new Pangotimer(0.008f);
+    Pangotimer snow_timer = new Pangotimer(0.005f);
 
     static Rect wholescreen = new Rect(0, 0, 640 * zoomfactor, 360 * zoomfactor);
 
@@ -225,6 +233,7 @@ public partial class Game : MonoBehaviour
                     float gg = Time.time;
                     //Rectparticle.x = f; 
                     StoredNoise[curnoi] = SimplexNoise.Noise.Generate(ff * 128, gg);
+                    StoredNoise2[curnoi] = (StoredNoise[curnoi] / 2f) + 1f;
                     //Rectparticle.y = (int)(180+ ((4) * StoredNoise[curnoi]))*zoomfactor;
                     curnoi++;
                     //GUI.DrawTextureWithTexCoords(Rectparticle, particle, Rectparticle2);
@@ -259,7 +268,7 @@ public partial class Game : MonoBehaviour
                     r3c.x = x * zoomfactor;
                     r3c.y = y * zoomfactor;
 
-                    r5.x = spriteratio * 44;           //s
+                    r5.x = spriteratio * ((int)Etilesprite.EFFECT_FULLSQUARE-1);           //s
                     r5.y = (1f / 16f) * 10f;
                     r5.width = spriteratio3;
                     r5.height = (1f / 16f) * 3f;//0.5f;
@@ -419,7 +428,7 @@ public partial class Game : MonoBehaviour
                         screenx++;
                     }
                     screeny++; screenx = 0;
-                }
+                }//end of screen loop
 
               
 
@@ -460,10 +469,34 @@ public partial class Game : MonoBehaviour
                 PrintNumber(37 * 6, 359 - 12, player.score);
                 //DO YOU GOT THE BEEDZ, PANGO? THE BEEEEEDS! THE BEEEEEEEDS!
                 if (player.mob.hasbeads) { DrawSprite(15, 21, (int)Etilesprite.ITEM_WARP_BEADS); }
-            
+
+                //experimental snow
+                GUI.color = new Color(255, 255, 255, 0.5f);
+                for (int f = 0; f < number_snow_particles; f++)
+                {
+                    //       float tx = (StoredNoise[(screenx * 16) + f] + 1.0f) * 4.5f;
+                    //       float ty = (StoredNoise[(screeny * 16) + f + 8] + 1.0f) * 4.5f;
+                    //
+                   // int sxf = (int)snowx[f];
+                   // int syf = (int)snowy[f];
+                   // if (sxf < 0) sxf = 0;if (syf < 0) syf = 0;
+                   // if (sxf > 639) sxf = 639;if (syf > 479) syf = 479;
+                   // snowx[f] += StoredNoise[sxf];
+                   // snowy[f] += (StoredNoise[syf]+1)*2f;
+                   // if (snowy[f] > 479) { snowy[f] = 0;snowx[f]= lil.randf(0, 21*16); }
+                    DrawSprite3x3((int)snowx[f], (int)snowy[f]);
+
+                        //_Particle((screenx * 16 * zoomfactor) + zoomfactor * (int)tx, (screeny * 16 * zoomfactor) + zoomfactor * (int)ty, 13);
+                    }               
+                //end snow 
+
+
+
+
+
                 //tooltipz. the last thing to do!
                 //31,214 (*zoomfactor)
-                
+
                 int fx = (int)Input.mousePosition.x; int fy = (int)((360 * zoomfactor) - 1 - Input.mousePosition.y);
 
                 int mausx = ((fx / zoomfactor) - 0) / 16;//((fx) / zoomfactorx16);//-31;
@@ -629,7 +662,13 @@ public partial class Game : MonoBehaviour
 
     void Start()
     {
-
+        //experimental snow
+        for (int i = 0; i < number_snow_particles; i++)
+        {
+            snowx[i] = lil.randi(0,21*16);
+            snowy[i] = lil.randi(0,479);
+        }
+        //
         bstrPressStart = System.Text.Encoding.ASCII.GetBytes("Press " + "start" + " or Klik Left Maus");
         pressstartx = (640 - (bstrPressStart.Length * 6)) / 2;
         bool wtf = PlayerPrefs.GetInt("Screenmanager Is Fullscreen mode") == 1 ? true : false;
@@ -763,6 +802,23 @@ public partial class Game : MonoBehaviour
                     }
 
                     floating_text_timer.reset();
+                }
+                //do snow
+                if (snow_timer.test()) { 
+                    for (int f = 0; f < number_snow_particles; f++)
+                    {
+                        //       float tx = (StoredNoise[(screenx * 16) + f] + 1.0f) * 4.5f;
+                        //       float ty = (StoredNoise[(screeny * 16) + f + 8] + 1.0f) * 4.5f;
+                        //
+                        int sxf = (int)snowx[f];
+                        int syf = (int)snowy[f];
+                        if (sxf < 0) sxf = 0; if (syf < 0) syf = 0;
+                        if (sxf > 639) sxf = 639; if (syf > 479) syf = 479;
+                        snowx[f] += StoredNoise[sxf] * 2;
+                        snowy[f] += (StoredNoise2[syf] + StoredNoise2[sxf]) * 1f;// + lil.randf(0, 1) ;
+                        if (snowy[f] > 479) { snowy[f] = 0; snowx[f] = lil.randf(0, 21*16); }
+                    }
+                    snow_timer.reset();
                 }
                 //NEXT LETS PROCESS LE TURN
                 if (TimeEngine == CradleOfTime.ready_to_process_turn ||
