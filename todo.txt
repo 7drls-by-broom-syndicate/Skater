@@ -9,8 +9,6 @@ moopwater is not being set to nopass
 
 enemy adjacent to you turns to face you
 
-maybe snow
-
 game over screen for win
 
 you can walk in water

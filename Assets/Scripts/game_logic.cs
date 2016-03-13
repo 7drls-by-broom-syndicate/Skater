@@ -73,6 +73,9 @@ public partial class Game : MonoBehaviour
                 {
                     if (i.ismob)//mob crashes into mob! this could need changing
                     {
+                        //bumping into something attacks it. 
+                        //might need to make this player only or mobs could attack twice?
+                        MobAttacksMob(m, i.mob);
                         m.speed = 0;
                     }
                     else
@@ -212,7 +215,8 @@ public partial class Game : MonoBehaviour
         }
         if (player.hp <= 0)
         {
-            log.Printline("<snarky game over message>", Color.red);
+            log.Printline("This life no longer grips you.", Color.red);
+            log.Printline("Now you can into Sky Burrow.");
 
             TimeEngine = CradleOfTime.dormant;
             gamestate = Egamestate.gameover;
@@ -256,6 +260,7 @@ public partial class Game : MonoBehaviour
         if (damage < 1) damage = 1;
         FloatingDamage(target, attacker, -damage, attacker.archetype.weaponname);
     }
+
     void MobGetsToAct(mob e)
     {
         if (!e.noticedyou || e.dead_currently) return; //METAL MOOP SOLID
