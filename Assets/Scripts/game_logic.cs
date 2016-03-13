@@ -286,7 +286,7 @@ public partial class Game : MonoBehaviour
 
         //if on thin ice and no speed, or if moop, and not flying fall through
         Etilesprite et = map.displaychar[m.posx, m.posy];
-        if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy) && !m.flies_currently))
+        if (et == Etilesprite.MAP_THIN_ICE && !m.flies_currently && (m.speed == 0 || m.archetype.heavy))  
         {
             if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
