@@ -28,6 +28,29 @@ public partial class Game : MonoBehaviour
 
         }
     }
+    bool IsEmpty(int x, int y)
+    {
+        if (x < 0 || x >= map.width || y < 0 || y >= map.height) return false;//off map
+        if (!map.passable[x, y]) return false;//this ignores the fact moops or fliers could be fine on water
+        if (map.itemgrid[x, y] != null) return false;//a mob is on the square
+        if (x == player.posx && y == player.posy) return false;//player is on square
+        return true;
+    }
+    Cell Random9way(int x, int y)
+    {
+        List<Cell> bob = new List<Cell>();
+        if (IsEmpty(x - 1, y)) bob.Add(new Cell(x - 1, y));
+        if (IsEmpty(x + 1, y)) bob.Add(new Cell(x + 1, y));
+        if (IsEmpty(x, y - 1)) bob.Add(new Cell(x, y - 1));
+        if (IsEmpty(x, y + 1)) bob.Add(new Cell(x, y + 1));
+
+        if (IsEmpty(x - 1, y - 1)) bob.Add(new Cell(x - 1, y - 1));
+        if (IsEmpty(x + 1, y + 1)) bob.Add(new Cell(x + 1, y + 1));
+        if (IsEmpty(x + 1, y - 1)) bob.Add(new Cell(x + 1, y - 1));
+        if (IsEmpty(x - 1, y + 1)) bob.Add(new Cell(x - 1, y + 1));
+        if (bob.Count == 0) return null;
+        else return bob.randmember();
+    }
     bool checkforitemactivation(mob m,int tentx,int tenty)
     {
         item_instance i = map.itemgrid[tentx, tenty];
@@ -64,14 +87,39 @@ public partial class Game : MonoBehaviour
             m.hasbeads = true;
             return true;
         }
-        else if (i.tile == Etilesprite.ITEM_CAIRN_GREEN || i.tile == Etilesprite.ITEM_CAIRN_RED || i.tile == Etilesprite.ITEM_CAIRN_BLUE || i.tile == Etilesprite.ITEM_CAIRN_PURPLE)//DEBUGGING
+        else if (i.tile == Etilesprite.ITEM_CAIRN_RED)
         {
             log.Printline("The ", Color.gray);
             log.Print("red cairn ", Color.red);
-            log.Print("has healing properties!");
+            log.Print("repairs your body!");
             FloatingDamage(m, m, +5 + lil.randi(0, 10), "magic");
             i.tile = Etilesprite.ITEM_CAIRN_USED_RED;
             map.dostaticlights();
+            return true;
+        }
+        else if (i.tile == Etilesprite.ITEM_CAIRN_PURPLE)
+        {
+            log.Printline("The ", Color.gray);
+            log.Print("purple cairn ", Color.magenta);
+            log.Print("twists space around you!");
+            int otherx = map.extradata[tentx, tenty].x;
+            int othery = map.extradata[tentx, tenty].y;
+            Cell c = Random9way(otherx, othery);
+            if (c == null)
+            {
+                log.Printline("The cairn should transport you", Color.blue);
+                log.Printline("but it is having problems!", Color.blue);
+            } else
+            {
+                //if a mob uses this it's going to be messed up because need to change map.itemgrids
+                m.posx = c.x;m.posy = c.y;
+            }
+            item_instance i2 = map.itemgrid[otherx, othery];
+            if (i2 == null) log.Printline("ERROR at receiving cairn.");
+            i.tile = Etilesprite.ITEM_CAIRN_USED_PURPLE;
+            i2.tile = Etilesprite.ITEM_CAIRN_USED_PURPLE;        
+            map.dostaticlights();
+            moveplayer();
             return true;
         }
         return false;
