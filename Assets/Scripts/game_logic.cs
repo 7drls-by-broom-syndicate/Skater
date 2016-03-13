@@ -247,8 +247,8 @@ public partial class Game : MonoBehaviour
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
-        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount > 0)
-            map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3);
+        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount!=0)
+            if(map.bloodgrid[victim.posx,victim.posy]==null)map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3)+((amount< -3)?4:0);
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
 

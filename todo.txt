@@ -1,7 +1,6 @@
-enemy should skate up to you, can hit you and end up drifting past
-(enemies coast as they attack)
-
 do cairns
+
+win screen
 
 moopwater is not being set to nopass
 
@@ -11,15 +10,15 @@ game over screen for win
 
 you can walk in water
 
+enemy should skate up to you, can hit you and end up drifting past
+(enemies coast as they attack)
+
 why do some enemies face north and never move until you get closer?
 i suspect a nonpassable invisible. new theory: it's a* cutting out as it 
 does for player
 
 polarmoops in water need to check for other polarmoops for passablility
-
-
 deal with offscreen damage messages being ridiculously off edge
-
 
 do attackgrid thing
 
@@ -27,59 +26,27 @@ we do need to fix that hillock thing- spawned in one, couldn't move
 
 make it so it's easier to turn on ice when stopped but not snow
 
-
 why exactly does click move stop?
-
-
-
 
 before starting the game, see if any mobs too close to player and if
 so walk them away from the player like flee style
-
-
-
-do breaking barrels. can actually do when moving
-
-
-
-
-
-
-
-
-
-
 
 add concept of buffs and debuffs. 
 	freezing
 	bleeding
 	attack up, down
 	def up, down
-	shortcut: do warp beads as a buff
-	
 	
 change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class.
 
 idea for another potion: coldproof for crossing water
 to use something, open crate etc. you need to stop first, (alternative
 is to stop the player then use it, which uses one fewer turn)
-maybe bumping an obstacle makes your speed go to zero and you take 
-damage! so you will learn to stop yourself. AHAHAHAHHA
-eeeeeeexcellent
 
 a little pffffffft shower of snow particles when you turn and stop
 haha that's really going to happen in 7drl...
 
-
 general suspicious slowdown after adding game state code
-
-
-
-
-
-music hand drum 4 drummers tremor, long patterns overlapping sometimes syncing the main "theme" on more than one drum
-
-music that's faster for combat. same music or different? anyway it speeds up in combat and goes back to normal later
 
 sound effect - hum of warp gate increases with proximity
 
