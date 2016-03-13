@@ -28,24 +28,79 @@ public partial class Game : MonoBehaviour
 
         }
     }
+    bool checkforitemactivation(mob m,int tentx,int tenty)
+    {
+        item_instance i = map.itemgrid[tentx, tenty];
+        if (i == null) return false;
+        if (i.tile == Etilesprite.ITEM_BARREL)
+        {
+            if (map.extradata[tentx, tenty] != null)
+            {
+                log.Printline("Inside the barrel was a something!", Color.blue);
+                i.tile = Etilesprite.ITEM_WARP_BEADS;
+                map.extradata[tentx, tenty] = null;
+                return true;
+            }
+            else
+            {
+                log.Printline("Take that, you barrel bastard!", Color.gray);
+                i.tile = Etilesprite.ITEM_BARREL_BROKEN;
+                map.extradata[tentx, tenty] = null;
+                return true;
+            }
+        }
+        else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
+        {
+            log.Printline(m.archetype.name + " plays cleanup!", Color.gray);
+            map.itemgrid[tentx, tenty] = null;
+            map.passable[tentx, tenty] = true;
+            return true;
+        }
+        else if (i.tile == Etilesprite.ITEM_WARP_BEADS)
+        {
+            log.Printline(m.archetype.name + " collects the Warp Beads!", Color.magenta);
+            map.itemgrid[tentx, tenty] = null;
+            map.passable[tentx, tenty] = true;
+            m.hasbeads = true;
+            return true;
+        }
+        else if (i.tile == Etilesprite.ITEM_CAIRN_GREEN || i.tile == Etilesprite.ITEM_CAIRN_RED || i.tile == Etilesprite.ITEM_CAIRN_BLUE || i.tile == Etilesprite.ITEM_CAIRN_PURPLE)//DEBUGGING
+        {
+            log.Printline("The ", Color.gray);
+            log.Print("red cairn ", Color.red);
+            log.Print("has healing properties!");
+            FloatingDamage(m, m, +5 + lil.randi(0, 10), "magic");
+            i.tile = Etilesprite.ITEM_CAIRN_USED_RED;
+            map.dostaticlights();
+            return true;
+        }
+        return false;
+    }
 
     bool trytomove(mob m, int rotdir, bool coasting = false)
-    {
-        // Debug.Log(m.archetype.name + " " + rotdir);
-        if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
-
-        if (coasting) rotdir = m.facing;
-
+    { if (coasting) rotdir = m.facing;
         int deltax = lil.rot_deltax[rotdir];
         int deltay = lil.rot_deltay[rotdir];
         int tentx = m.posx + deltax;
         int tenty = m.posy + deltay;
 
         if (tentx < 0 || tentx >= map.width || tenty < 0 || tenty >= map.height)
-        {
-            Speed.change(m, -200);
-            return false;
-        }
+                {
+                    Speed.change(m, -200);
+                    return false;
+                }
+        bool didanactivation=false;
+        if (m.speed == 0 && !coasting) didanactivation=checkforitemactivation(m, tentx, tenty);
+
+        // Debug.Log(m.archetype.name + " " + rotdir);
+        if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
+
+       
+
+      
+
+      
+
 
         /*
          mob m=map.mobgrid[tentx,tenty];
@@ -61,7 +116,7 @@ public partial class Game : MonoBehaviour
         if (!coasting)
             Speed.SpeedAndDirectionChange(m, rotdir);
 
-        if (m.speed > 0)
+        if (m.speed > 0 && !didanactivation)
         {
             if (map.passablecheck(tentx, tenty, m))
             {
@@ -82,38 +137,14 @@ public partial class Game : MonoBehaviour
                     else
                     {//item there but not a mob, so cairn, tree, ?
                      //take damage                        
-                        FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
-                        m.speed = 0;
-                        if (i.tile == Etilesprite.ITEM_BARREL)
+                        if (m.speed > 0)
                         {
-                            if (map.extradata[tentx, tenty] != null)
-                            {
-                                log.Printline("Inside the barrel was a something!", Color.blue);
-                                i.tile = Etilesprite.ITEM_WARP_BEADS;
-                                map.extradata[tentx, tenty] = null;
-                            }
-                            else
-                            {
-                                log.Printline("Take that, you barrel bastard!", Color.gray);
-                                i.tile = Etilesprite.ITEM_BARREL_BROKEN;
-                                map.extradata[tentx, tenty] = null;
-                            }
+                            FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)i.tile + 2]);
+                            m.speed = 0;
                         }
-                        else if (i.tile == Etilesprite.ITEM_BARREL_BROKEN)
-                        {
-                            log.Printline(m.archetype.name + " plays cleanup!", Color.gray);
-                            map.itemgrid[tentx, tenty] = null;
-                            map.passable[tentx, tenty] = true;
+                        else {
 
                         }
-                        else if (i.tile == Etilesprite.ITEM_WARP_BEADS)
-                        {
-                            log.Printline(m.archetype.name + " collects the Warp Beads!", Color.magenta);
-                            map.itemgrid[tentx, tenty] = null;
-                            map.passable[tentx, tenty] = true;
-                            m.hasbeads = true;
-                        }
-
                     }
                 }
                 else
@@ -128,14 +159,14 @@ public partial class Game : MonoBehaviour
                         m.speed = 0;
 
                     }
-                    else if (map.displaychar[tentx,tenty]== Etilesprite.ITEM_WARP_GATE_ANIM_1 && m.hasbeads)
+                    else if (map.displaychar[tentx, tenty] == Etilesprite.ITEM_WARP_GATE_ANIM_1 && m.hasbeads)
                     {//this means in theory, depending on how i coded this, a mob could get you to next level!
                         log.Printline("I'm stepping through the door", Color.green);
                         log.Printline("And I'm floating in a most peculiar way", Color.green);
                         log.Printline("And the stars look very different today", Color.green);
                         NextLevel();
                     }
-               else
+                    else
                     {//non-passable tile that isn't water, so probably snow-covered rock
                         FloatingDamage(m, m, -(m.speed / 2), "crashed into " + Tilestuff.tilestring[(int)map.displaychar[tentx, tenty] + 2]);
                         m.speed = 0;
@@ -143,6 +174,10 @@ public partial class Game : MonoBehaviour
                 }
             }//end of not passable
         }//end speed >0
+        else m.speed = 0;
+
+
+
         //if on thin ice and no speed, or if moop, and not flying fall through
         Etilesprite et = map.displaychar[m.posx, m.posy];
         if (et == Etilesprite.MAP_THIN_ICE && (m.speed == 0 || (m.archetype.heavy) && !m.flies_currently))
@@ -203,7 +238,7 @@ public partial class Game : MonoBehaviour
         //check for mob hp so dead
         foreach (var f in map.moblist)
         {
-            if (f.dead_currently==false && f.hp <= 0)
+            if (f.dead_currently == false && f.hp <= 0)
             {
                 log.Printline("The " + f.archetype.name + " dies.", new Color(0.6f, 0, 0));
                 player.score++;
@@ -217,7 +252,7 @@ public partial class Game : MonoBehaviour
         if (player.hp <= 0)
         {
             log.Printline("This life no longer grips you.", Color.magenta);
-            log.Printline("Now you can into Sky Burrow.",Color.magenta);
+            log.Printline("Now you can into Sky Burrow.", Color.magenta);
 
             TimeEngine = CradleOfTime.dormant;
             gamestate = Egamestate.gameover;
@@ -237,6 +272,8 @@ public partial class Game : MonoBehaviour
         if (amount == 0) c = Color.grey;
         else c = (amount < 0) ? Color.red : Color.green;
 
+        if (amount > 0 && victim.hp + amount > victim.archetype.hp) amount = victim.archetype.hp - victim.hp;
+
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
 
         if (attacker == player.mob && victim != player.mob)
@@ -254,8 +291,8 @@ public partial class Game : MonoBehaviour
         //actually do the damage
         victim.hp += amount;
         c.a = 0.5f;
-        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount!=0)
-            if(map.bloodgrid[victim.posx,victim.posy]==null)map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3)+((amount< -3)?4:0);
+        if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount != 0)
+            if (map.bloodgrid[victim.posx, victim.posy] == null) map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3) + ((amount < -3) ? 4 : 0);
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
 
