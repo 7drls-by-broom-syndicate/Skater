@@ -58,6 +58,7 @@ public class Player {
         mob.hasbeads = false;
         posx = x; posy = y;
         dunlevel++;    
+        
         //keep speed   
     }
 

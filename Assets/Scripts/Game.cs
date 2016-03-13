@@ -44,7 +44,7 @@ class Pangotimer
     }
 }
 
-public enum Egamestate : int { initializing, titlescreen, playing, gameover }
+public enum Egamestate : int { initializing, titlescreen, playing, gameover,youwon }
 
 public enum CradleOfTime { dormant, ready_to_process_turn, waiting_for_player, player_is_done, processing_other_actors }
 
@@ -59,6 +59,7 @@ public partial class Game : MonoBehaviour
     //
     byte[] bstrGameOver = System.Text.Encoding.ASCII.GetBytes("Game Over");
     byte[] statusline = System.Text.Encoding.ASCII.GetBytes("HP:     SPEED:     LEVEL:     SCORE:");
+    byte[] winstring = System.Text.Encoding.ASCII.GetBytes("A winner is you!Score is:");
     Color whiteblend = new Color(1f, 1f, 1f, 0.8f);
     Color whiteblendvariable = new Color(0.9f, 0.1f, 0.1f, 0f);
     Color highlight = new Color(0.7f, 0.4f, 0.2f, 0.05f);
@@ -198,6 +199,12 @@ public partial class Game : MonoBehaviour
         GUI.color = Color.white;
         switch (gamestate)
         {
+            case Egamestate.youwon:
+                GUI.color = Color.yellow;
+                PrintString(50, 50, winstring);
+                PrintNumber(50 + (6 * 27), 50, player.score);
+
+                break;
             case Egamestate.titlescreen:
                 GUI.DrawTexture(wholescreen, titlescreen);
 
@@ -738,7 +745,12 @@ public partial class Game : MonoBehaviour
         firstpress = false;
         mauswalking = false;
         //
-
+        if (player.dunlevel == 10)
+        {
+            gamestate = Egamestate.youwon;
+            MyAudioSource.Stop();
+            return;
+        }
         map = new RLMap(player, DungeonGenType.Skater2016);
         r_minimap = new Rect(336 * zoomfactor, 0, map.width * 2 * zoomfactor, map.height * 2 * zoomfactor);//was 339
 
@@ -817,6 +829,7 @@ public partial class Game : MonoBehaviour
                 break;
             case Egamestate.playing:
             case Egamestate.gameover:
+            case Egamestate.youwon:
 
                 //FIRST LET'S MOVE THE FLOATZING TEXT
                 if (floating_text_timer.test())
@@ -854,7 +867,7 @@ public partial class Game : MonoBehaviour
                     ProcessTurn();
 
                 //RIGHT CLICK
-                if (gamestate == Egamestate.gameover)
+                if (gamestate == Egamestate.gameover||gamestate==Egamestate.youwon)
                 {
                     if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("start"))
                     {
