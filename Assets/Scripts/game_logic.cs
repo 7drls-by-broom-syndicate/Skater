@@ -57,6 +57,7 @@ public partial class Game : MonoBehaviour
         if (i == null) return false;
         if (i.tile == Etilesprite.ITEM_BARREL)
         {
+            
             if (map.extradata[tentx, tenty] != null)
             {
                 log.Printline("Inside the barrel was a something!", Color.blue);
@@ -113,6 +114,8 @@ public partial class Game : MonoBehaviour
             {
                 //if a mob uses this it's going to be messed up because need to change map.itemgrids
                 m.posx = c.x;m.posy = c.y;
+                cairntransport_effect(c.x, c.y);
+               
             }
             item_instance i2 = map.itemgrid[otherx, othery];
             if (i2 == null) log.Printline("ERROR at receiving cairn.");
@@ -124,7 +127,18 @@ public partial class Game : MonoBehaviour
         }
         return false;
     }
-
+    void cairntransport_effect(int xx,int yy)
+    {
+        for (int y = 0; y < map.height; y++)
+        {
+            for (int x = 0; x < map.width; x++)
+            {
+                map.gridflashcolour[x, y] = new Color(110f / 255f, 37f / 255f, 125f / 255f, 0.8f);
+                map.gridflashtime[x, y] = Time.time + (0+ (float)(RLMap.Distance_Euclidean(x, y, xx, yy) / 10.0f));
+                //lil.randf(0f, 1f);
+            }
+        }
+    }
     bool trytomove(mob m, int rotdir, bool coasting = false)
     { if (coasting) rotdir = m.facing;
         int deltax = lil.rot_deltax[rotdir];

@@ -108,25 +108,25 @@ public partial class RLMap  {
 		return pibs;
 	}
 
-    static int Distance_Chebyshev(int x, int y, int x2, int y2) {
+    public static int Distance_Chebyshev(int x, int y, int x2, int y2) {
 		int dx = Math.Abs(x - x2);
 		int dy = Math.Abs(y - y2);
 		return (dx > dy) ? dx : dy;
 	}
 
-	static int Distance_Manhatten(int x, int y, int x2, int y2) {
+    public static int Distance_Manhatten(int x, int y, int x2, int y2) {
 		int dx = Math.Abs(x - x2);
 		int dy = Math.Abs(y - y2);
 		return  dx + dy;
 	}
 
-	static int Distance_Euclidean(int x, int y, int x2, int y2) {
+    public static int Distance_Euclidean(int x, int y, int x2, int y2) {
 		int dx = Math.Abs(x - x2);
 		int dy = Math.Abs(y - y2);
 		return (int)Math.Sqrt((dx*dx) + (dy*dy));
 	}
 
-	static int Distance_Squared(int x, int y, int x2, int y2) {
+    public static int Distance_Squared(int x, int y, int x2, int y2) {
 		int dx = Math.Abs(x - x2);
 		int dy = Math.Abs(y - y2);
 		return (dx*dx) + (dy*dy);
