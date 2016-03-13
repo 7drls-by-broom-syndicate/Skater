@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class Game : MonoBehaviour
 {
@@ -95,6 +96,38 @@ public partial class Game : MonoBehaviour
             log.Print("repairs your body!");
             FloatingDamage(m, m, +5 + lil.randi(0, 10), "magic");
             i.tile = Etilesprite.ITEM_CAIRN_USED_RED;
+            map.dostaticlights();
+            return true;
+        }
+        else if (i.tile == Etilesprite.ITEM_CAIRN_GREEN)
+        {
+            log.Printline("The ", Color.gray);
+            log.Print("green cairn ", Color.green);
+            log.Print("is activated: nature is angry!");
+            //now we want to reach out and strike 1-3 mobs on screen. if no mobs on screen it hits you!
+            //List<mob> mablist = map.moblist.Where(s => RLMap.Distance_Euclidean(s.posx, s.posy, tentx, tenty) < 10);
+            //later on figure out why this doesn't work
+            List<mob> mablist = new List<mob>();
+            foreach (var mab in map.moblist)
+            {
+                if (RLMap.Distance_Euclidean(mab.posx, mab.posy, tentx, tenty) < 10)
+                    mablist.Add(mab);
+            }
+            if (mablist.Count == 0)
+            {
+                //attack player
+                FloatingDamage(m, m, -5 - lil.randi(0, 5), "nature");
+
+            } else
+            {
+                foreach(var mab in mablist)
+                {
+                    BresLineColour(tentx, tenty, mab.posx, mab.posy, true, false, colour_snakespit);
+                    FloatingDamage(mab, mab, -5 - lil.randi(0, 5), "nature");
+                }
+            }
+            
+            i.tile = Etilesprite.ITEM_CAIRN_USED_GREEN;
             map.dostaticlights();
             return true;
         }

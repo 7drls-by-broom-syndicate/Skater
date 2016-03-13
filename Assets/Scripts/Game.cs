@@ -721,6 +721,7 @@ public partial class Game : MonoBehaviour
 
         log = new MessageLog(50, 15);
         log.Printline("Skater by The Broom Institute: 7DRL 2016");
+        log.Printline("This is the 168 hour version.");
         lil.seednow();
         player = new Player(0);
 
