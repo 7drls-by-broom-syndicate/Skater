@@ -980,8 +980,16 @@ public partial class RLMap
         const int MOBS_NUMBER_OF = 15;
         for (int i = 0; i < MOBS_NUMBER_OF; i++)
         {
-            int x = lil.randi(0, 4);
-            mob m = new mob(Emobtype.polarmoop + x);
+            int x = 0;
+            int which = lil.randi(1, 100);
+            if (which > 95)
+            {
+                 x = lil.randi(0, 2)+(int)Emobtype.kobbybomber;                
+            } else
+            {
+                 x = lil.randi(0, 5)+(int)Emobtype.polarmoop;
+            }
+            mob m = new mob((Emobtype)x);
             int tentx, tenty;
             FreeSpace(out tentx, out tenty);
             m.posx = tentx;m.posy = tenty;

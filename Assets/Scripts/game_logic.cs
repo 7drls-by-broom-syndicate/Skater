@@ -98,6 +98,27 @@ public partial class Game : MonoBehaviour
             map.dostaticlights();
             return true;
         }
+        else if (i.tile == Etilesprite.ITEM_CAIRN_BLUE)
+        {
+            log.Printline("The ", Color.gray);
+            log.Print("blue cairn ", Color.blue);
+            log.Print("lends you its power!");
+            int which = lil.randi(1, 100);
+            if(which<50 || (m.hasattackup && !m.hasdefenseup))
+            {
+                log.Print(m.archetype.name+" gains the buff: defense up!", Color.blue);
+                if (m.hasdefenseup) log.Print("Which " + m.archetype.name + " already had, oh well.");
+                m.hasdefenseup = true;
+            } else
+            {
+                log.Print(m.archetype.name+" gains the buff: attack up!", Color.blue);
+                if (m.hasattackup) log.Print("Which " + m.archetype.name + " already had, oh well.");
+                m.hasattackup = true;
+            }           
+            i.tile = Etilesprite.ITEM_CAIRN_USED_BLUE;
+            map.dostaticlights();
+            return true;
+        }
         else if (i.tile == Etilesprite.ITEM_CAIRN_PURPLE)
         {
             log.Printline("The ", Color.gray);

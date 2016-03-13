@@ -2,7 +2,8 @@
 using System.Collections;
 
 public enum Emobtype { playerpango, playermarsby, playerpapa, playermoop,
-    polarmoop, lancer, antipaladin, swinger, tefrog, kobbybomber, bat, mage, necro,
+    polarmoop, lancer, antipaladin, swinger, tefrog, bat,
+    kobbybomber, mage, necro,
     wolf, kitten1, kitten2, kitten3, kitten4, skelsumd, golem, lich, fox }
 
 public class mobarchetype
@@ -45,8 +46,8 @@ public class mob {
         new mobarchetype(false,"antipaladin","sword", 10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_SWORDANDBOARD,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
         new mobarchetype(false,"swinger","chain",     10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_CHAIN,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
         new mobarchetype(false,"tef-rog","dagger",    10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_DAGGER,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
-        new mobarchetype(false,"kobby bomber","knife",5,  true,false,false,   false,false,    Etilesprite.ENEMY_KOBBY_BOMBER,Etilesprite.ENEMY_KOBBY_BOMBER_CORPSE,Etilesprite.ENEMY_KOBBY_BOMBER_SKELETON),
         new mobarchetype(false,"giant bat","fangs",   5,  true,false,false,   false,true,     Etilesprite.ENEMY_GIANTBAT,Etilesprite.ENEMY_GIANTBAT_CORPSE,Etilesprite.ENEMY_GIANTBAT_SKELETON),
+        new mobarchetype(false,"kobby bomber","knife",5,  true,false,false,   false,false,    Etilesprite.ENEMY_KOBBY_BOMBER,Etilesprite.ENEMY_KOBBY_BOMBER_CORPSE,Etilesprite.ENEMY_KOBBY_BOMBER_SKELETON),     
         new mobarchetype(false,"ice mage","spell",    10, true,false,false,   false,false,    Etilesprite.ENEMY_MAGE,Etilesprite.ENEMY_MAGE_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
         new mobarchetype(false,"necromancer","spell", 10, true,false,false,   false,false,    Etilesprite.ENEMY_NECROMANCER,Etilesprite.ENEMY_NECROMANCER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
 
@@ -83,6 +84,9 @@ public class mob {
     public int facing;
     public int speed;
     public bool hasbeads = false;//sort this out better later but for now...
+    public bool hasattackup = false;
+    public bool hasdefenseup = false;
+
 	public mob(Emobtype typ)
     {
         
