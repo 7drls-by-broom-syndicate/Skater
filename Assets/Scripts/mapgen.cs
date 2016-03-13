@@ -989,7 +989,8 @@ public partial class RLMap
             {
                  x = lil.randi(0, 5)+(int)Emobtype.polarmoop;
             }
-            mob m = new mob((Emobtype)x);
+            // mob m = new mob((Emobtype)x);
+            mob m = new mob(Emobtype.kobbybomber);//DEBUG
             int tentx, tenty;
             FreeSpace(out tentx, out tenty);
             m.posx = tentx;m.posy = tenty;

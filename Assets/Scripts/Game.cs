@@ -540,7 +540,7 @@ public partial class Game : MonoBehaviour
                     else s = Tilestuff.tilestring[(int)map.displaychar[mapx, mapy] + 2];
 
                     //debug:
-                    s += (map.passable[mapx, mapy]) ? " PASS" : " NOPASS";
+                    //s += (map.passable[mapx, mapy]) ? " PASS" : " NOPASS";
 
                     if (s != "")
                     {

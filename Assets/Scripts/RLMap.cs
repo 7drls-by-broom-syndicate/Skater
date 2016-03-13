@@ -16,7 +16,7 @@ public partial class RLMap  {
     //                                          Color.yellow,Color.yellow,Color.yellow,Color.yellow,new Color (0.25f,0.25f,0.25f)};
     public Array2D<Color> gridflashcolour;
     public Array2D<float> gridflashtime;
-
+    public List<item_instance> bomblist;
     public Color?[] minimapcolours;
 
     public Texture2D minimap;
@@ -108,7 +108,7 @@ public partial class RLMap  {
 		return pibs;
 	}
 
-    public static int Distance_Chebyshev(int x, int y, int x2, int y2) {
+    public static int Distance_ChevyChase(int x, int y, int x2, int y2) {
 		int dx = Math.Abs(x - x2);
 		int dy = Math.Abs(y - y2);
 		return (dx > dy) ? dx : dy;
@@ -187,6 +187,8 @@ public partial class RLMap  {
         extradata = new Array2D<Cell>(width, height, null);
         gridflashcolour = new Array2D<Color>(width, height, Color.clear);
         gridflashtime = new Array2D<float>(width, height, 0f);
+        bomblist = new List<item_instance>();
+
         switch (dgt) {
             case DungeonGenType.Splitter2013:
                // genlevelsplitterstyle();

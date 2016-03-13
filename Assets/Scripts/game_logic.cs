@@ -349,6 +349,33 @@ public partial class Game : MonoBehaviour
         return true;
     }
 
+    void detonate(int xx,int yy)
+    {
+        for (int y = -1; y < 2; y++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                int sqx = xx + x;int sqy = yy + y;
+                if (sqx > 0 && sqy > 0 && sqx < map.width && sqy < map.height)
+                {
+                    //Debug.Log("ok");
+                    map.gridflashcolour[sqx, sqy] = new Color(1.0f, 0f, 0f, 0.5f);
+                    map.gridflashtime[sqx, sqy] = Time.time+0.5f;
+                    item_instance i = map.itemgrid[sqx, sqy];
+                    if(player.posx==sqx&&player.posy==sqy) FloatingDamage(player.mob, player.mob, -5, "explosion", true);
+                    if (i != null)
+                    {
+                        if (i.ismob)
+                        {
+                            FloatingDamage(i.mob, i.mob, -5, "explosion", true);
+                        }
+                    }
+
+                }
+            }
+        }
+        //should maybe chain explosions
+    }
 
     void ProcessTurn()
     {
@@ -369,6 +396,23 @@ public partial class Game : MonoBehaviour
 
         //effects and mobs get to act
         //stop being scared of "foreach": think of all the other shitty garbage you are creating
+        //bombs
+        foreach(var f in map.bomblist)
+        {
+            f.bombcount++;
+            if (f.bombcount >= 5)
+            {
+                log.Printline("Boom! The bomb explodes!", Color.red);
+                int x = f.bombx; int y = f.bomby;
+                map.itemgrid[x, y] = null;
+                //do explosion and damage. set off other bombs
+                detonate(x, y);
+            }
+            f.tile = Etilesprite.ITEM_BOMB_LIT_1 + (f.bombcount - 1);
+
+        }
+        map.bomblist.RemoveAll(x => x.bombcount >= 5);
+        //mobs
         foreach (var f in map.moblist)
             MobGetsToAct(f);
 
@@ -483,6 +527,31 @@ public partial class Game : MonoBehaviour
             MobAttacksMob(e, player.mob);
             e.speed = 0;//this is a hack. mobs should attack and coast. all combat is a hack at the moment though
             return;
+        }
+
+        if (e.tile == Etilesprite.ENEMY_KOBBY_BOMBER 
+            && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) >= 4
+            && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy)<=10)
+        {
+            if (lil.randi(1, 1000) > 950)
+            {
+                int rotdir = player.mob.facing;
+                int deltax = lil.rot_deltax[rotdir];
+                int deltay = lil.rot_deltay[rotdir];
+                int tentx = player.mob.posx + (deltax*4);
+                int tenty = player.mob.posy + (deltay*4);
+                Cell c = Random9way(tentx, tenty);
+                if (c != null)
+                {
+                    log.Printline(e.archetype.name + " lobs a bomb!", Color.green);
+                    BresLineColour(e.posx, e.posy, c.x, c.y, false, true, new Color(0.7f, 0.7f, 0.7f, 0.7f));
+                    map.itemgrid[c.x, c.y] = new item_instance(Etilesprite.ITEM_BOMB_LIT_1,false,null,1);
+                    map.itemgrid[c.x, c.y].bombx = c.x;
+                    map.itemgrid[c.x, c.y].bomby = c.y;
+                    map.bomblist.Add(map.itemgrid[c.x, c.y]);
+                    return;
+                }
+            }
         }
 
         map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
