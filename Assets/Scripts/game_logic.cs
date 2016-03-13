@@ -220,6 +220,7 @@ public partial class Game : MonoBehaviour
 
             TimeEngine = CradleOfTime.dormant;
             gamestate = Egamestate.gameover;
+            MyAudioSource.Stop();
             return;
         }
         player.turns++;
@@ -267,6 +268,7 @@ public partial class Game : MonoBehaviour
         if (e.IsAdjacentTo(player.mob))
         {
             MobAttacksMob(e, player.mob);
+            e.speed = 0;//this is a hack. mobs should attack and coast. all combat is a hack at the moment though
             return;
         }
 

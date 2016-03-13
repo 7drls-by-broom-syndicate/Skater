@@ -1,5 +1,3 @@
-you attack mobs
-
 enemy should skate up to you, can hit you and end up drifting past
 (enemies coast as they attack)
 
@@ -18,8 +16,6 @@ i suspect a nonpassable invisible. new theory: it's a* cutting out as it
 does for player
 
 polarmoops in water need to check for other polarmoops for passablility
-
-
 
 
 deal with offscreen damage messages being ridiculously off edge
