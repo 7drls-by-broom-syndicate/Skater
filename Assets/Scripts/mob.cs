@@ -88,6 +88,11 @@ public class mob {
     public bool hasdefenseup = false;
     public int attackuptimer = 0;
     public int defenseuptimer = 0;
+
+    //animation for mages
+    public bool magepointing = false;
+    public float magepointing_timer = 0;
+
 	public mob(Emobtype typ)
     {
         

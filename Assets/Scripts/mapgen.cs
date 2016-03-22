@@ -982,7 +982,7 @@ public partial class RLMap
         {
             int x = 0;
             int which = lil.randi(1, 100);
-            if (which > 95)
+            if (which > 50)//95
             {
                  x = lil.randi(0, 2)+(int)Emobtype.kobbybomber;                
             } else

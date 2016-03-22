@@ -1,0 +1,15 @@
+GAME ONLY WORKS IN 1280X720. I apologise
+
+I'll have a video up tomorrow some time on how to play. Check https://pangoempire.wordpress.com/
+
+redefine keys in unity launcher or use defaults:
+enter num pad to start game, numpad keys incl. diags to move
+movement is skating and a bit weird and rotationallllllly.
+press the exact opposite of the way you're facing to "stop"
+your speed affects things like if you bump an obstacle at speed you crash
+and mob vs. mob combat uses speed.
+
+aim of game is to clear 10 levels
+to get off each level find the warp beads then head to the warp gate!
+
+

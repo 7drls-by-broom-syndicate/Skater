@@ -365,7 +365,7 @@ public partial class Game : MonoBehaviour
                             {
                                 DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_BLOOD_1+(int) map.bloodgrid[xx, yy]);
                             }
-                            //item layer
+                            //item layer draw item draw mob
                             if (map.itemgrid[xx, yy] != null)
                             {
                                 if (map.itemgrid[xx, yy].ismob)
@@ -375,10 +375,26 @@ public partial class Game : MonoBehaviour
                                         map.itemgrid[xx, yy].mob.noticedyou = true;
                                         log.Printline(map.itemgrid[xx, yy].mob.archetype.name + " noticed you!");
                                     }
-                                    if (map.itemgrid[xx, yy].mob.reversesprite)
-                                        DrawSpriteReverse(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
-                                    else
-                                        DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+
+                                    if (!map.itemgrid[xx, yy].mob.magepointing)
+                                    {
+                                        if (map.itemgrid[xx, yy].mob.reversesprite)
+                                            DrawSpriteReverse(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+                                        else
+                                            DrawSprite(screenx, screeny, (int)map.itemgrid[xx, yy].tile);
+                                    } else
+                                    {
+                                        if (map.itemgrid[xx, yy].mob.reversesprite)
+                                            DrawSpriteReverse(screenx, screeny, 1+(int)map.itemgrid[xx, yy].tile);
+                                        else
+                                            DrawSprite(screenx, screeny, 1+(int)map.itemgrid[xx, yy].tile);
+
+                                        if (Time.time > map.itemgrid[xx, yy].mob.magepointing_timer)
+                                            map.itemgrid[xx, yy].mob.magepointing = false;
+
+                                        
+                                    }
+
 
                                    if(!map.itemgrid[xx,yy].mob.dead_currently) DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_DIRECTION_INDICATOR_1 + map.itemgrid[xx, yy].mob.facing);
                                 }

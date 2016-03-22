@@ -52,13 +52,13 @@ public partial class Game : MonoBehaviour
         if (bob.Count == 0) return null;
         else return bob.randmember();
     }
-    bool checkforitemactivation(mob m,int tentx,int tenty)
+    bool checkforitemactivation(mob m, int tentx, int tenty)
     {
         item_instance i = map.itemgrid[tentx, tenty];
         if (i == null) return false;
         if (i.tile == Etilesprite.ITEM_BARREL)
         {
-            
+
             if (map.extradata[tentx, tenty] != null)
             {
                 log.Printline("Inside the barrel was a something!", Color.blue);
@@ -118,15 +118,16 @@ public partial class Game : MonoBehaviour
                 //attack player
                 FloatingDamage(m, m, -5 - lil.randi(0, 5), "nature");
 
-            } else
+            }
+            else
             {
-                foreach(var mab in mablist)
+                foreach (var mab in mablist)
                 {
                     BresLineColour(tentx, tenty, mab.posx, mab.posy, true, false, colour_snakespit);
                     FloatingDamage(mab, mab, -5 - lil.randi(0, 5), "nature");
                 }
             }
-            
+
             i.tile = Etilesprite.ITEM_CAIRN_USED_GREEN;
             map.dostaticlights();
             return true;
@@ -137,19 +138,20 @@ public partial class Game : MonoBehaviour
             log.Print("blue cairn ", Color.blue);
             log.Print("lends you its power!");
             int which = lil.randi(1, 100);
-            if(which<50 || (m.hasattackup && !m.hasdefenseup))
+            if (which < 50 || (m.hasattackup && !m.hasdefenseup))
             {
-                log.Print(m.archetype.name+" gains the buff: defense up!", Color.blue);
+                log.Print(m.archetype.name + " gains the buff: defense up!", Color.blue);
                 //if (m.hasdefenseup) log.Print("Which " + m.archetype.name + " already had, oh well.");
                 m.hasdefenseup = true;
                 m.defenseuptimer += 15;
-            } else
+            }
+            else
             {
-                log.Print(m.archetype.name+" gains the buff: attack up!", Color.blue);
+                log.Print(m.archetype.name + " gains the buff: attack up!", Color.blue);
                 //if (m.hasattackup) log.Print("Which " + m.archetype.name + " already had, oh well.");
                 m.hasattackup = true;
                 m.attackuptimer += 15;
-            }           
+            }
             i.tile = Etilesprite.ITEM_CAIRN_USED_BLUE;
             map.dostaticlights();
             return true;
@@ -166,31 +168,32 @@ public partial class Game : MonoBehaviour
             {
                 log.Printline("The cairn should transport you", Color.blue);
                 log.Printline("but it is having problems!", Color.blue);
-            } else
+            }
+            else
             {
                 //if a mob uses this it's going to be messed up because need to change map.itemgrids
-                m.posx = c.x;m.posy = c.y;
+                m.posx = c.x; m.posy = c.y;
                 cairntransport_effect(c.x, c.y);
-               
+
             }
             item_instance i2 = map.itemgrid[otherx, othery];
             if (i2 == null) log.Printline("ERROR at receiving cairn.");
             i.tile = Etilesprite.ITEM_CAIRN_USED_PURPLE;
-            i2.tile = Etilesprite.ITEM_CAIRN_USED_PURPLE;        
+            i2.tile = Etilesprite.ITEM_CAIRN_USED_PURPLE;
             map.dostaticlights();
             moveplayer();
             return true;
         }
         return false;
     }
-    void cairntransport_effect(int xx,int yy)
+    void cairntransport_effect(int xx, int yy)
     {
         for (int y = 0; y < map.height; y++)
         {
             for (int x = 0; x < map.width; x++)
             {
                 map.gridflashcolour[x, y] = new Color(110f / 255f, 37f / 255f, 125f / 255f, 0.8f);
-                map.gridflashtime[x, y] = Time.time + (0+ (float)(RLMap.Distance_Euclidean(x, y, xx, yy) / 10.0f));
+                map.gridflashtime[x, y] = Time.time + (0 + (float)(RLMap.Distance_Euclidean(x, y, xx, yy) / 10.0f));
                 //lil.randf(0f, 1f);
             }
         }
@@ -224,21 +227,21 @@ public partial class Game : MonoBehaviour
         int tenty = m.posy + deltay;
 
         if (tentx < 0 || tentx >= map.width || tenty < 0 || tenty >= map.height)
-                {
-                    Speed.change(m, -200);
-                    return false;
-                }
-        bool didanactivation=false;
-        if (m.speed == 0 && !coasting) didanactivation=checkforitemactivation(m, tentx, tenty);
+        {
+            Speed.change(m, -200);
+            return false;
+        }
+        bool didanactivation = false;
+        if (m.speed == 0 && !coasting) didanactivation = checkforitemactivation(m, tentx, tenty);
 
         // Debug.Log(m.archetype.name + " " + rotdir);
         if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
 
-       
 
-      
 
-      
+
+
+
 
 
         /*
@@ -319,7 +322,7 @@ public partial class Game : MonoBehaviour
 
         //if on thin ice and no speed, or if moop, and not flying fall through
         Etilesprite et = map.displaychar[m.posx, m.posy];
-        if (et == Etilesprite.MAP_THIN_ICE && !m.flies_currently && (m.speed == 0 || m.archetype.heavy))  
+        if (et == Etilesprite.MAP_THIN_ICE && !m.flies_currently && (m.speed == 0 || m.archetype.heavy))
         {
             if (m.isplayer) log.Printline("The thin ice collapses!", Color.red);
             map.displaychar[m.posx, m.posy] = Etilesprite.MAP_WATER;
@@ -349,20 +352,20 @@ public partial class Game : MonoBehaviour
         return true;
     }
 
-    void detonate(int xx,int yy)
+    void detonate(int xx, int yy)
     {
         for (int y = -1; y < 2; y++)
         {
             for (int x = -1; x < 2; x++)
             {
-                int sqx = xx + x;int sqy = yy + y;
+                int sqx = xx + x; int sqy = yy + y;
                 if (sqx > 0 && sqy > 0 && sqx < map.width && sqy < map.height)
                 {
                     //Debug.Log("ok");
                     map.gridflashcolour[sqx, sqy] = new Color(1.0f, 0f, 0f, 0.5f);
-                    map.gridflashtime[sqx, sqy] = Time.time+0.5f;
+                    map.gridflashtime[sqx, sqy] = Time.time + 0.5f;
                     item_instance i = map.itemgrid[sqx, sqy];
-                    if(player.posx==sqx&&player.posy==sqy) FloatingDamage(player.mob, player.mob, -5, "explosion", true);
+                    if (player.posx == sqx && player.posy == sqy) FloatingDamage(player.mob, player.mob, -5, "explosion", true);
                     if (i != null)
                     {
                         if (i.ismob)
@@ -397,7 +400,7 @@ public partial class Game : MonoBehaviour
         //effects and mobs get to act
         //stop being scared of "foreach": think of all the other shitty garbage you are creating
         //bombs
-        foreach(var f in map.bomblist)
+        foreach (var f in map.bomblist)
         {
             f.bombcount++;
             if (f.bombcount >= 5)
@@ -529,30 +532,84 @@ public partial class Game : MonoBehaviour
             return;
         }
 
-        if (e.tile == Etilesprite.ENEMY_KOBBY_BOMBER 
-            && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) >= 4
-            && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy)<=10)
+        switch (e.tile)
         {
-            if (lil.randi(1, 1000) > 950)
-            {
-                int rotdir = player.mob.facing;
-                int deltax = lil.rot_deltax[rotdir];
-                int deltay = lil.rot_deltay[rotdir];
-                int tentx = player.mob.posx + (deltax*4);
-                int tenty = player.mob.posy + (deltay*4);
-                Cell c = Random9way(tentx, tenty);
-                if (c != null)
+
+            case Etilesprite.ENEMY_KOBBY_BOMBER:
+                if (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) >= 4
+                    && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) <= 10)
                 {
-                    log.Printline(e.archetype.name + " lobs a bomb!", Color.green);
-                    BresLineColour(e.posx, e.posy, c.x, c.y, false, true, new Color(0.7f, 0.7f, 0.7f, 0.7f));
-                    map.itemgrid[c.x, c.y] = new item_instance(Etilesprite.ITEM_BOMB_LIT_1,false,null,1);
-                    map.itemgrid[c.x, c.y].bombx = c.x;
-                    map.itemgrid[c.x, c.y].bomby = c.y;
-                    map.bomblist.Add(map.itemgrid[c.x, c.y]);
-                    return;
+                    if (lil.randi(1, 1000) > 950)
+                    {
+                        int rotdir = player.mob.facing;
+                        int deltax = lil.rot_deltax[rotdir];
+                        int deltay = lil.rot_deltay[rotdir];
+                        int tentx = player.mob.posx + (deltax * 4);
+                        int tenty = player.mob.posy + (deltay * 4);
+                        Cell c = Random9way(tentx, tenty);
+                        if (c != null)
+                        {
+                            log.Printline(e.archetype.name + " lobs a bomb!", Color.green);
+                            BresLineColour(e.posx, e.posy, c.x, c.y, false, true, new Color(0.7f, 0.7f, 0.7f, 0.7f));
+                            map.itemgrid[c.x, c.y] = new item_instance(Etilesprite.ITEM_BOMB_LIT_1, false, null, 1);
+                            map.itemgrid[c.x, c.y].bombx = c.x;
+                            map.itemgrid[c.x, c.y].bomby = c.y;
+                            map.bomblist.Add(map.itemgrid[c.x, c.y]);
+                            return;
+                        }
+                    }
                 }
-            }
-        }
+                break;
+            case Etilesprite.ENEMY_MAGE:
+                if (lil.randi(1, 1000) > 950)
+                {
+                    //casting a spell:
+                    int which = lil.randi(1, 3);
+                    log.Printline(e.archetype.name + " casts ", Color.blue);
+                    e.magepointing = true;
+                    e.magepointing_timer = Time.time + 1.5f;
+                    switch (which)
+                    {
+                        case 1://ice wall
+                            log.Print("Ice Wall.", Color.blue);
+                            break;
+                        case 2://ice beam
+                            log.Print("Ice Beam.", Color.blue);
+                            break;
+                        case 3://summon golems
+                            log.Print("Create Ice Servants.", Color.blue);
+                            break;
+                    }
+ return;
+                }
+               
+            break;
+            case Etilesprite.ENEMY_NECROMANCER:
+                if (lil.randi(1, 1000) > 950)
+                {
+                    //casting a spell:
+                    int which = lil.randi(1, 3);
+                    log.Printline(e.archetype.name + " casts ", Color.blue);
+                    e.magepointing = true;
+                    e.magepointing_timer = Time.time + 1.5f;
+                    switch (which)
+                    {
+                        case 1:
+                            log.Print("Ignite Blood.", Color.blue);
+                            break;
+                        case 2:
+                            log.Print("Explode Corpse.", Color.blue);
+                            break;
+                        case 3:
+                            log.Print("Raise Dead.", Color.blue);
+                            break;
+                    }
+    return;
+                }
+            
+                break;
+
+        }//end switch tile
 
         map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
                                             //attempt to move 
