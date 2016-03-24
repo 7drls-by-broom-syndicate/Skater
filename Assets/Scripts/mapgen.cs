@@ -993,6 +993,7 @@ public partial class RLMap
             //mob m = new mob(Emobtype.kobbybomber);//DEBUG
             int tentx, tenty;
             FreeSpace(out tentx, out tenty);
+           
             m.posx = tentx;m.posy = tenty;
             itemgrid[tentx, tenty] = new item_instance(m.tile,true,m);
             passable[tentx, tenty] = false;

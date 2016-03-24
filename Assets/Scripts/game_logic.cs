@@ -29,10 +29,21 @@ public partial class Game : MonoBehaviour
 
         }
     }
+
+    mob CreateMob(Emobtype t,int tentx,int tenty)
+    {      
+        mob m = new mob(t);
+        m.posx = tentx;m.posy = tenty;
+        map.itemgrid[tentx, tenty] = new item_instance(m.tile,true,m);
+        map.passable[tentx, tenty] = false;
+        map.newmoblist.Add(m);
+        return m;
+    }
+
     bool IsEmpty(int x, int y)
     {
         if (x < 0 || x >= map.width || y < 0 || y >= map.height) return false;//off map
-        if (!map.passable[x, y]) return false;//this ignores the fact moops or fliers could be fine on water
+        if (!map.passable[x, y]) return false;//this ignores the fact moops(and golems=also heavy) or fliers could be fine on water
         if (map.itemgrid[x, y] != null) return false;//a mob is on the square
         if (x == player.posx && y == player.posy) return false;//player is on square
         return true;
@@ -419,6 +430,12 @@ public partial class Game : MonoBehaviour
         foreach (var f in map.moblist)
             MobGetsToAct(f);
 
+        //add any new mobs created this turn.
+        if (map.newmoblist.Count > 0)
+        {
+            map.moblist.AddRange(map.newmoblist);
+            map.newmoblist.Clear();
+        }
 
 
         //check for mob hp so dead
@@ -578,6 +595,16 @@ public partial class Game : MonoBehaviour
                             break;
                         case 3://summon golems
                             log.Print("Create Ice Servants.", Color.blue);
+                            int numgol = lil.randi(1, 3);
+                            for (int i = 0; i < numgol; i++)
+                            {
+                                Cell c = Random9way(e.posx, e.posy);
+                                if (c != null)
+                                {
+                                    CreateMob(Emobtype.golem,c.x, c.y);
+                                }
+                            
+                            }
                             break;
                     }
  return;

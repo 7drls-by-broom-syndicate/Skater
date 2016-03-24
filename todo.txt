@@ -1,3 +1,5 @@
+! ice golems can't be created because we are doing a foreach of all mobs when letting them act and the ice golems are getting added to it
+
 1. content enemies: magic users
 	ice mage		
 		ice wall (walls expand)
