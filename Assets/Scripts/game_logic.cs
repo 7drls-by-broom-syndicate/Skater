@@ -6,6 +6,7 @@ using System.Linq;
 public partial class Game : MonoBehaviour
 {
     Color colour_snakespit = new Color(0.125f, 0.85f, 0.05f, 0.5f);
+    Color ice_beam = new Color(0f, 0.2f, 0.7f, 0.5f);
     Color colour_damage = new Color(0.85f, 0.05f, 0.125f, 0.5f);
 
 
@@ -592,6 +593,7 @@ public partial class Game : MonoBehaviour
                             break;
                         case 2://ice beam
                             log.Print("Ice Beam.", Color.blue);
+                            BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
                             break;
                         case 3://summon golems
                             log.Print("Create Ice Servants.", Color.blue);
