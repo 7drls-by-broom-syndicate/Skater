@@ -594,6 +594,7 @@ public partial class Game : MonoBehaviour
                         case 2://ice beam
                             log.Print("Ice Beam.", Color.blue);
                             BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
+                            FloatingDamage(player.mob, e, - lil.randi(1, 4), "magic ice");
                             break;
                         case 3://summon golems
                             log.Print("Create Ice Servants.", Color.blue);
