@@ -58,8 +58,8 @@ public class mob {
         new mobarchetype(false,"muhkitten","sharps",  1,  false,true,false,   false,false,    Etilesprite.PLAYER_COMPANION_MUHKITTENS_BRITISHBLUE,Etilesprite.PLAYER_COMPANION_MUHKITTENS_BRITISHBLUE_CORPSE,Etilesprite.PLAYER_COMPANION_MUHKITTENS_SKELETON),
 
         new mobarchetype(false,"summoned skel","raw bones",5,true,false,true,    false,false,Etilesprite.ENEMY_HUMAN_SKELETON,Etilesprite.EMPTY,Etilesprite.ENEMY_HUMAN_SKELETON),
-        new mobarchetype(true,"ice golem","icy prong",20,true,false,false,  false,false,    Etilesprite.ENEMY_ICE_GOLEM,Etilesprite.EMPTY,Etilesprite.EMPTY),
-
+        new mobarchetype(true,"ice golem","icy prong",2,true,false,false,  false,false,    Etilesprite.ENEMY_ICE_GOLEM,Etilesprite.EMPTY,Etilesprite.EMPTY),
+        //HP OF GOLEM IS 20
         new mobarchetype(false,"lich","spell",        5,true,false,true,    false,true,     Etilesprite.ENEMY_LICH,Etilesprite.EMPTY,Etilesprite.EMPTY),
 
         new mobarchetype(false,"hopped-up fox","bodypart",5,true,true,false,false,false,    Etilesprite.ENEMY_HOPPED_UP_FOX,Etilesprite.ENEMY_HOPPED_UP_FOX_CORPSE,Etilesprite.ENEMY_HOPPED_UP_FOX_SKELETON)

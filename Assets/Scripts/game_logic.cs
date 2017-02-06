@@ -448,11 +448,28 @@ public partial class Game : MonoBehaviour
                 player.score++;
                 f.speed = 0;
                 f.dead_currently = true;
-                f.tile = f.archetype.tile_dead;
+
+                if (f.archetype.tile_dead != Etilesprite.EMPTY) //if the type of mob has a sprite for its dead state
+                {
+                    f.tile = f.archetype.tile_dead; //mob's display tile = what it should be for dead
+                    map.itemgrid[f.posx, f.posy].tile = f.tile;
+                }
+                else {
+                    f.tile = Etilesprite.EMPTY;
+                    map.passable[f.posx, f.posy] = true;
+                    map.itemgrid[f.posx, f.posy] = null;
+                        }
                 if (map.itemgrid[f.posx, f.posy] == null) Debug.Log("error map thing in mob dies thing");
-                else map.itemgrid[f.posx, f.posy].tile = f.tile;
+               
             }
         }
+        //remove all really dead mobs. these are things like snow golem and undead mobs that go to nothing
+        int b4 = map.moblist.Count;
+
+        map.moblist.RemoveAll(x => x.tile == Etilesprite.EMPTY);
+
+        if (b4 != map.moblist.Count) Debug.Log("removed somethnig");
+
         if (player.hp <= 0)
         {
             log.Printline("This life no longer grips you.", Color.magenta);

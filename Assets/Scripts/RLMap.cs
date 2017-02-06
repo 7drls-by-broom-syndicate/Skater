@@ -171,7 +171,7 @@ public partial class RLMap  {
 
         //locked=new BitArray(width*height,false);
         itemgrid =new Array2D<item_instance>(width, height,null);
-        moblist = new List<mob>();
+        moblist = new List<mob>(); //will the old mobs in the old moblist be garbage collected?
         newmoblist = new List<mob>();
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
