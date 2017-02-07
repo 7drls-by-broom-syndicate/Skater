@@ -464,11 +464,11 @@ public partial class Game : MonoBehaviour
             }
         }
         //remove all really dead mobs. these are things like snow golem and undead mobs that go to nothing
-        int b4 = map.moblist.Count;
+        //int b4 = map.moblist.Count;
 
         map.moblist.RemoveAll(x => x.tile == Etilesprite.EMPTY);
 
-        if (b4 != map.moblist.Count) Debug.Log("removed somethnig");
+        //if (b4 != map.moblist.Count) Debug.Log("removed somethnig");//was just checking it was actually working
 
         if (player.hp <= 0)
         {
@@ -549,8 +549,27 @@ public partial class Game : MonoBehaviour
             map.gridflashtime[celllist[i].x, celllist[i].y] = Time.time + 0.5f;
         }
     }
-    void MobAttacksMob(mob attacker, mob target)
+    bool BresLineOfSight(int startx, int starty, int endx, int endy, bool includestart, bool includeend)
+    {
+        List<Cell> celllist = map.BresLine(startx, starty, endx, endy);
+        for (int i = 0; i < celllist.Count; i++)
+        {
+            if (!includestart && startx == celllist[i].x && starty == celllist[i].y) continue;
+            if (!includeend && endx == celllist[i].x && endy == celllist[i].y) continue;
 
+            if(map.blocks_sight[celllist[i].x,celllist[i].y])return false;
+            var f = map.itemgrid[celllist[i].x, celllist[i].y];
+
+            if (f != null && f.ismob && f.mob.dead_currently == false)
+                return false;
+
+           
+        }
+        return true;
+    }
+
+
+    void MobAttacksMob(mob attacker, mob target)
     {
         int damage = attacker.speed - target.speed;
         if (damage < 1) damage = 1;
@@ -610,8 +629,14 @@ public partial class Game : MonoBehaviour
                             break;
                         case 2://ice beam
                             log.Print("Ice Beam.", Color.blue);
-                            BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
-                            FloatingDamage(player.mob, e, - lil.randi(1, 4), "magic ice");
+                            if (BresLineOfSight(e.posx, e.posy, player.posx, player.posy, false, false))
+                            {
+                                BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
+                                FloatingDamage(player.mob, e, -lil.randi(1, 4), "magic ice");
+                            } else
+                            {
+                                log.Print(e.archetype.name + " can't see the target.", Color.blue);
+                            }
                             break;
                         case 3://summon golems
                             log.Print("Create Ice Servants.", Color.blue);
