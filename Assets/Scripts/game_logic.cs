@@ -578,6 +578,10 @@ public partial class Game : MonoBehaviour
 
     void MobGetsToAct(mob e)
     {
+
+        bool actcheck = false;
+        string actstring = "";
+
         if (!e.noticedyou || e.dead_currently) return; //METAL MOOP SOLID
         if (e.IsAdjacentTo(player.mob))
         {
@@ -615,31 +619,38 @@ public partial class Game : MonoBehaviour
                 }
                 break;
             case Etilesprite.ENEMY_MAGE:
+
+                actcheck = false;
+
                 if (lil.randi(1, 1000) > 950)
                 {
                     //casting a spell:
                     int which = lil.randi(1, 3);
-                    log.Printline(e.archetype.name + " casts ", Color.blue);
-                    e.magepointing = true;
-                    e.magepointing_timer = Time.time + 1.5f;
+                    
                     switch (which)
                     {
                         case 1://ice wall
-                            log.Print("Ice Wall.", Color.blue);
+                            actcheck = true;
+                            actstring="Ice Wall.";
                             break;
-                        case 2://ice beam
-                            log.Print("Ice Beam.", Color.blue);
-                            if (BresLineOfSight(e.posx, e.posy, player.posx, player.posy, false, false))
+                        case 2://ice beam                           
+                            if (
+                                (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) <= 10)
+                                && (BresLineOfSight(e.posx, e.posy, player.posx, player.posy, false, false))
+                                )
                             {
                                 BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
                                 FloatingDamage(player.mob, e, -lil.randi(1, 4), "magic ice");
+                                actcheck = true;
+                                actstring = "Ice Beam";
                             } else
                             {
                                 log.Print(e.archetype.name + " can't see the target.", Color.blue);
                             }
                             break;
                         case 3://summon golems
-                            log.Print("Create Ice Servants.", Color.blue);
+                            actstring = "Create Ice Servants.";
+                            actcheck = true;
                             int numgol = lil.randi(1, 3);
                             for (int i = 0; i < numgol; i++)
                             {
@@ -651,9 +662,17 @@ public partial class Game : MonoBehaviour
                             
                             }
                             break;
+                    }//end of switch for which spell
+                    if (actcheck)
+                    {
+                        log.Printline(e.archetype.name + " casts ", Color.blue);
+                        e.magepointing = true;
+                        e.magepointing_timer = Time.time + 1.5f;
+                        log.Print(actstring, Color.blue);
                     }
+
  return;
-                }
+                }//end of "if random chance means mage is casting a spell"
                
             break;
             case Etilesprite.ENEMY_NECROMANCER:
