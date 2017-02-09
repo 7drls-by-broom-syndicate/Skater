@@ -630,6 +630,41 @@ public partial class Game : MonoBehaviour
                     switch (which)
                     {
                         case 1://ice wall
+
+                            int length = lil.randi(3, 11);
+                            int startpos = lil.randi(-5, 5 - length);
+                            int fixedpos = lil.randi(2, 8);
+                            if (lil.coinflip()) fixedpos = -fixedpos;
+
+                            int drawxpos, drawypos;
+                            int drawxdelta, drawydelta;
+
+                            if (lil.coinflip())
+                            {
+                                drawxpos = player.posx + fixedpos;
+                                drawxdelta = 0;
+                                drawypos = player.posy + startpos;
+                                drawydelta = 1;
+                            } else
+                            {
+                                drawypos = player.posy + fixedpos;
+                                drawydelta = 0;
+                                drawxpos = player.posx + startpos;
+                                drawxdelta = 1;
+                            }
+
+                            for(int d = 0; d < length; d++)
+                            {
+                                if (IsEmpty(drawxpos, drawypos))
+                                {
+                                    map.itemgrid[drawxpos, drawypos] = new item_instance(Etilesprite.ITEM_WIZARD_WALL);
+                                    map.passable[drawxpos, drawypos] = false;
+                                    map.blocks_sight[drawxpos, drawypos] = true;
+                                }
+                                drawxpos += drawxdelta; drawypos += drawydelta;
+
+                            }
+
                             actcheck = true;
                             actstring="Ice Wall.";
                             break;
@@ -642,10 +677,10 @@ public partial class Game : MonoBehaviour
                                 BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, ice_beam);
                                 FloatingDamage(player.mob, e, -lil.randi(1, 4), "magic ice");
                                 actcheck = true;
-                                actstring = "Ice Beam";
+                                actstring = "Ice Beam.";
                             } else
                             {
-                                log.Print(e.archetype.name + " can't see the target.", Color.blue);
+                                log.Printline(e.archetype.name + " can't see the target.", Color.blue);
                             }
                             break;
                         case 3://summon golems

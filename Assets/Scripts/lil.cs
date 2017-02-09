@@ -39,6 +39,10 @@ public static class lil {
     public static int randi(int low, int high) {
         return UnityEngine.Random.Range(low, high+1);
     }
+    public static bool coinflip()
+    {
+        return (randi(0, 1000) < 500);
+    }
     public static byte randb(byte low, byte high) {
         return (byte)UnityEngine.Random.Range(low, high+1);
     }
