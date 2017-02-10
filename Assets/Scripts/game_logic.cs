@@ -466,7 +466,26 @@ public partial class Game : MonoBehaviour
             f.tile = Etilesprite.ITEM_BOMB_LIT_1 + (f.bombcount - 1);
 
         }
-        if(dirty)map.bomblist.RemoveAll(x => x.bombcount >= 5);
+        if (dirty) {
+            map.bomblist.RemoveAll(x => x.bombcount >= 5);
+            dirty = false;
+        }
+            
+
+        //fire
+        foreach(var f in map.firelist)
+        {
+            map.onfire[f.x, f.y]--;
+            if (map.onfire[f.x, f.y] < 0)
+            {
+                map.onfire[f.x, f.y] = null;
+                dirty = true;
+            }
+        }
+        if (dirty)
+            map.firelist.RemoveAll(z => map.onfire[z.x, z.y] == null);
+
+
         //mobs
         foreach (var f in map.moblist)
             MobGetsToAct(f);
@@ -660,10 +679,12 @@ public partial class Game : MonoBehaviour
                 break;
             case Etilesprite.ENEMY_MAGE:
 
-                actcheck = false;
+                
 
                 if (lil.randi(1, 1000) > 950)
                 {
+                    actcheck = false;
+
                     //casting a spell:
                     int which = lil.randi(1, 3);
                     
@@ -767,24 +788,54 @@ public partial class Game : MonoBehaviour
             case Etilesprite.ENEMY_NECROMANCER:
                 if (lil.randi(1, 1000) > 950)
                 {
+                    actcheck = false;
+
                     //casting a spell:
                     int which = lil.randi(1, 3);
-                    log.Printline(e.archetype.name + " casts ", Color.blue);
-                    e.magepointing = true;
-                    e.magepointing_timer = Time.time + 1.5f;
+                   
                     switch (which)
                     {
                         case 1:
-                            log.Print("Ignite Blood.", Color.blue);
+                            actstring = "Ignite Blood.";   
+
+                            for(int x = e.posx - 10; x < e.posx + 10; x++)
+                            {
+                                for(int y = e.posy = 10; y < e.posy + 10; y++)
+                                {
+                                  
+                                    if (map.onmap(x,y)&&map.bloodgrid[x, y] != null)
+                                    {
+                                        actcheck = true;
+                                        map.onfire[x, y] = lil.randi(10, 15);
+                                        map.firelist.Add(new Cell(x, y));
+                                    }
+                                }
+                            }
+
+                            
+                                 
+                                                
                             break;
                         case 2:
-                            log.Print("Explode Corpse.", Color.blue);
+                            actcheck = true;
+                            actstring = "Explode Corpse.";   
                             break;
                         case 3:
-                            log.Print("Raise Dead.", Color.blue);
+                            actcheck = true;
+                            actstring = "Raise Dead.";  
                             break;
                     }
-    return;
+
+                    if (actcheck)
+                    {
+                        log.Printline(e.archetype.name + " casts ", Color.blue);
+                        e.magepointing = true;
+                        e.magepointing_timer = Time.time + 1.5f;
+                        log.Print(actstring, Color.blue);
+                    }
+
+
+                    return;
                 }
             
                 break;

@@ -18,12 +18,13 @@ public partial class RLMap  {
     public Array2D<float> gridflashtime;
     public List<item_instance> bomblist;
     public List<item_instance> walllist;
+    public List<Cell> firelist;
     public Color?[] minimapcolours;
 
     public Texture2D minimap;
 
     //public Array2D<int?> wizwalltime;
-
+    public Array2D<int?> onfire;
     public Array2D<int?> bloodgrid;
     public Array2D<Cell> extradata;
     public int width, height;                               //width and height of the map
@@ -56,6 +57,11 @@ public partial class RLMap  {
     public List<mob> newmoblist;
                                            //list<item_instance> bomblist // specific to sucker
 
+
+    public bool onmap(int x,int y)
+    {
+        return (x >= 0 && x < width && y >= 0 && y < height);
+    }
     bool IsEmpty(int x, int y)
     {
         if (x < 0 || x >=width || y < 0 || y >= height) return false;//off map
@@ -178,6 +184,7 @@ public partial class RLMap  {
         newmoblist = new List<mob>();
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
+        onfire = new Array2D<int?>(width, height, null);
         bloodgrid = new Array2D<int?>(width, height, null);
         //wizwalltime = new Array2D<int?>(width, height, null);
         blocks_sight=new Array2D<bool>(width,height,false);
@@ -195,6 +202,7 @@ public partial class RLMap  {
         gridflashtime = new Array2D<float>(width, height, 0f);
         bomblist = new List<item_instance>();
         walllist= new List<item_instance>();
+        firelist = new List<Cell>();
 
         switch (dgt) {
             case DungeonGenType.Splitter2013:

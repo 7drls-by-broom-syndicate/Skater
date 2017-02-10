@@ -414,7 +414,7 @@ public partial class Game : MonoBehaviour
                             }
 
                             //smoke/cloud/gas
-                            GUI.color = new Color(GUI.color.r, 255, GUI.color.b, 0.3f);
+                            GUI.color = new Color(GUI.color.r, 255, GUI.color.b, 0.6f);
                             if (map.fogoffog[xx, yy])
                             {
                                 for (int f = 0; f < 8; f++)
@@ -425,7 +425,13 @@ public partial class Game : MonoBehaviour
                                     DrawSprite_Particle((screenx * 16 * zoomfactor) + zoomfactor * (int)tx, (screeny * 16 * zoomfactor) + zoomfactor * (int)ty, 13);
                                 }
                             }
+                            if (map.onfire[xx, yy]!=null)
+                            {
+                                int i = (int)(Time.time * 3.0f) % 3;
+                                DrawSprite(screenx, screeny, (int)Etilesprite.EFFECT_FIRE_ANIM_1 + i);
+                                    
 
+                            }
 
 
 
