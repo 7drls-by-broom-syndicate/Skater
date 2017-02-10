@@ -17,9 +17,12 @@ public partial class RLMap  {
     public Array2D<Color> gridflashcolour;
     public Array2D<float> gridflashtime;
     public List<item_instance> bomblist;
+    public List<item_instance> walllist;
     public Color?[] minimapcolours;
 
     public Texture2D minimap;
+
+    //public Array2D<int?> wizwalltime;
 
     public Array2D<int?> bloodgrid;
     public Array2D<Cell> extradata;
@@ -176,6 +179,7 @@ public partial class RLMap  {
         displaychar =new Array2D<Etilesprite>(width,height,Etilesprite.EMPTY);
 		passable=new Array2D<bool>(width,height,true);
         bloodgrid = new Array2D<int?>(width, height, null);
+        //wizwalltime = new Array2D<int?>(width, height, null);
         blocks_sight=new Array2D<bool>(width,height,false);
         distance=new Array2D<int>(width,height);
 		in_FOV=new Array2D<bool>(width,height,false);
@@ -190,6 +194,7 @@ public partial class RLMap  {
         gridflashcolour = new Array2D<Color>(width, height, Color.clear);
         gridflashtime = new Array2D<float>(width, height, 0f);
         bomblist = new List<item_instance>();
+        walllist= new List<item_instance>();
 
         switch (dgt) {
             case DungeonGenType.Splitter2013:

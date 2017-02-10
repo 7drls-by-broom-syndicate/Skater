@@ -12,6 +12,20 @@ public partial class Game : MonoBehaviour
 
     // bool trytomove(int deltax, int deltay) {
 
+    void doplayerfovandlights()
+    {
+        map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
+        map.dynamiclight.Fill(Color.black);
+        if (player.lantern)
+            map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);//was 9
+
+        if (lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f &&
+            lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f)
+            player.stealthed = true;
+        else
+            player.stealthed = false;
+    }
+
     void movemob(mob m, int tentx, int tenty)
     {
         if (m.isplayer)
@@ -411,12 +425,38 @@ public partial class Game : MonoBehaviour
 
         //effects and mobs get to act
         //stop being scared of "foreach": think of all the other shitty garbage you are creating
+
+        bool dirty= false;
+        //wizard walls
+        foreach(var f in map.walllist)
+        {
+            f.bombcount--;
+            if (f.bombcount == 0)
+            {
+                dirty = true;
+                map.itemgrid[f.bombx, f.bomby] = null;
+                map.passable[f.bombx, f.bomby] = true;
+                map.blocks_sight[f.bombx, f.bomby] = false;
+
+            }
+        }
+
+        if (dirty)
+        {
+            map.walllist.RemoveAll(x => x.bombcount == 0);
+            //redo FoV
+            doplayerfovandlights();
+
+            dirty = false;
+        }
+
         //bombs
         foreach (var f in map.bomblist)
         {
             f.bombcount++;
             if (f.bombcount >= 5)
             {
+                dirty = true;
                 log.Printline("Boom! The bomb explodes!", Color.red);
                 int x = f.bombx; int y = f.bomby;
                 map.itemgrid[x, y] = null;
@@ -426,7 +466,7 @@ public partial class Game : MonoBehaviour
             f.tile = Etilesprite.ITEM_BOMB_LIT_1 + (f.bombcount - 1);
 
         }
-        map.bomblist.RemoveAll(x => x.bombcount >= 5);
+        if(dirty)map.bomblist.RemoveAll(x => x.bombcount >= 5);
         //mobs
         foreach (var f in map.moblist)
             MobGetsToAct(f);
@@ -630,6 +670,10 @@ public partial class Game : MonoBehaviour
                     switch (which)
                     {
                         case 1://ice wall
+                            if (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) > 10)
+                                break;
+
+                            bool dirty = false;
 
                             int length = lil.randi(3, 11);
                             int startpos = lil.randi(-5, 5 - length);
@@ -653,20 +697,30 @@ public partial class Game : MonoBehaviour
                                 drawxdelta = 1;
                             }
 
-                            for(int d = 0; d < length; d++)
+                            int t = lil.randi(8, 16); //number of turns wall will stick around
+
+                            for (int d = 0; d < length; d++)
                             {
                                 if (IsEmpty(drawxpos, drawypos))
                                 {
-                                    map.itemgrid[drawxpos, drawypos] = new item_instance(Etilesprite.ITEM_WIZARD_WALL);
+                                    dirty = true;                 
+                                    var i=new item_instance(Etilesprite.ITEM_WIZARD_WALL,false,null,t);
+                                    map.itemgrid[drawxpos, drawypos] = i;
                                     map.passable[drawxpos, drawypos] = false;
                                     map.blocks_sight[drawxpos, drawypos] = true;
+                                    map.walllist.Add(i);
+                                    i.bombx = drawxpos;i.bomby = drawypos;
+                                    //map.wizwalltime[drawxpos, drawypos] = t;
                                 }
                                 drawxpos += drawxdelta; drawypos += drawydelta;
 
                             }
-
-                            actcheck = true;
-                            actstring="Ice Wall.";
+                            if (dirty)
+                            {
+                                actcheck = true;
+                                actstring = "Ice Wall.";
+                                doplayerfovandlights();
+                            }
                             break;
                         case 2://ice beam                           
                             if (

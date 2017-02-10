@@ -813,16 +813,9 @@ public partial class Game : MonoBehaviour
 
     void moveplayer()
     {
-        map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
-        map.dynamiclight.Fill(Color.black);
-        if (player.lantern)
-            map.do_fov_foradynamiclight(player.posx, player.posy, 11, Color.white);//was 9
-
-        if (lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f &&
-            lil.totalcolour(map.dynamiclight.AtGet(player.posx, player.posy)) == 0f)
-            player.stealthed = true;
-        else
-            player.stealthed = false;
+        //map.do_fov_rec_shadowcast(player.posx, player.posy, 11);
+        doplayerfovandlights();
+        
     }
 
     float nextfire = 0.0f;
