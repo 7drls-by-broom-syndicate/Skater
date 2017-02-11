@@ -355,14 +355,32 @@ public partial class Game : MonoBehaviour
             map.passable[m.posx, m.posy] = false;
             if (map.bloodgrid[m.posx, m.posy] != null)
             {
-                log.Printline("The blood disperses", new Color(0.5f, 0, 0));
+                log.Printline("The blood disperses.", new Color(0.5f, 0, 0));
                 map.bloodgrid[m.posx, m.posy] = null;
+            }
+            if (map.onfire[m.posx, m.posy] != null)
+            {
+                map.onfire[m.posx, m.posy] = null;
+                map.firelist.RemoveAll(x => x.x == m.posx && x.y == m.posy);
+                log.Printline("The fire is extinguished.", new Color(0.5f, 0, 0));
             }
             //if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
         }
+        //general if you are in a square on fire you get damaged line
+        if (map.onfire[m.posx, m.posy] != null)
+        {
+            int pep;
+            if (m.undead_currently == false)//skel etc take no damage from fire
+            {
+                if (m.archetype.tile == Etilesprite.ENEMY_ICE_GOLEM)
+                    pep = -10;
+                else pep = -lil.randi(2, 5);
 
+                FloatingDamage(m, m, pep, "fire");
+            }
+        }
         //general if you are in water you get damaged line
-        if (map.displaychar[m.posx, m.posy] == Etilesprite.MAP_WATER)
+        if (map.displaychar[m.posx, m.posy] == Etilesprite.MAP_WATER && m.undead_currently==false)//undead take no damage from water
             if (!m.archetype.heavy) FloatingDamage(m, m, -lil.randi(1, 4), "cold");
 
         //if not on ice or thin ice, reduce speed such that it is gone in 2 turns
@@ -426,6 +444,19 @@ public partial class Game : MonoBehaviour
         //effects and mobs get to act
         //stop being scared of "foreach": think of all the other shitty garbage you are creating
 
+        //DEBUGGING THING
+       
+        foreach(var debugMob in map.moblist)
+        {
+            if (map.itemgrid[debugMob.posx, debugMob.posy] == null)
+            {
+                log.Printline("BUG: mob at "+debugMob.posx+" "+debugMob.posy+" "+debugMob.archetype.name);
+                log.Printline("where player at " + player.posx + " " + player.posy);
+            }
+        }
+        
+        //END DEBUGGING THING
+
         bool dirty= false;
         //wizard walls
         foreach(var f in map.walllist)
@@ -479,6 +510,7 @@ public partial class Game : MonoBehaviour
             if (map.onfire[f.x, f.y] < 0)
             {
                 map.onfire[f.x, f.y] = null;
+                map.bloodgrid[f.x, f.y] = null;//blood is "used up" by the fire
                 dirty = true;
             }
         }
@@ -518,7 +550,9 @@ public partial class Game : MonoBehaviour
                     map.passable[f.posx, f.posy] = true;
                     map.itemgrid[f.posx, f.posy] = null;
                         }
-                if (map.itemgrid[f.posx, f.posy] == null) Debug.Log("error map thing in mob dies thing");
+                //if (map.itemgrid[f.posx, f.posy] == null)
+                 //   log.Printline("BUG: itemgrid null in mob death");
+                        // Debug.Log("error map thing in mob dies thing");
                
             }
         }
@@ -592,7 +626,11 @@ public partial class Game : MonoBehaviour
         victim.hp += amount;
         c.a = 0.5f;
         if (map.displaychar[victim.posx, victim.posy] != Etilesprite.MAP_WATER && amount != 0)
-            if (map.bloodgrid[victim.posx, victim.posy] == null) map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3) + ((amount < -3) ? 4 : 0);
+            if (map.bloodgrid[victim.posx, victim.posy] == null)
+            {
+                if(victim.archetype.tile!=Etilesprite.ENEMY_ICE_GOLEM && victim.undead_currently==false)
+                map.bloodgrid[victim.posx, victim.posy] = lil.randi(0, 3) + ((amount < -3) ? 4 : 0);
+            }
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
 
@@ -796,11 +834,11 @@ public partial class Game : MonoBehaviour
                     switch (which)
                     {
                         case 1:
-                            actstring = "Ignite Blood.";   
-
+                            actstring = "Ignite Blood.";
+                            //log.Printline("debug: here in ignite blood");
                             for(int x = e.posx - 10; x < e.posx + 10; x++)
                             {
-                                for(int y = e.posy = 10; y < e.posy + 10; y++)
+                                for(int y = e.posy - 10; y < e.posy + 10; y++)
                                 {
                                   
                                     if (map.onmap(x,y)&&map.bloodgrid[x, y] != null)
@@ -824,7 +862,7 @@ public partial class Game : MonoBehaviour
                             actcheck = true;
                             actstring = "Raise Dead.";  
                             break;
-                    }
+                    }//end of switch on which spell to cast
 
                     if (actcheck)
                     {
@@ -836,7 +874,7 @@ public partial class Game : MonoBehaviour
 
 
                     return;
-                }
+                }//end of if rnd chance means it's casting a spell
             
                 break;
 

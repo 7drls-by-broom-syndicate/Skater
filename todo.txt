@@ -1,3 +1,11 @@
+ blood needs to disappear when fire goes
+ ice golems need to not bleed (also skeletons)
+ fire needs to hurt things that end their turn on it
+ ice golems need to take extra damage from fire
+ if ice collapses fire needs to go	
+need to take damage if on blood when ignited
+ cold water needs to not hurt skeletons - check
+
 ! ice golems can't be created because we are doing a foreach of all mobs when letting them act and the ice golems are getting added to it
 
 1. content enemies: magic users
@@ -5,7 +13,7 @@
 		ice wall (walls expand)
 		ice beam
 		summon 1-3 ice golem
-		chilling hands (next to you)
+		chilling hands (next to you): slows you!
 	necromancer
 		ignite blood
 		explode corpse
