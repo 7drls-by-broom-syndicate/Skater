@@ -403,7 +403,7 @@ public partial class Game : MonoBehaviour
             for (int x = -1; x < 2; x++)
             {
                 int sqx = xx + x; int sqy = yy + y;
-                if (sqx > 0 && sqy > 0 && sqx < map.width && sqy < map.height)
+                if (sqx >= 0 && sqy >= 0 && sqx < map.width && sqy < map.height)
                 {
                     //Debug.Log("ok");
                     map.gridflashcolour[sqx, sqy] = new Color(1.0f, 0f, 0f, 0.5f);

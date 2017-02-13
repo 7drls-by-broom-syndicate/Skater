@@ -1,3 +1,7 @@
+weird thing where i'm at the bottom of the map facing down and enemies
+are frozen. if i rotate so i'm facing se instead of s they start moving
+again
+
  blood needs to disappear when fire goes
  ice golems need to not bleed (also skeletons)
  fire needs to hurt things that end their turn on it
