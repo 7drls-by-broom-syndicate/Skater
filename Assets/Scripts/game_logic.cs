@@ -881,7 +881,7 @@ public partial class Game : MonoBehaviour
                             }
                             if (actcheck)
                             {
-                                actstring = "Explode Corpse.";
+                                log.Printline(e.archetype.name + " casts Explode Corpse.", Color.blue);
                                 Cell c = candidates.randmember();
                                 map.itemgrid[c.x, c.y].mob.tile = Etilesprite.EMPTY;//force mob to get deleted from moblist after the foreach that calls mobgetstoact()
                                 map.itemgrid[c.x, c.y].tile = Etilesprite.EMPTY;
@@ -902,7 +902,7 @@ public partial class Game : MonoBehaviour
                             if (filteredmoblist.Count()>0) //there's at least one corpse we could raise
                             {
                                 actcheck = true;
-                                actstring = "Raise dead.";
+                                log.Printline(e.archetype.name + " casts Raise Dead.", Color.blue);
                                 mob m = filteredmoblist.randmember();//pick one
                                 //raise it 
                                 m.dead_currently = false;
@@ -921,10 +921,10 @@ public partial class Game : MonoBehaviour
 
                     if (actcheck)
                     {
-                        log.Printline(e.archetype.name + " casts ", Color.blue);
+                       // log.Printline(e.archetype.name + " casts ", Color.blue);
                         e.magepointing = true;
                         e.magepointing_timer = Time.time + 1.5f;
-                        log.Print(actstring, Color.blue);
+                       // log.Print(actstring, Color.blue);
                     }
 
 
