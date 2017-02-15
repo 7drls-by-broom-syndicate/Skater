@@ -883,6 +883,7 @@ public partial class Game : MonoBehaviour
                             {
                                 log.Printline(e.archetype.name + " casts Explode Corpse.", Color.blue);
                                 Cell c = candidates.randmember();
+                                BresLineColour(e.posx, e.posy, c.x, c.y, false, true, Color.red);
                                 map.itemgrid[c.x, c.y].mob.tile = Etilesprite.EMPTY;//force mob to get deleted from moblist after the foreach that calls mobgetstoact()
                                 map.itemgrid[c.x, c.y].tile = Etilesprite.EMPTY;
                                 map.itemgrid[c.x, c.y] = null;//nuke the itemgrid on map

@@ -1,3 +1,5 @@
+make ignite blood only used when near player
+
 lit line function
 
 mobs should not show as grey dots on minimap
@@ -31,8 +33,8 @@ need to take damage if on blood when ignited
 		chilling hands (next to you): slows you!
 	necromancer
 	v	ignite blood
-		explode corpse
-		raise dead
+	v	explode corpse
+	v	raise dead
 		drain life(has to be next to you)]
 	lich: (when necro raised by necro)						
 		ignite blood
