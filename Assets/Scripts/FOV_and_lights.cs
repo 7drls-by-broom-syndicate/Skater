@@ -109,7 +109,7 @@ public partial class RLMap
             Etilesprite et = displaychar.AtGet(xx, yy);
             playermemory.AtSet(xx, yy, et);
 
-            if (itemgrid[xx, yy] != null) minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)itemgrid[xx, yy].tile]);
+            if (itemgrid[xx, yy] != null && itemgrid[xx,yy].ismob==false) minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)itemgrid[xx, yy].tile]);
             else minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)et]);
             //if (et == Etilesprite.WALL) minimap.SetPixel(xx, yy, Color.grey);
             //else if (et == Etilesprite.FLOOR) minimap.SetPixel(xx, yy, Color.black);
