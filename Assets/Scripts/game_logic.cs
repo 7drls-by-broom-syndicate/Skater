@@ -883,8 +883,8 @@ public partial class Game : MonoBehaviour
                             {
                                 actstring = "Explode Corpse.";
                                 Cell c = candidates.randmember();
-                                map.itemgrid[c.x, c.y].tile = Etilesprite.EMPTY;//force mob to get deleted from moblist after the foreach that calls mobgetstoact()
-
+                                map.itemgrid[c.x, c.y].mob.tile = Etilesprite.EMPTY;//force mob to get deleted from moblist after the foreach that calls mobgetstoact()
+                                // ^ was itemgrid[].tile now .mob.tile
                                 map.itemgrid[c.x, c.y] = null;//nuke the itemgrid on map
                                 detonate(c.x, c.y);
                                 break;// finished with this mob IT NEEDS TO PRINT THE MESSAGE

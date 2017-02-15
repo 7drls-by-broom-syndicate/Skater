@@ -1,3 +1,11 @@
+i think it's bombs! when a mob or yourself moves over a bomb
+bomb is itemgrid? and mobs are too
+
+foreach(var obj in from o in someList where o.SomeBooleanTest select o)
+{
+    //do stuff
+}
+
 weird thing where i'm at the bottom of the map facing down and enemies
 are frozen. if i rotate so i'm facing se instead of s they start moving
 again
