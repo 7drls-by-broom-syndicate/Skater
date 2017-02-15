@@ -37,6 +37,15 @@ public partial class Game : MonoBehaviour
         {
             if (m.posx != tentx || m.posy != tenty)
             {
+                //debug move onto bomb?
+                if (map.itemgrid[tentx, tenty] != null)
+                {
+                    item_instance i = map.itemgrid[tentx, tenty];
+                    log.Printline("WARNING MOB MOVING ONTO " +
+                        Tilestuff.tilestring[(int)i.tile + 2]
+                        );
+                }
+                //end debug
                 map.itemgrid[tentx, tenty] = map.itemgrid[m.posx, m.posy];
                 map.itemgrid[m.posx, m.posy] = null;
                 m.posx = tentx; m.posy = tenty;
@@ -445,10 +454,10 @@ public partial class Game : MonoBehaviour
         //stop being scared of "foreach": think of all the other shitty garbage you are creating
 
         //DEBUGGING THING
-       
-        foreach(var debugMob in map.moblist)
+        player.hp = 60; //HP CHEAT DEBUG
+        foreach(var debugMob in map.moblist)//there's a mob in the moblist
         {
-            if (map.itemgrid[debugMob.posx, debugMob.posy] == null)
+            if (map.itemgrid[debugMob.posx, debugMob.posy] == null)//the map's itemlist at the mob's position is null
             {
                 log.Printline("BUG: mob at "+debugMob.posx+" "+debugMob.posy+" "+debugMob.archetype.name);
                 log.Printline("where player at " + player.posx + " " + player.posy);
@@ -829,7 +838,7 @@ public partial class Game : MonoBehaviour
                     actcheck = false;
 
                     //casting a spell:
-                    int which = lil.randi(1, 3);
+                    int which = lil.randi(1, 2);
                    
                     switch (which)
                     {
@@ -854,14 +863,59 @@ public partial class Game : MonoBehaviour
                                  
                                                 
                             break;
-                        case 2:
-                            actcheck = true;
-                            actstring = "Explode Corpse.";   
+                        case 2://explode corpse/raise dead to be animated and scary and chasing you
+
+
+                            List<Cell> candidates = new List<Cell>();//make a list of all possible corpses to explode
+                            for (int y = player.posy - 1; y < player.posy + 2; y++)//loop through moore neighbourhood round player
+                            {
+                                for(int x = player.posx - 1; x < player.posx + 2; x++)
+                                {
+                                    if (map.onmap(x, y) && map.itemgrid[x, y] != null && map.itemgrid[x,y].ismob &&
+                                        map.itemgrid[x, y].mob.dead_currently == true)
+                                    {
+                                        actcheck = true;
+                                        candidates.Add(new Cell(x, y));
+                                    }
+                                }
+                            }
+                            if (actcheck)
+                            {
+                                actstring = "Explode Corpse.";
+                                Cell c = candidates.randmember();
+                                map.itemgrid[c.x, c.y].tile = Etilesprite.EMPTY;//force mob to get deleted from moblist after the foreach that calls mobgetstoact()
+
+                                map.itemgrid[c.x, c.y] = null;//nuke the itemgrid on map
+                                detonate(c.x, c.y);
+                                break;// finished with this mob IT NEEDS TO PRINT THE MESSAGE
+                            }
+                            //there was no candidate corpse to explode let's see if there's one to raise                   
+
+                            var filteredmoblist = System.Linq.Enumerable.Where(
+                                map.moblist,
+                                n => RLMap.Distance_ChevyChase(n.posx, n.posy, e.posx, e.posy) < 10 && n.dead_currently==true
+                                && n.tile!=Etilesprite.EMPTY
+                                ).ToList();
+
+                         
+                            if (filteredmoblist.Count()>0) //there's at least one corpse we could raise
+                            {
+                                actcheck = true;
+                                actstring = "Raise dead.";
+                                mob m = filteredmoblist.randmember();//pick one
+                                //raise it 
+                                m.dead_currently = false;
+                                m.undead_currently = true;
+                                m.tile = m.archetype.tile_undead;
+                                map.itemgrid[m.posx, m.posy].tile = m.tile;
+                                m.hp = m.archetype.hp; //should it get its full normal hp when undead?
+                                //we may need a skipturn flag on mob if we don't want it acting the same turn it got up
+                                log.Printline("The " + m.archetype.name + " rises up!");//yeah this needs to go after spell line
+                            }
+
+
                             break;
-                        case 3:
-                            actcheck = true;
-                            actstring = "Raise Dead.";  
-                            break;
+                        
                     }//end of switch on which spell to cast
 
                     if (actcheck)
