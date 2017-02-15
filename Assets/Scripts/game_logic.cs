@@ -617,8 +617,7 @@ public partial class Game : MonoBehaviour
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
 
-        if (attacker.tile == Etilesprite.ENEMY_GIANTBAT  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");
-        
+        if (attacker.tile == Etilesprite.ENEMY_GIANTBAT  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");        
         if (attacker.tile == Etilesprite.ENEMY_NECROMANCER  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "drain life");
 
         if (attacker == player.mob && victim != player.mob)
@@ -644,6 +643,12 @@ public partial class Game : MonoBehaviour
             }
         map.gridflashcolour[victim.posx, victim.posy] = c;
         map.gridflashtime[victim.posx, victim.posy] = Time.time + 0.5f;
+
+        if (attacker.tile == Etilesprite.ENEMY_MAGE && attacker!=victim)
+        {
+            log.Printline(victim.archetype.name + " is slowed!");
+            victim.speed = 0;
+        }
 
     }
     void BresLineColour(int startx, int starty, int endx, int endy, bool includestart, bool includeend, Color c)

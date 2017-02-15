@@ -1,8 +1,5 @@
 make ignite blood only used when near player
 
-lit line function
-
-mobs should not show as grey dots on minimap
 
 i think it's bombs! when a mob or yourself moves over a bomb
 bomb is itemgrid? and mobs are too
@@ -35,7 +32,7 @@ need to take damage if on blood when ignited
 	v	ignite blood
 	v	explode corpse
 	v	raise dead
-		drain life(has to be next to you)]
+	v	drain life(has to be next to you)]
 	lich: (when necro raised by necro)						
 		ignite blood
 		explode corpse-ga
