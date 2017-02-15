@@ -617,7 +617,9 @@ public partial class Game : MonoBehaviour
 
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
 
-        if (attacker.tile == Etilesprite.ENEMY_GIANTBAT && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");
+        if (attacker.tile == Etilesprite.ENEMY_GIANTBAT  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");
+        
+        if (attacker.tile == Etilesprite.ENEMY_NECROMANCER  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "drain life");
 
         if (attacker == player.mob && victim != player.mob)
         {
@@ -703,7 +705,7 @@ public partial class Game : MonoBehaviour
                 if (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) >= 4
                     && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) <= 10)
                 {
-                    if (lil.randi(1, 1000) > 950)
+                    if (lil.randi(1, 1000) > 95)//950
                     {
                         int rotdir = player.mob.facing;
                         int deltax = lil.rot_deltax[rotdir];
