@@ -500,6 +500,7 @@ public partial class Game : MonoBehaviour
                 log.Printline("Boom! The bomb explodes!", Color.red);
                 int x = f.bombx; int y = f.bomby;
                 map.itemgrid[x, y] = null;
+                map.passable[x, y] = true;//fixing bug of invisible mobs, one hopes
                 //do explosion and damage. set off other bombs
                 detonate(x, y);
             }
@@ -710,7 +711,7 @@ public partial class Game : MonoBehaviour
                 if (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) >= 4
                     && RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) <= 10)
                 {
-                    if (lil.randi(1, 1000) > 95)//950
+                    if (lil.randi(1, 1000) > 950)//950
                     {
                         int rotdir = player.mob.facing;
                         int deltax = lil.rot_deltax[rotdir];
@@ -723,6 +724,7 @@ public partial class Game : MonoBehaviour
                             log.Printline(e.archetype.name + " lobs a bomb!", Color.green);
                             BresLineColour(e.posx, e.posy, c.x, c.y, false, true, new Color(0.7f, 0.7f, 0.7f, 0.7f));
                             map.itemgrid[c.x, c.y] = new item_instance(Etilesprite.ITEM_BOMB_LIT_1, false, null, 1);
+                            map.passable[c.x, c.y] = false;//invis mob bug
                             map.itemgrid[c.x, c.y].bombx = c.x;
                             map.itemgrid[c.x, c.y].bomby = c.y;
                             map.bomblist.Add(map.itemgrid[c.x, c.y]);
