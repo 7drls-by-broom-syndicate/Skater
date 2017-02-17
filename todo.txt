@@ -1,3 +1,7 @@
+make it so if you press to go in direction
+opposite to your facing and your speed is 0 then it rotates you
+
+
 make it so corpses take 5 damage then disappear. stops corpses blocking 
 the way and makes bombs remove threat of zombies
 but don't print the thing takes -5 damage when it's already dead
@@ -5,15 +9,12 @@ but don't print the thing takes -5 damage when it's already dead
 tasks for today:
 
 v 1 do lich and spells
-2 test bomb bug.make it so you can't go over bombs.
+v 2 test bomb bug.make it so you can't go over bombs.
 3 try a fix for the movement bug. "face up"
 
 
 make ignite blood only used when near player
 
-
-i think it's bombs! when a mob or yourself moves over a bomb
-bomb is itemgrid? and mobs are too
 
 foreach(var obj in from o in someList where o.SomeBooleanTest select o)
 {

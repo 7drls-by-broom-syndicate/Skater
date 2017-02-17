@@ -25,6 +25,18 @@ public static class Speed {
         //eg if you were going east and you pressed south it's 2
       //  int relcode = lil.rot_lookup[reldir]; //0 for straight ahead, 4 for opposite, 123 or -123 for turns
 
+        //new thing to try to fix bug 
+        
+        if(m.speed==0 && reldir == 4)
+        {
+            m.facing += 4;
+            if (m.facing > 7) m.facing -= 8;
+            goto youmaycontinue;
+        }
+        
+        //end of new thing
+
+
         m.speed += deltasbyrelativeheading[reldir];
         if (m.speed < min) m.speed = min;
         else if (m.speed > max) m.speed = max;
@@ -34,6 +46,8 @@ public static class Speed {
         m.facing += ROTATIONdeltasbyrelativeheading[reldir];
         if (m.facing < 0) m.facing += 8;
         else if (m.facing > 7) m.facing -= 8;
+
+        youmaycontinue:
 
         if (m.facing > 0 && m.facing < 4) m.reversesprite = false;
         else if (m.facing > 4) m.reversesprite = true;
