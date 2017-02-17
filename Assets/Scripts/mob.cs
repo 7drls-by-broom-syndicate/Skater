@@ -47,9 +47,9 @@ public class mob {
         new mobarchetype(false,"swinger","chain",     10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_CHAIN,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON) ,
         new mobarchetype(false,"tef-rog","dagger",    10, true,false,false,   true,false,     Etilesprite.ENEMY_SKATER_DAGGER,Etilesprite.ENEMY_SKATER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
         new mobarchetype(false,"giant bat","fangs",   5,  true,false,false,   false,true,     Etilesprite.ENEMY_GIANTBAT,Etilesprite.ENEMY_GIANTBAT_CORPSE,Etilesprite.ENEMY_GIANTBAT_SKELETON),
-        new mobarchetype(false,"kobby bomber","knife",5,  true,false,false,   false,false,    Etilesprite.ENEMY_KOBBY_BOMBER,Etilesprite.ENEMY_KOBBY_BOMBER_CORPSE,Etilesprite.ENEMY_KOBBY_BOMBER_SKELETON),     
+        new mobarchetype(false,"kobby bomber","knife",5,  true,false,false,   false,false,    Etilesprite.ENEMY_KOBBY_BOMBER,Etilesprite.ENEMY_KOBBY_BOMBER_CORPSE,Etilesprite.ENEMY_KOBBY_BOMBER_SKELETON),
         new mobarchetype(false,"ice mage","frost hands",    10, true,false,false,   false,false,    Etilesprite.ENEMY_MAGE,Etilesprite.ENEMY_MAGE_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
-        new mobarchetype(false,"necromancer","drain life", 10, true,false,false,   false,false,    Etilesprite.ENEMY_NECROMANCER,Etilesprite.ENEMY_NECROMANCER_CORPSE,Etilesprite.ENEMY_HUMAN_SKELETON),
+        new mobarchetype(false,"necromancer","drain life", 10, true,false,false,   false,false,    Etilesprite.ENEMY_NECROMANCER,Etilesprite.ENEMY_NECROMANCER_CORPSE,Etilesprite.ENEMY_LICH),
 
         new mobarchetype(false,"wolf","bite",         5,  false,true,false,   false,false,    Etilesprite.PLAYER_COMPANION_WOLF,Etilesprite.PLAYER_COMPANION_WOLF_CORPSE,Etilesprite.PLAYER_COMPANION_WOLF_SKELETON),
         new mobarchetype(false,"muhkitten","sharps",  1,  false,true,false,   false,false,    Etilesprite.PLAYER_COMPANION_MUHKITTENS_BLACK,Etilesprite.PLAYER_COMPANION_MUHKITTENS_BLACK_CORPSE,Etilesprite.PLAYER_COMPANION_MUHKITTENS_SKELETON),
@@ -60,7 +60,7 @@ public class mob {
         new mobarchetype(false,"summoned skel","raw bones",5,true,false,true,    false,false,Etilesprite.ENEMY_HUMAN_SKELETON,Etilesprite.EMPTY,Etilesprite.ENEMY_HUMAN_SKELETON),
         new mobarchetype(true,"ice golem","icy prong",2,true,false,false,  false,false,    Etilesprite.ENEMY_ICE_GOLEM,Etilesprite.EMPTY,Etilesprite.EMPTY),
         //HP OF GOLEM IS 20
-        new mobarchetype(false,"lich","spell",        5,true,false,true,    false,true,     Etilesprite.ENEMY_LICH,Etilesprite.EMPTY,Etilesprite.EMPTY),
+        new mobarchetype(false,"lich","drain life",        5,true,false,true,    false,true,     Etilesprite.ENEMY_LICH,Etilesprite.EMPTY,Etilesprite.EMPTY),
 
         new mobarchetype(false,"hopped-up fox","bodypart",5,true,true,false,false,false,    Etilesprite.ENEMY_HOPPED_UP_FOX,Etilesprite.ENEMY_HOPPED_UP_FOX_CORPSE,Etilesprite.ENEMY_HOPPED_UP_FOX_SKELETON)
            

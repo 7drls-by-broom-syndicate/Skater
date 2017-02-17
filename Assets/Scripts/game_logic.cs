@@ -618,7 +618,7 @@ public partial class Game : MonoBehaviour
         FloatingTextItems.Add(new FloatingTextItem(explanation + " " + amount + " hp", victim.posx, victim.posy, c));
 
         if (attacker.tile == Etilesprite.ENEMY_GIANTBAT  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "blood drain");        
-        if (attacker.tile == Etilesprite.ENEMY_NECROMANCER  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "drain life");
+        if ((attacker.tile == Etilesprite.ENEMY_NECROMANCER||attacker.tile==Etilesprite.ENEMY_LICH)  && victim != attacker) FloatingDamage(attacker, attacker, -amount, "drain life");
 
         if (attacker == player.mob && victim != player.mob)
         {
@@ -940,7 +940,118 @@ public partial class Game : MonoBehaviour
                 }//end of if rnd chance means it's casting a spell
             
                 break;
+            case Etilesprite.ENEMY_LICH:
+                if (lil.randi(1, 1000) > 950)
+                {
+                    actcheck = false;
 
+                    //casting a spell:
+                    int which = lil.randi(1, 4);
+
+                    switch (which)
+                    {
+                        case 1:
+                            actstring = "Ignite Blood.";
+                            //log.Printline("debug: here in ignite blood");
+                            for (int x = e.posx - 10; x < e.posx + 10; x++)
+                            {
+                                for (int y = e.posy - 10; y < e.posy + 10; y++)
+                                {
+
+                                    if (map.onmap(x, y) && map.bloodgrid[x, y] != null)
+                                    {
+                                        actcheck = true;
+                                        map.onfire[x, y] = lil.randi(10, 15);
+                                        map.firelist.Add(new Cell(x, y));
+                                    }
+                                }
+                            }
+
+
+
+
+                            break;
+                        case 2://Ishtar's Threat!                                              
+
+                            var filteredmoblist = System.Linq.Enumerable.Where(
+                                map.moblist,
+                                n => RLMap.Distance_ChevyChase(n.posx, n.posy, e.posx, e.posy) < 10 && n.dead_currently == true
+                                && n.tile != Etilesprite.EMPTY
+                                ).ToList();
+
+
+                            if (filteredmoblist.Count() > 0) //there's at least one corpse we could raise
+                            {
+                                actcheck = true;
+                                log.Printline(e.archetype.name + " casts Ishtar's Threat.", Color.blue);
+                                log.Printline("'I shall raise the dead and they shall eat the living!'", Color.magenta);
+
+                                foreach (mob m in filteredmoblist)
+                                {
+                                    //raise it 
+                                    m.dead_currently = false;
+                                    m.undead_currently = true;
+                                    m.tile = m.archetype.tile_undead;
+                                    map.itemgrid[m.posx, m.posy].tile = m.tile;
+                                    m.hp = m.archetype.hp; //should it get its full normal hp when undead?
+                                                           //we may need a skipturn flag on mob if we don't want it acting the same turn it got up
+                                    log.Printline("The " + m.archetype.name + " rises up!");//yeah this needs to go after spell line
+                                }
+                            }
+
+
+                            break;
+                        case 3: //Rain Blood
+                            actcheck = true;
+                            log.Printline(e.archetype.name + " casts Rain of Blood.", Color.blue);
+                            log.Printline("'My words have wounded heaven!'", Color.magenta);
+                            ///cock vice
+                            for (int x = e.posx - 10; x < e.posx + 10; x++)
+                            {
+                                for (int y = e.posy - 10; y < e.posy + 10; y++)
+                                {
+
+                                    if (map.onmap(x, y) && map.bloodgrid[x, y] == null)
+                                    {                                       
+                                        if(lil.randi(0,100)>30)map.bloodgrid[x, y] = lil.randi(0,7);
+                                        
+                                    }
+                                }
+                            }
+                            break;
+                        case 4: //drain life: BEEEEEM VERSION
+                            if (
+                              (RLMap.Distance_ChevyChase(player.posx, player.posy, e.posx, e.posy) <= 10)
+                              && (BresLineOfSight(e.posx, e.posy, player.posx, player.posy, false, false))
+                              )
+                            {
+                                BresLineColour(e.posx, e.posy, player.posx, player.posy, false, true, Color.magenta);
+                                int howmuchforyoursnakesir = lil.randi(1, 4);
+                                FloatingDamage(player.mob, e, -howmuchforyoursnakesir, "drain life");
+                                FloatingDamage(e, e, howmuchforyoursnakesir, "drain life") ;
+                                actcheck = true;
+                                log.Printline(e.archetype.name + " casts Drain Life Beam.", Color.blue);
+                            }
+                            else
+                            {
+                                log.Printline(e.archetype.name + " can't see the target.", Color.blue);
+                            }
+                            break;
+                    }//end of switch on which spell to cast
+
+                    if (actcheck)
+                    {
+                        // log.Printline(e.archetype.name + " casts ", Color.blue);
+                        e.magepointing = true;
+                        e.magepointing_timer = Time.time + 1.5f;
+                        // log.Print(actstring, Color.blue);
+                    }
+
+
+                    return;
+                }//end of if rnd chance means it's casting a spell
+
+                break;
         }//end switch tile
 
         map.passable[e.posx, e.posy] = true;//we need square the mob starts on to be passable, for pathfinding.
