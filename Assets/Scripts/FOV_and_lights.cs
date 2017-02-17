@@ -107,6 +107,9 @@ public partial class RLMap
             in_FOV.AtSet(xx, yy, true);
             fogofwar.AtSet(xx, yy, false);
             Etilesprite et = displaychar.AtGet(xx, yy);
+            //new debug
+            if ((int)et < 0 || (int)et > 255) Debug.Log("ET OUT OF BOUNDS =" + (int)et);
+            //end new debug
             playermemory.AtSet(xx, yy, et);
 
             if (itemgrid[xx, yy] != null && itemgrid[xx,yy].ismob==false) minimap.SetPixel(xx, yy, (Color)minimapcolours[(int)itemgrid[xx, yy].tile]);

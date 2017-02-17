@@ -6,12 +6,13 @@ make it so corpses take 5 damage then disappear. stops corpses blocking
 the way and makes bombs remove threat of zombies
 but don't print the thing takes -5 damage when it's already dead
 
-tasks for today:
-
-v 1 do lich and spells
-v 2 test bomb bug.make it so you can't go over bombs.
-3 try a fix for the movement bug. "face up"
-
+there's a new? bug where minimap crashes out 
+i think it was fov and lights file, line 113
+index out of range
+happened even before title screen had disappeared and in game too
+and in the next game after that- so not just bad seed?
+it could somehow be etilesprite.empty which is -1 so would be out of range?
+but how would a displaychar get set to .empty?
 
 make ignite blood only used when near player
 
