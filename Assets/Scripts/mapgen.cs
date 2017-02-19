@@ -701,6 +701,7 @@ public partial class RLMap
         }
         emptyspaces.Shuffle();
 
+        var emptyspaces2 = new List<Cell>();
 
         //add snow-topped rocks
         for (int ly = 0; ly < this.height; ly += 10)
@@ -719,28 +720,46 @@ public partial class RLMap
                 //bool suc;
                 if (displaychar[tentx, tenty] == Etilesprite.MAP_SNOW)
                 {
-                    if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true))
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_ICE, out outx, out outy, out direction, true)
+                        && displaychar[outx,outy]==Etilesprite.MAP_SNOW)//new. only put boulder there if it's blank
                     {//DODGY - WAS ' '
                         displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
                         blocks_sight[outx, outy] = true;
                         passable[outx, outy] = false;
+                        ///bookmark george takkei
+                        emptyspaces.RemoveAll(thing => thing.x == outx && thing.y == outy);//remove freespace where we put snow rock
+                        if(tentx!=outx || tenty!=outy)
+                            emptyspaces2.Add(new Cell(tentx, tenty));//put original placing of rock back if it's not where it ended up
                         //do_fov_foralight(outx, outy, 3, walllight);
 
                     }
 
                 }
                 else {
-                    if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction))
+                    if (shootrays(tentx, tenty, Etilesprite.MAP_SNOW, out outx, out outy, out direction)
+                        && displaychar[outx, outy] == Etilesprite.MAP_SNOW)//new. only put boulder there if it's blank
                     {
                         displaychar[outx, outy] = Etilesprite.MAP_SNOW_COVERED_ROCK_1 + lil.randi(0, 3);
                         blocks_sight[outx, outy] = true;
                         passable[outx, outy] = false;
                         // do_fov_foralight(outx, outy, 3, walllight);
+                        emptyspaces.RemoveAll(thing => thing.x == outx && thing.y == outy);//remove freespace where we put snow rock
+                        if (tentx != outx || tenty != outy)
+                            emptyspaces2.Add(new Cell(tentx, tenty));//put original placing of rock back if it's not where it ended up
+
                     }
                 }
 
             }
         }
+
+        //deal with spare spaces
+        //Debug.Log("first " + emptyspaces.Count);
+        emptyspaces.AddRange(emptyspaces2);
+        emptyspaces.Shuffle();
+        emptyspaces2.Clear();
+        //Debug.Log("second " + emptyspaces.Count);
+
         //do cairns
         int cx, cy;
 

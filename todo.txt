@@ -1,11 +1,3 @@
-make it so if you press to go in direction
-opposite to your facing and your speed is 0 then it rotates you
-
-
-make it so corpses take 5 damage then disappear. stops corpses blocking 
-the way and makes bombs remove threat of zombies
-but don't print the thing takes -5 damage when it's already dead
-
 there's a new? bug where minimap crashes out 
 i think it was fov and lights file, line 113
 index out of range
@@ -13,6 +5,9 @@ happened even before title screen had disappeared and in game too
 and in the next game after that- so not just bad seed?
 it could somehow be etilesprite.empty which is -1 so would be out of range?
 but how would a displaychar get set to .empty?
+
+invis mob bug still happens. easy to get it to appear using mouse click
+to move but hard to tell what causes it when doing that.
 
 make ignite blood only used when near player
 
@@ -28,25 +23,6 @@ foreach(var obj in from o in someList where o.SomeBooleanTest select o)
 
 need to take damage if on blood when ignited
 
-
-
-
-1. content enemies: magic users
-	ice mage		
-	v	ice wall (walls expand)
-	v	ice beam
-	v	summon 1-3 ice golem
-	v	chilling hands (next to you): slows you!
-	necromancer
-	v	ignite blood
-	v	explode corpse
-	v	raise dead
-	v	drain life(has to be next to you)]
-	lich: (when necro raised by necro)						
-		ignite blood
-		RAIN BLOOD!
-		drain life BEAM VERSION
-		ISHTAR'S THREAT: RAISE THE DEAD AND THEY SHALL EAT THE LIVING
 		
 2. content: items
 	
@@ -97,13 +73,12 @@ need to take damage if on blood when ignited
 
 6. attack grid
 
-when you crit (random) you cause bleeding and same on you by enemies
+
 
 moopwater is not being set to nopass
 
 enemy adjacent to you turns to face you
 
-you can walk in water
 
 enemy should skate up to you, can hit you and end up drifting past
 (enemies coast as they attack)
@@ -122,23 +97,26 @@ add concept of buffs and debuffs.
 	attack up, down
 	def up, down
 	
-change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class.
 
-a little pffffffft shower of snow particles when you turn and stop
-haha that's really going to happen in 7drl...
+
+
+
+
+
+better indication of speed, both player and mobs'
 
 general suspicious slowdown after adding game state code
 
-sound effect - hum of warp gate increases with proximity
 
-ripples on pond
+
+
 
 if you ever destroy a lantern regen lighting
 when you activate a cairn, redo lighting (dostaticlights())
 
 stop player turning lantern on and off it's always on
 
-make walls item not map feature so you can blow em up
+
 
 
 
@@ -150,3 +128,14 @@ sound attributions
 http://www.freesound.org/people/escortmarius/sounds/172569/
 http://www.freesound.org/people/be_a_hero_not_a_patriot/sounds/331886/
 http://www.freesound.org/people/833-45/sounds/11725/
+
+
+
+low priority
+when you crit (random) you cause bleeding and same on you by enemies
+sound effect - hum of warp gate increases with proximity
+ripples on pond
+make walls item not map feature so you can blow em up
+a little pffffffft shower of snow particles when you turn and stop
+change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class
+
