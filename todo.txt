@@ -21,8 +21,13 @@ foreach(var obj in from o in someList where o.SomeBooleanTest select o)
 
 
 
-need to take damage if on blood when ignited
+snow covered rocks are getting blood on them from rain of blood
+...and water...
 
+		
+UI has hp speed level score then square for beads, square for attack up, then square for defence up. after that there are 3 squares i think to
+put items to use in
+maybe make a hand icon for "held" and put in extreme right then to the left of it you put the item in hand
 		
 2. content: items
 	
@@ -138,4 +143,4 @@ ripples on pond
 make walls item not map feature so you can blow em up
 a little pffffffft shower of snow particles when you turn and stop
 change item instance so it includes the extra data and get rid of extradata. or make item instance just the tile not a class
-
+need to take damage if on blood when ignited

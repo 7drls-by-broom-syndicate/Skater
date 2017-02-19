@@ -1024,13 +1024,13 @@ public partial class Game : MonoBehaviour
                             actcheck = true;
                             log.Printline(e.archetype.name + " casts Rain of Blood.", Color.blue);
                             log.Printline("'My words have wounded heaven!'", Color.magenta);
-                            ///cock vice
+                            
                             for (int x = e.posx - 10; x < e.posx + 10; x++)
                             {
                                 for (int y = e.posy - 10; y < e.posy + 10; y++)
                                 {
 
-                                    if (map.onmap(x, y) && map.bloodgrid[x, y] == null)
+                                    if (map.onmap(x, y) && map.bloodgrid[x, y] == null && map.passable[x,y])
                                     {                                       
                                         if(lil.randi(0,100)>30)map.bloodgrid[x, y] = lil.randi(0,7);
                                         
