@@ -22,13 +22,9 @@ foreach(var obj in from o in someList where o.SomeBooleanTest select o)
     //do stuff
 }
 
-weird thing where i'm at the bottom of the map facing down and enemies
-are frozen. if i rotate so i'm facing se instead of s they start moving
-again. caused by next move by a* towards target being exact opposite of 
-facing so instead of moving it stops them. fix this for mobs at least and
-maybe player when under effects of maus moob
 
-invisible ice golem bug
+
+
 
 need to take damage if on blood when ignited
 
@@ -76,12 +72,9 @@ need to take damage if on blood when ignited
 	
 	idea for another potion: coldproof for crossing water
 	
+	do we have mouseover for buffs? as in cairn off defnse
 	
-3. fix interaction of a* with rotational movement
 
-	why do some enemies face north and never move until you get closer?
-	i suspect a nonpassable invisible. new theory: it's a* cutting out as it 
-	does for player
 	
 4. no map unsolvable	
 
@@ -98,7 +91,7 @@ need to take damage if on blood when ignited
 	 due to edge of map
 
 	we do need to fix that hillock thing- spawned in one, couldn't move
-	why exactly does click move stop?
+	
 	
 5. balancing of difficulty after adding new mobs and items. increase mob# ?
 

@@ -543,12 +543,23 @@ public partial class Game : MonoBehaviour
         //check for mob hp so dead
         foreach (var f in map.moblist)
         {
+            if(f.dead_currently==true && f.hp < -4)
+            {
+                //corpse has taken enough damage. we remove it. this stops corpses blocking doors
+                //and means you can prevent zombie apocalypse by killing corpses
+
+                    f.tile = Etilesprite.EMPTY;
+                    map.passable[f.posx, f.posy] = true;
+                    map.itemgrid[f.posx, f.posy] = null;
+            }
             if (f.dead_currently == false && f.hp <= 0)
             {
                 log.Printline("The " + f.archetype.name + " dies.", new Color(0.6f, 0, 0));
                 player.score++;
                 f.speed = 0;
                 f.dead_currently = true;
+
+                f.hp = 0; //newly added. Even if you smack a mob for 10 damage when it has 1hp its corpse should take 5 damage to make disappear
 
                 if (f.archetype.tile_dead != Etilesprite.EMPTY) //if the type of mob has a sprite for its dead state
                 {
@@ -598,14 +609,16 @@ public partial class Game : MonoBehaviour
             if (attacker.hasattackup)
             {
                 amount -= 100;
-                log.Printline("Aided by cairn power " + attacker.archetype.name + " strikes true!", Color.magenta);
+                if (!victim.dead_currently)
+                    log.Printline("Aided by cairn power " + attacker.archetype.name + " strikes true!", Color.magenta);
             }
             if (victim.hasdefenseup)
             {
                 if (amount < 0)
                 {
                     amount = 0;
-                    log.Printline("The cairn power protects " + victim.archetype.name + "!", Color.magenta);
+                    if (!victim.dead_currently)
+                        log.Printline("The cairn power protects " + victim.archetype.name + "!", Color.magenta);
                 }
             }
 
@@ -623,15 +636,19 @@ public partial class Game : MonoBehaviour
 
         if (attacker == player.mob && victim != player.mob)
         {
-            log.Printline(attacker.archetype.name + " deals " + (-amount) + " to " + victim.archetype.name + " [" + explanation + "]", Color.green);
+            if(!victim.dead_currently)
+                log.Printline(attacker.archetype.name + " deals " + (-amount) + " to " + victim.archetype.name + " [" + explanation + "]", Color.green);
         }
         else {
-            log.Printline(victim.archetype.name, c);
-            if (amount <= 0) log.Print(" takes ", c);
-            else log.Print(" gains ", c);
-            if (victim == attacker) log.Print(amount + " ", c);
-            else log.Print(amount + " from " + attacker.archetype.name, c);
-            if (explanation.Length > 0) log.Print("[" + explanation + "]", c);
+            if (!victim.dead_currently)
+            {
+                log.Printline(victim.archetype.name, c);
+                if (amount <= 0) log.Print(" takes ", c);
+                else log.Print(" gains ", c);
+                if (victim == attacker) log.Print(amount + " ", c);
+                else log.Print(amount + " from " + attacker.archetype.name, c);
+                if (explanation.Length > 0) log.Print("[" + explanation + "]", c);
+            }
         }
         //actually do the damage
         victim.hp += amount;
