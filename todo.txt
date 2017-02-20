@@ -21,13 +21,13 @@ foreach(var obj in from o in someList where o.SomeBooleanTest select o)
 
 
 
-snow covered rocks are getting blood on them from rain of blood
-...and water...
+
 
 		
 UI has hp speed level score then square for beads, square for attack up, then square for defence up. after that there are 3 squares i think to
 put items to use in
-maybe make a hand icon for "held" and put in extreme right then to the left of it you put the item in hand
+
+do items held in hand, new key to use etc.
 		
 2. content: items
 	
