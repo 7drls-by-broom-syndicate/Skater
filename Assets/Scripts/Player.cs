@@ -18,8 +18,9 @@ public class Player {
         set { mob.hp = value; }
     }
     public bool lantern;
-    
-    //item_instance* held = nullptr;
+
+    Etilesprite held=Etilesprite.EMPTY;
+
     public int score=0;
     public bool stealthed = false;
     //int charlevel = 0;

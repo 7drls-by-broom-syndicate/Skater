@@ -93,11 +93,12 @@ public partial class Game : MonoBehaviour
         if (i == null) return false;
         if (i.tile == Etilesprite.ITEM_BARREL)
         {
-
+            //open barrel
             if (map.extradata[tentx, tenty] != null)
             {
-                log.Printline("Inside the barrel was a something!", Color.blue);
-                i.tile = Etilesprite.ITEM_WARP_BEADS;
+               
+                i.tile = (Etilesprite)map.extradata[tentx, tenty].x; //was Etilesprite.ITEM_WARP_BEADS; when there was only warp beads in barrels
+                log.Printline("Inside the barrel was a "+Tilestuff.tilestring[(int)i.tile+2], Color.blue);
                 map.extradata[tentx, tenty] = null;
                 return true;
             }
@@ -564,7 +565,7 @@ public partial class Game : MonoBehaviour
                 if (f.archetype.tile_dead != Etilesprite.EMPTY) //if the type of mob has a sprite for its dead state
                 {
                     f.tile = f.archetype.tile_dead; //mob's display tile = what it should be for dead
-                    map.itemgrid[f.posx, f.posy].tile = f.tile;
+                    map.itemgrid[f.posx, f.posy].tile = f.tile;//crash
                 }
                 else {
                     f.tile = Etilesprite.EMPTY;

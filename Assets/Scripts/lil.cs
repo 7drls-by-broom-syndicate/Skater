@@ -59,6 +59,13 @@ public static class lil {
     public static T randmember<T>(this List<T> l) {
         return l[randi(0, l.Count-1)];
     }
+    
+    //public static T randmember<T>(this Array<T> a)
+    //{
+     //   return a[randi(0, a.length)];
+    //}
+
+
     public static Color colouradd(Color a, Color b) {
         float c1 = a.r + b.r;
         float c2 = a.g + b.g;

@@ -75,7 +75,7 @@ public static class Tilestuff
     "Bomb (lit 2s)",
     "Bomb (lit 3s)",
     "Bomb (lit 4s about to blow!)",
-    "Trap",
+    "Trap (safe, to pick up and use)",
     "Trap (set)",
     "Trap (sprung)",
     "Scrool of Ice Cube",
@@ -149,7 +149,13 @@ public static class Tilestuff
     "[HENGE STONE]",
     "[HENGE STONE]",
     "[HENGE STONE]",
-    "//EFFECT_FULLSQUARE"
+    "//EFFECT_FULLSQUARE",
+     "//COMBAT_GRID_ATTACK",
+    "//COMBAT_GRID_DEFENCE",
+    "//COMBAT_GRID_VULNERABLE",
+    "//INVENTORY_HAND",
+    "Fishing rod",
+    "Fishy"
 };
 }
 public enum Etilesprite : int

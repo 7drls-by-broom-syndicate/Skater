@@ -582,7 +582,18 @@ public partial class RLMap
         const int NUMBEROF_BARRELS_MIN = 5;
         const int NUMBEROF_BARRELS_MAX = 20;
         int NUMBEROF_BARRELS = lil.randi(NUMBEROF_BARRELS_MIN, NUMBEROF_BARRELS_MAX);
-        const int NUMBEROF_BARRELS_THAT_HAVE_ITEMS = 1;//5 when you have more items
+        int NUMBEROF_BARRELS_THAT_HAVE_ITEMS = lil.randi(1,NUMBEROF_BARRELS);
+        Etilesprite[] barrelitems = {            
+            Etilesprite.ITEM_RAW_MEAT,
+            Etilesprite.ITEM_BOMB,
+            Etilesprite.ITEM_TRAP,
+            Etilesprite.ITEM_SCROLL_FIRELANCE,
+            Etilesprite.ITEM_SCROLL_ICECUBE,
+            Etilesprite.ITEM_POTION_SPEED,
+            Etilesprite.ITEM_POTION_SPECIAL,
+            Etilesprite.ITEM_FISHING_ROD,
+            Etilesprite.ENEMY_HOPPED_UP_FOX
+        };
         //number of moops on level is not set, hence number of moop crates not set, but:
         const int PERCENT_CHANCE_MOOP_CRATE_NOT_EMPTY = 30;//this needs to be somewhere more scoped out.
 
@@ -981,12 +992,18 @@ public partial class RLMap
         }
         else
         {
+            //fill barrels
             barrels.Shuffle();//CRASH
             for (int i = 0; i < NUMBEROF_BARRELS_THAT_HAVE_ITEMS; i++)
             {
+                int w;
+                //w = (i == 0) ? (int)Etilesprite.ITEM_WARP_BEADS : (int)item_instance.possible_barrel_contents[lil.randi(0, item_instance.possible_barrel_contents.Length)];
+                w = (i == 0) ? (int)Etilesprite.ITEM_WARP_BEADS : (int)item_instance.possible_barrel_contents.randmember();
+
                 Cell c = barrels.OneFromTheTop();
-                extradata[c.x, c.y] = new Cell(1, 1);
+                extradata[c.x, c.y] = new Cell(w, w);
                 //so a barrel with extradata of 1,1 has something in it and extradata of null means empty! yay magic numbers.
+                //revision, using co-ord to store which item is in it
             }
         }
 

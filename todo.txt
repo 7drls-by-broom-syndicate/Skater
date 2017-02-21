@@ -22,7 +22,9 @@ foreach(var obj in from o in someList where o.SomeBooleanTest select o)
 
 
 
-
+maybe later bomb can be used then "cooked" like a grenade and thrown when
+you like (usually at last minute) but for now do it like throw and it 
+has normal timer. (makes it less useful)
 		
 UI has hp speed level score then square for beads, square for attack up, then square for defence up. after that there are 3 squares i think to
 put items to use in
@@ -40,16 +42,18 @@ do items held in hand, new key to use etc.
 	scroll of fire lance
 	speed potion
 	special potion (gives special)		
-		papa greebo: carpet of muhkittens (bunch of 1hp mobs)
-		pango: tung grab (grab item)
-		marsby: maxim strike (damage mobs)
-		polarmoop: dance (moop and enemies dance and they take damage)
+    fishing rod			
 	a hopped up fox!
 	
-	another idea: item: fishing kit: get fish from water. hp back
-	or even eat fish - low hp regain, be standing on blood when
-	ignited, fish gets fried. full hp back on eat. almost becomes
-	like an adventure game
+	
+specials
+
+papa greebo: carpet of muhkittens (bunch of 1hp mobs)
+pango: tung grab (grab item)
+marsby: maxim strike (damage mobs)
+polarmoop: dance (moop and enemies dance and they take damage)
+
+	
 	
 	idea for another potion: coldproof for crossing water
 	
