@@ -268,7 +268,9 @@ public partial class Game : MonoBehaviour
             return false;
         }
         bool didanactivation = false;
-        if (m.speed == 0 && !coasting) didanactivation = checkforitemactivation(m, tentx, tenty);
+        //if (m.speed == 0 && !coasting) didanactivation = checkforitemactivation(m, tentx, tenty);
+        //new- attempt to ensure you can only pick things up, activate cairns etc. if facing it.
+        if (m.speed == 0 && !coasting && rotdir==m.facing) didanactivation = checkforitemactivation(m, tentx, tenty);
 
         // Debug.Log(m.archetype.name + " " + rotdir);
         if (coasting && !m.skates_currently) goto playercoastingbutnotaskater;//was &&m.isplayer
