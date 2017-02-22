@@ -17,7 +17,6 @@ make ignite blood only used when near player
 
 
 
-
 maybe later bomb can be used then "cooked" like a grenade and thrown when
 you like (usually at last minute) but for now do it like throw and it 
 has normal timer. (makes it less useful)

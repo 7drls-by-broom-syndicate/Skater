@@ -427,6 +427,19 @@ public partial class Game : MonoBehaviour
         return true;
     }
 
+    public void useobject()
+    {
+        if (player.held == Etilesprite.EMPTY)
+        {
+            log.Printline("Nothing to use", Color.grey);
+        }
+        else
+        {
+            log.Printline(player.mob.archetype.name + " uses the " + Tilestuff.tilestring[(int)player.held + 2], Color.blue);
+        }
+        TimeEngine = CradleOfTime.player_is_done;
+    }
+
     void detonate(int xx, int yy)
     {
         for (int y = -1; y < 2; y++)

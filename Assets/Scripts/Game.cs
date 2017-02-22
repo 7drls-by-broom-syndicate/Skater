@@ -968,7 +968,7 @@ public partial class Game : MonoBehaviour
                     else if (Input.GetButtonDown("down")) { currentcommand = 1; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("left")) { currentcommand = 2; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("right")) { currentcommand = 3; nextfire = 0.0f; firstpress = true; }
-                    else if (Input.GetButtonDown("lantern")) { currentcommand = 4; nextfire = 0.0f; firstpress = true; }
+                    else if (Input.GetButtonDown("use")) { currentcommand = 4; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("wait")) { currentcommand = 5; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("upleft")) { currentcommand = 6; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("upright")) { currentcommand = 7; nextfire = 0.0f; firstpress = true; }
@@ -993,7 +993,10 @@ public partial class Game : MonoBehaviour
                             trytomove(player.mob, 2);// trytomove(1, 0);//E
                             break;
                         case 4:
-                            { player.lantern = !player.lantern; moveplayer(); }
+
+                            //from when command 4 was lantern. now it's "use"
+                            //{ player.lantern = !player.lantern; moveplayer(); }
+                            { useobject(); }
                             break;
                         case 5:
                             log.Printline((player.mob.speed>0)?"You coast.":"You wait.");trytomove(player.mob, 0,true);
@@ -1019,7 +1022,7 @@ public partial class Game : MonoBehaviour
                 (Input.GetButtonUp("down")) ||
                 (Input.GetButtonUp("left")) ||
               (Input.GetButtonUp("right")) ||
-                 (Input.GetButtonUp("lantern")) ||
+                 (Input.GetButtonUp("use")) ||
                 (Input.GetButtonUp("wait")) ||
                  (Input.GetButtonUp("upleft")) ||
                 (Input.GetButtonUp("upright")) ||
