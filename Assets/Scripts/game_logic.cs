@@ -220,6 +220,25 @@ public partial class Game : MonoBehaviour
             moveplayer();
             return true;
         }
+        //new. pickup
+        else if (item_instance.holdable_items.Contains(i.tile)){
+            Etilesprite prev = player.held;
+            log.Printline(m.archetype.name + " collects a "+Tilestuff.tilestring[(int)i.tile+2], Color.grey);
+            player.held = i.tile;
+            if (prev == Etilesprite.EMPTY)
+            {
+                map.itemgrid[tentx, tenty] = null;
+                map.passable[tentx, tenty] = true;
+            }
+            else
+            {
+                map.itemgrid[tentx, tenty].tile = prev;
+                log.Printline(m.archetype.name + " puts down a " + Tilestuff.tilestring[(int)prev + 2],Color.grey);
+            }
+           
+            
+            return true;
+        }
         return false;
     }
     void cairntransport_effect(int xx, int yy)

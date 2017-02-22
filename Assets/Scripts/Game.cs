@@ -514,6 +514,7 @@ public partial class Game : MonoBehaviour
                 }
                 //later: def down and attack down too
                 DrawSprite(20, 21, (int)Etilesprite.INVENTORY_HAND);
+                if (player.held != Etilesprite.EMPTY) DrawSprite(19, 21, (int)player.held);
                 //experimental snow
                 GUI.color = new Color(255, 255, 255, 0.5f);
                 for (int f = 0; f < number_snow_particles; f++)

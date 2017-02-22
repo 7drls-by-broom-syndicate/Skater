@@ -19,7 +19,7 @@ public class Player {
     }
     public bool lantern;
 
-    Etilesprite held=Etilesprite.EMPTY;
+    public Etilesprite held=Etilesprite.EMPTY;
 
     public int score=0;
     public bool stealthed = false;
