@@ -98,6 +98,14 @@ public partial class Game : MonoBehaviour
             {
                
                 i.tile = (Etilesprite)map.extradata[tentx, tenty].x; //was Etilesprite.ITEM_WARP_BEADS; when there was only warp beads in barrels
+                if (i.tile == Etilesprite.ENEMY_HOPPED_UP_FOX)
+                {
+                    i.ismob = true;
+                    mob mm = new mob(Emobtype.fox);
+                    mm.posx = tentx;mm.posy = tenty;
+                    i.mob = mm;
+                    map.moblist.Add(mm);
+                }
                 log.Printline("Inside the barrel was a "+Tilestuff.tilestring[(int)i.tile+2], Color.blue);
                 map.extradata[tentx, tenty] = null;
                 return true;
@@ -435,6 +443,30 @@ public partial class Game : MonoBehaviour
         }
         else
         {
+            switch (player.held)
+            {
+                case Etilesprite.ITEM_RAW_MEAT:
+                    break;
+                case Etilesprite.ITEM_BOMB:
+                    break;
+                case Etilesprite.ITEM_TRAP:
+                    break;
+                case Etilesprite.ITEM_SCROLL_FIRELANCE:
+                    break;
+                case Etilesprite.ITEM_SCROLL_ICECUBE:
+                    break;
+                case Etilesprite.ITEM_POTION_SPEED:
+                    break;
+                case Etilesprite.ITEM_POTION_SPECIAL:
+                    break;
+                case Etilesprite.ITEM_FISHING_ROD:
+                    break;
+                case Etilesprite.ITEM_FISH:
+                    break;
+
+            }
+
+
             log.Printline(player.mob.archetype.name + " uses the " + Tilestuff.tilestring[(int)player.held + 2], Color.blue);
         }
         TimeEngine = CradleOfTime.player_is_done;

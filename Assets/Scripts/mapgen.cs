@@ -997,9 +997,10 @@ public partial class RLMap
             for (int i = 0; i < NUMBEROF_BARRELS_THAT_HAVE_ITEMS; i++)
             {
                 int w;
-                //w = (i == 0) ? (int)Etilesprite.ITEM_WARP_BEADS : (int)item_instance.possible_barrel_contents[lil.randi(0, item_instance.possible_barrel_contents.Length)];
-                w = (i == 0) ? (int)Etilesprite.ITEM_WARP_BEADS : (int)item_instance.possible_barrel_contents.randmember();
 
+                //w = (i == 0) ? (int)Etilesprite.ITEM_WARP_BEADS : (int)item_instance.possible_barrel_contents.randmember();
+                w = (int)Etilesprite.ENEMY_HOPPED_UP_FOX;
+                //debug always fochs
                 Cell c = barrels.OneFromTheTop();
                 extradata[c.x, c.y] = new Cell(w, w);
                 //so a barrel with extradata of 1,1 has something in it and extradata of null means empty! yay magic numbers.
@@ -1018,7 +1019,7 @@ public partial class RLMap
         {
             int x = 0;
             int which = lil.randi(1, 100);
-            if (which > 50)//95
+            if (which > 95)//95
             {
                  x = lil.randi(0, 2)+(int)Emobtype.kobbybomber;                
             } else
