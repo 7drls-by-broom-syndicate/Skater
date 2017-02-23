@@ -1,5 +1,7 @@
 bugs that still happen 
 
+bats are not flying to you over water. i wonder if they fly over water if you yourself are not water and hence not on an "unreachable" tile ?
+
 there's a new? bug where minimap crashes out 
 i think it was fov and lights file, line 113
 index out of range
@@ -14,7 +16,8 @@ gamelogic 568 crash
 make ignite blood only used when near player
 
 
-
+todo:
+mobs only attack you if facing you?
 
 
 maybe later bomb can be used then "cooked" like a grenade and thrown when
