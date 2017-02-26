@@ -780,6 +780,8 @@ public partial class Game : MonoBehaviour
         bool actcheck = false;
         string actstring = "";
 
+     //   if(e.h)
+
         if (!e.noticedyou || e.dead_currently) return; //METAL MOOP SOLID
         if (e.IsAdjacentTo(player.mob))
         {

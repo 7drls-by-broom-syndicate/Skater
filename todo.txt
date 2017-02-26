@@ -18,6 +18,8 @@ make ignite blood only used when near player
 
 todo:
 mobs only attack you if facing you?
+raised mobs "die" when controlling necromancer dies, except for lich
+
 
 
 maybe later bomb can be used then "cooked" like a grenade and thrown when
