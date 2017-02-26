@@ -437,6 +437,10 @@ public partial class Game : MonoBehaviour
 
     public void useobject()
     {
+
+        Game.currentmenu= new Menu("PICK WIESLY",new List<string>  { "here's the first option", "the second option is about lemurs", "build a city", "whatever" });
+        Game.menuup = true;
+        Game.currentmenu.setpos(32, 32);
         if (player.held == Etilesprite.EMPTY)
         {
             log.Printline("Nothing to use", Color.grey);

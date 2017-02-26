@@ -79,15 +79,18 @@ public partial class Game : MonoBehaviour
     public Texture titlescreen;
     public Texture2D particle;
     AudioSource MyAudioSource;
-    public AudioClip backmusic,titlemusic;
+    public AudioClip backmusic, titlemusic;
 
 
     float[] StoredNoise = new float[640];
     float[] StoredNoise2 = new float[640];
     List<FloatingTextItem> FloatingTextItems = new List<FloatingTextItem>();
 
-    const int zoomfactor = 2;           //1,2 or 3 for 640x360,1280x720 or 1920x1080
-    const int zoomfactorx16 = zoomfactor * 16;
+    //const int zoomfactor = 2;           //1,2 or 3 for 640x360,1280x720 or 1920x1080
+
+    public static int zoomfactor = 2;//was const int
+
+    public static int zoomfactorx16 = zoomfactor * 16;//was const int
     const bool fullscreenp = true;
 
     MessageLog log;             //message log
@@ -95,14 +98,14 @@ public partial class Game : MonoBehaviour
     //vars for drawing sprites 
     const float xratio = 1f / 32f;
     const float yratio = 1f / 8f;
-    float spriteratio,spriteratio3;
+    float spriteratio, spriteratio3;
     static Rect rbigtext = new Rect(0, 0, (12 * 6) * zoomfactor, (20 * 12) * zoomfactor);
 
     static Rect r = new Rect(0, 0, 6 * zoomfactor, 12 * zoomfactor);
     static Rect r2 = new Rect(0, 0, xratio, yratio);
     static Rect r3 = new Rect(0, 0, 16 * zoomfactor, 16 * zoomfactor);
     static Rect r3b = new Rect(0, 0, 8 * zoomfactor, 8 * zoomfactor);
- static Rect r3c= new Rect(0, 0, 3 * zoomfactor, 3 * zoomfactor);
+    static Rect r3c = new Rect(0, 0, 3 * zoomfactor, 3 * zoomfactor);
     static Rect r4 = new Rect(0, 0, 0, 1f);
     static Rect r4reverse = new Rect(0, 0, 0, 1f);
     static Rect r5 = new Rect(0, 0, 0, 1f);
@@ -136,7 +139,8 @@ public partial class Game : MonoBehaviour
 #endif
 
 
-
+    public static Menu currentmenu=null;
+    public static bool menuup = false;
 
     void OnGUI()
     {
@@ -692,11 +696,18 @@ public partial class Game : MonoBehaviour
                         GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2);
 
                     }
-                }
+                }//end if gameover state
 
 
                 break;
 
+        }//end switch gamestate
+
+        if (menuup)
+        {
+ 
+            GUI.color = currentmenu.colBackground;
+            GUI.DrawTextureWithTexCoords(currentmenu.r, wednesdayfont, currentmenu.r2, true);
         }
 
     }
@@ -709,6 +720,7 @@ public partial class Game : MonoBehaviour
     {
         //music 
         MyAudioSource = GetComponent<AudioSource>();
+
         
 
         //experimental snow
@@ -721,6 +733,8 @@ public partial class Game : MonoBehaviour
         bstrPressStart = System.Text.Encoding.ASCII.GetBytes("Press " + "start" + " or Klik Left Maus");
         pressstartx = (640 - (bstrPressStart.Length * 6)) / 2;
         bool wtf = PlayerPrefs.GetInt("Screenmanager Is Fullscreen mode") == 1 ? true : false;
+
+       // Debug.Log("width and height are " + Screen.currentResolution.width + " " + Screen.currentResolution.height);
 
         // Screen.SetResolution(640 * zoomfactor, 360 * zoomfactor, fullscreenp);
 
@@ -744,6 +758,8 @@ public partial class Game : MonoBehaviour
 
     void StartAGame()
     {
+        
+
         //MyAudioSource.Stop();
         MyAudioSource.clip =backmusic;
         MyAudioSource.loop = true;
@@ -752,6 +768,7 @@ public partial class Game : MonoBehaviour
         log = new MessageLog(50, 15);
         log.Printline("Skater by The Broom Institute: 7DRL 2016");
         log.Printline("This is the post-contest version.");
+        //log.Printline("Resolution is " + Screen.currentResolution.width + " x " + Screen.currentResolution.height);
         lil.seednow();
         player = new Player(0);
 
