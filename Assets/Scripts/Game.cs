@@ -144,7 +144,24 @@ public partial class Game : MonoBehaviour
 
     void OnGUI()
     {
+        Action<int, int, byte> PrintOneChar = (int xx, int yy, byte c) =>
+        {
+           // for (int x = 0; x < b.Length; x++)
+           // {
+                int y = 0;
+               // byte c = b[x];
+                int xpos = c % 32;
+                int ypos = 7 - (c / 32);
+                r.x = (xx + (0 * 6)) * zoomfactor;
+                r.y = yy * zoomfactor;
 
+                r2.x = xratio * xpos;
+                r2.y = yratio * ypos;
+
+                GUI.DrawTextureWithTexCoords(r, wednesdayfont, r2);
+
+          //  }
+        };
         Action<int, int, byte[]> PrintString = (int xx, int yy, byte[] b) =>
         {
             for (int x = 0; x < b.Length; x++)
@@ -703,11 +720,25 @@ public partial class Game : MonoBehaviour
 
         }//end switch gamestate
 
+        //draw menu
         if (menuup)
         {
- 
+            //draw background
             GUI.color = currentmenu.colBackground;
             GUI.DrawTextureWithTexCoords(currentmenu.r, wednesdayfont, currentmenu.r2, true);
+            //draw title
+            GUI.color = currentmenu.colTitle;
+            PrintString(currentmenu.titlepos, currentmenu.locy, currentmenu.title);
+            //draw choices
+            GUI.color = currentmenu.colText;
+            for(int upto = 0; upto < currentmenu.number_of_options; upto++)
+            {
+                PrintString(currentmenu.locx+12,currentmenu.locy+((upto+2)*12),currentmenu.optionstrings[upto]);
+            }
+            //draw selector
+            GUI.color = currentmenu.colTitle;
+            PrintOneChar(currentmenu.locx + 6, currentmenu.locy + (currentmenu.currently_selected_option+2)*12, 16);
+            
         }
 
     }

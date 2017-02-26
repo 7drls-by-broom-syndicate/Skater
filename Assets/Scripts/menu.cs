@@ -14,16 +14,19 @@ public class Menu  {
     public Color colTitle = Color.yellow;
     public byte[] title;
 
+    
+
     int bgwidth, bgheight;
-    public int locx, locy;
+    public int titlepos;
+    public int locx, locy;//pos in the 640x360 space
     public Menu(string t,List<string> s)
     {
-       
+        
         title = System.Text.Encoding.ASCII.GetBytes(t);
 
         number_of_options = 0;
 
-        int longeststring = 0;
+        int longeststring = t.Length;//if title is longer than longest option, we want that for width
 
         optionstrings = new List<byte[]>();
 
@@ -38,11 +41,12 @@ public class Menu  {
         bgwidth = longeststring+3;//1 extra for each side and 1 for the "selector lane"
         bgheight = number_of_options+3;//1 extra top and bottom plus 1 for title
 
+        
 
         byte c = 219; //full block
         int xpos = c % 32;
         int ypos = 7 - (c / 32);
-
+        
         const float xratio = 1f / 32f;
         const float yratio = 1f / 8f;
         
@@ -63,5 +67,7 @@ public class Menu  {
         locx = x;locy = y;
         r.x = x*Game.zoomfactor;
         r.y = y*Game.zoomfactor;
+
+        titlepos = locx + ((bgwidth - title.Length) * 6) / 2;
     }
 }
