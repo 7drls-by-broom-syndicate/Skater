@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Menu  {
+
+    public enum Emenuidentity { graphics, wallabyselection, test, foreskin_shop }
+
     public List<byte[]> optionstrings;
     public int currently_selected_option;
     public int number_of_options;
@@ -14,14 +17,16 @@ public class Menu  {
     public Color colTitle = Color.yellow;
     public byte[] title;
 
-    
+    public Emenuidentity type;
 
     int bgwidth, bgheight;
     public int titlepos;
     public int locx, locy;//pos in the 640x360 space
-    public Menu(string t,List<string> s)
+    public Menu(Emenuidentity _type,string t,List<string> s)
     {
-        
+
+        type = _type;
+
         title = System.Text.Encoding.ASCII.GetBytes(t);
 
         number_of_options = 0;

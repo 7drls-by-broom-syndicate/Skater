@@ -434,13 +434,26 @@ public partial class Game : MonoBehaviour
         if (m.isplayer) TimeEngine = CradleOfTime.player_is_done;
         return true;
     }
-
+    public void doaction()
+    {
+        Game.currentmenu = new Menu(Menu.Emenuidentity.test,
+            "Best Soft-Drink Product Placement", new List<string> { "Star Trek: The Pepsi Generation", "They Call Me Mr.Pibb","Snow White and the 7 Ups" });
+        Game.menuup = true;
+        Game.currentmenu.setpos(32, 32);
+     //   log.Printline("-action- pressed", Color.grey);
+      //  TimeEngine = CradleOfTime.player_is_done;
+    }
     public void useobject()
     {
 
-        Game.currentmenu= new Menu("PICK WIESLY",new List<string>  { "here's the first option", "the second option is about lemurs", "build a city", "whatever" });
-        Game.menuup = true;
-        Game.currentmenu.setpos(32, 32);
+        //test
+       // Game.currentmenu = new Menu("PICK WIESLY", new List<string> { "here's the first option", "the second option is about lemurs", "build a city", "whatever" });
+       // Game.menuup = true;
+       // Game.currentmenu.setpos(32, 32);
+       // return;
+        //end test
+
+
         if (player.held == Etilesprite.EMPTY)
         {
             log.Printline("Nothing to use", Color.grey);

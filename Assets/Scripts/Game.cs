@@ -141,6 +141,7 @@ public partial class Game : MonoBehaviour
 
     public static Menu currentmenu=null;
     public static bool menuup = false;
+    public static bool menucommandwaiting = false;
 
     void OnGUI()
     {
@@ -945,9 +946,65 @@ public partial class Game : MonoBehaviour
                 //unless it's the player's turn, go away!
                 if (TimeEngine != CradleOfTime.waiting_for_player) return;
 
+                //is this the right place to put this?
+                //deal with input for menus
+                if (Game.menuup)
+                {
+                    if (Input.GetButtonDown("up"))
+                    {
+                        currentmenu.currently_selected_option--;
+                        if (currentmenu.currently_selected_option == -1) currentmenu.currently_selected_option = currentmenu.number_of_options-1;
 
+                    }
+                    else
+                         if (Input.GetButtonDown("down"))
+                    {
+                        currentmenu.currently_selected_option++;
+                        if (currentmenu.currently_selected_option == currentmenu.number_of_options) currentmenu.currently_selected_option = 0;
 
-                if (Input.GetMouseButtonDown(0))
+                    }
+                    else
+                         if (Input.GetButtonDown("start"))
+                    {
+                        Game.menuup = false;
+                        Game.menucommandwaiting = true;
+                    }
+                    else
+                         if (Input.GetButtonDown("cancel"))
+                    {
+                        Game.menuup = false;
+                    }
+
+                    return;//skipping the rest of the stuff in this function (maus walking, commands etc.) is it ok?
+                    //tell meh if it's ok, barnabeh. ah need to know, barnabeh! hold meh, barnabeh!
+                } else
+                {
+                    //menu is not up. maybe a command is waiting
+                    if (Game.menucommandwaiting)
+                    {
+                        switch (Game.currentmenu.type)
+                        {
+                            case Menu.Emenuidentity.test:
+                                switch (Game.currentmenu.currently_selected_option)
+                                {
+                                    case 0:
+                                        log.Printline("you selected the top option!");
+                                    break;
+                                    default:
+                                        log.Printline("you selected an option other than the top one!");
+                                        break;
+                                }
+                            break;
+                        }
+                        Game.menucommandwaiting = false;
+                        TimeEngine = CradleOfTime.player_is_done;
+                        return;
+                    }//end game command waiting
+                }
+                
+                
+
+                    if (Input.GetMouseButtonDown(0))
                 {
                     int fx = (int)Input.mousePosition.x; int fy = (int)((360 * zoomfactor) - 1 - Input.mousePosition.y);
                     //log.Printline("x = " + fx.ToString() + " y = " + fy.ToString());
@@ -1010,7 +1067,7 @@ public partial class Game : MonoBehaviour
                         else if (next.x < player.posx && next.y > player.posy) { currentcommand = 8; nextfire = 0.0f; firstpress = false; }//downleft
                         else if (next.x > player.posx && next.y > player.posy) { currentcommand = 9; nextfire = 0.0f; firstpress = false; }//downright
                     }
-                }
+                }//end if mauswalking
                 else {
                     if (Input.GetButtonDown("up")) { currentcommand = 0; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("down")) { currentcommand = 1; nextfire = 0.0f; firstpress = true; }
@@ -1022,6 +1079,7 @@ public partial class Game : MonoBehaviour
                     else if (Input.GetButtonDown("upright")) { currentcommand = 7; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("downleft")) { currentcommand = 8; nextfire = 0.0f; firstpress = true; }
                     else if (Input.GetButtonDown("downright")) { currentcommand = 9; nextfire = 0.0f; firstpress = true; }
+                    else if (Input.GetButtonDown("action")) { currentcommand = 10; nextfire = 0.0f; firstpress = true; }
                 }
 
                 if (currentcommand > -1 && Time.time > nextfire)
@@ -1040,12 +1098,13 @@ public partial class Game : MonoBehaviour
                         case 3:
                             trytomove(player.mob, 2);// trytomove(1, 0);//E
                             break;
-                        case 4:
-
+                        case 4://was 4
                             //from when command 4 was lantern. now it's "use"
                             //{ player.lantern = !player.lantern; moveplayer(); }
-                            { useobject(); }
+                            useobject(); 
+                           
                             break;
+
                         case 5:
                             log.Printline((player.mob.speed>0)?"You coast.":"You wait.");trytomove(player.mob, 0,true);
                             break;
@@ -1061,6 +1120,9 @@ public partial class Game : MonoBehaviour
                         case 9:
                             trytomove(player.mob, 3);// trytomove(1, 1);//SE
                             break;
+                        case 10://was 10
+                            doaction();
+                            break;
                     }
                     nextfire = Time.time + firerate;
                     if (firstpress) { nextfire += initialdelay; firstpress = false; }
@@ -1071,6 +1133,7 @@ public partial class Game : MonoBehaviour
                 (Input.GetButtonUp("left")) ||
               (Input.GetButtonUp("right")) ||
                  (Input.GetButtonUp("use")) ||
+                 (Input.GetButton("action")) || //notice it's GetButton not GetButtonUp, so this doesn't work and "action" doesn't repeat
                 (Input.GetButtonUp("wait")) ||
                  (Input.GetButtonUp("upleft")) ||
                 (Input.GetButtonUp("upright")) ||
